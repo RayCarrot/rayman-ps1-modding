@@ -1,0 +1,5 @@
+// C files
+ntsc-u, exe, FUN_801331a4, 0x0, src/hello.c // Overwrite unused function which has 0x110 bytes
+
+// Assembly files
+ntsc-u, exe, 0x8012f860, 0x0, src/hook.s // Overwrite call to pause screen function
