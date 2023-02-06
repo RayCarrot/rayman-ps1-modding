@@ -36,6 +36,7 @@ void level_menu__prev_level();
 void level_menu__next_level();
 void cheats_menu__place_ray();
 void cheats_menu__99_lives();
+void general_menu__checkpoint();
 
 // External variables
 extern short ray_mode;
@@ -45,6 +46,8 @@ extern bool new_world;
 extern bool new_level;
 extern short num_level;
 extern short num_level_choice;
+extern Obj ray;
+extern SaveState save1;
 
 // Constants
 #define DEFAULT_COOLDOWN 10
@@ -63,9 +66,13 @@ MENU(cheats_menu, "cheats",
     MENU_ACTION("place ray", cheats_menu__place_ray),
     MENU_ACTION("99 lives", cheats_menu__99_lives),
 );
+MENU(general_menu, "general",
+    MENU_ACTION("checkpoint", general_menu__checkpoint),
+);
 MENU(main_menu, "main",
     MENU_SUB_MENU("level...", &level_menu),
     MENU_SUB_MENU("cheats...", &cheats_menu),
+    MENU_SUB_MENU("general...", &general_menu),
     MENU_NONE("options..."), // TODO: Implement
 );
 
@@ -117,6 +124,14 @@ void cheats_menu__99_lives()
     // Since we're paused we need to manually
     // update the hud for it to show
     DO_FIXE();
+}
+
+void general_menu__checkpoint()
+{
+    ray.flags = ray.flags | 0x800;
+    restore_gendoor_link();
+    saveGameState(0x0, &save1);
+    correct_gendoor_link();
 }
 
 void change_menu(Menu *menu)
