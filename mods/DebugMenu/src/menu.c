@@ -20,41 +20,54 @@ typedef struct
 } Menu;
 
 // Function prototypes
-void main_menu__skip_level();
-void main_menu__place_ray();
-void main_menu__99_lives();
-void main_menu__exit_level();
+void level_menu__skip_level();
+void level_menu__exit_level();
+void level_menu__restart_level();
+void level_menu__prev_level();
+void level_menu__next_level();
+void cheats_menu__place_ray();
+void cheats_menu__99_lives();
 
 // External variables
 extern short ray_mode;
 extern bool PS1_IsPaused;
 extern StatusBar status_bar;
 extern bool new_world;
+extern bool new_level;
+extern short num_level;
+extern short num_level_choice;
 
 // Constants
 #define DEFAULT_COOLDOWN 10
 #define MENU_STACK_SIZE 2
 
-// Sub menu
-MenuItem sub_menu_items[] = 
+// Level menu
+MenuItem level_menu_items[] = 
 {
-    { .text = "dummy", .type = MENU_NONE },
+    { .text = "skip", .type = MENU_ACTION, .param = level_menu__skip_level },
+    { .text = "exit", .type = MENU_ACTION, .param = level_menu__exit_level },
+    { .text = "restart", .type = MENU_ACTION, .param = level_menu__restart_level },
+    { .text = "prev", .type = MENU_ACTION, .param = level_menu__prev_level },
+    { .text = "next", .type = MENU_ACTION, .param = level_menu__next_level },
 };
-Menu sub_menu = { .text = "sub", .count = 1, .items = sub_menu_items };
+Menu level_menu = { .text = "level", .count = 5, .items = level_menu_items };
+
+// Cheats menu
+MenuItem cheats_menu_items[] = 
+{
+    { .text = "place ray", .type = MENU_ACTION, .param = cheats_menu__place_ray },
+    { .text = "99 lives", .type = MENU_ACTION, .param = cheats_menu__99_lives },
+};
+Menu cheats_menu = { .text = "cheats", .count = 2, .items = cheats_menu_items };
 
 // Main menu
 MenuItem main_menu_items[] = 
 {
-    { .text = "sub menu", .type = MENU_SUB_MENU, .param = &sub_menu },
-    { .text = "place ray", .type = MENU_ACTION, .param = main_menu__place_ray },
-    { .text = "99 lives", .type = MENU_ACTION, .param = main_menu__99_lives },
-    { .text = "skip level", .type = MENU_ACTION, .param = main_menu__skip_level },
-    { .text = "exit level", .type = MENU_ACTION, .param = main_menu__exit_level },
-    { .text = "dummy", .type = MENU_NONE },
-    { .text = "dummy", .type = MENU_NONE },
-    { .text = "dummy", .type = MENU_NONE },
+    { .text = "level...", .type = MENU_SUB_MENU, .param = &level_menu },
+    { .text = "cheats...", .type = MENU_SUB_MENU, .param = &cheats_menu },
+    { .text = "options...", .type = MENU_NONE }, // TODO: Implement
 };
-Menu main_menu = { .text = "main", .count = 7, .items = main_menu_items };
+Menu main_menu = { .text = "main", .count = 3, .items = main_menu_items };
 
 // Variables
 byte input_cooldown;
@@ -62,31 +75,48 @@ byte menu_stack_index = 0xFF;
 Menu *menu_stack[MENU_STACK_SIZE];
 
 // Menu actions
-void main_menu__skip_level()
+void level_menu__skip_level()
 {
     ChangeLevel();
-    PS1_IsPaused = 0;
 }
 
-void main_menu__place_ray()
+void level_menu__exit_level()
+{
+    new_world = 1;
+}
+
+void level_menu__restart_level()
+{
+    new_level = 1;
+    num_level_choice = num_level;
+}
+
+// TODO: Add check in prev/next level action so the new level exists
+void level_menu__prev_level()
+{
+    new_level = 1;
+    num_level_choice = num_level - 1;
+}
+
+void level_menu__next_level()
+{
+    new_level = 1;
+    num_level_choice = num_level + 1;
+}
+
+void cheats_menu__place_ray()
 {
     ray_mode = -ray_mode;
     PS1_IsPaused = 0;
 }
 
-void main_menu__99_lives()
+void cheats_menu__99_lives()
 {
     status_bar.num_lives = 99;
     
     // Since we're paused we need to manually
     // update the hud for it to show
     DO_FIXE();
-}
-
-void main_menu__exit_level()
-{
-    new_world = 1;
-    PS1_IsPaused = 0;
 }
 
 void change_menu(Menu *menu)
