@@ -1,5 +1,14 @@
 #include <export.h>
 
+// Macros
+#define MENU_SUB_MENU(name, parameter) { .text=name, .type=MENU_SUB_MENU, .param=parameter}
+#define MENU_ACTION(name, parameter) { .text=name, .type=MENU_ACTION, .param=parameter}
+#define MENU_NONE(name) { .text=name, .type=MENU_NONE}
+#define MENU(varName, name, ...) MenuItem varName##Items[] = {\
+        __VA_ARGS__\
+    };\
+  Menu varName = { .text = name, .count = sizeof(varName##Items)/sizeof(varName##Items[0]), .items = varName##Items };\
+
 // Enums
 enum MENUITEMTYPE { MENU_NONE, MENU_SUB_MENU, MENU_ACTION };
 
@@ -42,33 +51,23 @@ extern short num_level_choice;
 #define DEFAULT_ACTION_COOLDOWN 20
 #define MENU_STACK_SIZE 2
 
-// Level menu
-MenuItem level_menu_items[] = 
-{
-    { .text = "skip", .type = MENU_ACTION, .param = level_menu__skip_level },
-    { .text = "exit", .type = MENU_ACTION, .param = level_menu__exit_level },
-    { .text = "restart", .type = MENU_ACTION, .param = level_menu__restart_level },
-    { .text = "prev", .type = MENU_ACTION, .param = level_menu__prev_level },
-    { .text = "next", .type = MENU_ACTION, .param = level_menu__next_level },
-};
-Menu level_menu = { .text = "level", .count = 5, .items = level_menu_items };
-
-// Cheats menu
-MenuItem cheats_menu_items[] = 
-{
-    { .text = "place ray", .type = MENU_ACTION, .param = cheats_menu__place_ray },
-    { .text = "99 lives", .type = MENU_ACTION, .param = cheats_menu__99_lives },
-};
-Menu cheats_menu = { .text = "cheats", .count = 2, .items = cheats_menu_items };
-
-// Main menu
-MenuItem main_menu_items[] = 
-{
-    { .text = "level...", .type = MENU_SUB_MENU, .param = &level_menu },
-    { .text = "cheats...", .type = MENU_SUB_MENU, .param = &cheats_menu },
-    { .text = "options...", .type = MENU_NONE }, // TODO: Implement
-};
-Menu main_menu = { .text = "main", .count = 3, .items = main_menu_items };
+// Menus
+MENU(level_menu, "level",
+    MENU_ACTION("skip", level_menu__skip_level),
+    MENU_ACTION("exit", level_menu__exit_level),
+    MENU_ACTION("restart", level_menu__restart_level),
+    MENU_ACTION("prev", level_menu__prev_level),
+    MENU_ACTION("next", level_menu__next_level),
+);
+MENU(cheats_menu, "cheats",
+    MENU_ACTION("place ray", cheats_menu__place_ray),
+    MENU_ACTION("99 lives", cheats_menu__99_lives),
+);
+MENU(main_menu, "main",
+    MENU_SUB_MENU("level...", &level_menu),
+    MENU_SUB_MENU("cheats...", &cheats_menu),
+    MENU_NONE("options..."), // TODO: Implement
+);
 
 // Variables
 byte input_cooldown;
