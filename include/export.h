@@ -616,6 +616,22 @@ struct AnimationLayer {
     byte sprite;
 };
 
+typedef struct AllFixData AllFixData, *PAllFixData;
+
+typedef struct Font Font, *PFont;
+
+struct Font {
+    struct Sprite * sprites;
+    undefined * img_buffer;
+    int nb_sprites;
+};
+
+struct AllFixData {
+    struct Font alpha;
+    struct Font alpha2;
+    struct Obj objects[29];
+};
+
 typedef struct OptionsJeu OptionsJeu, *POptionsJeu;
 
 struct OptionsJeu {
@@ -647,14 +663,6 @@ struct TextToDisplay {
     bool field8_0x3d;
     bool IsFond;
     byte field10_0x3f;
-};
-
-typedef struct Font Font, *PFont;
-
-struct Font {
-    struct Sprite * sprites;
-    undefined * img_buffer;
-    int nb_sprites;
 };
 
 typedef enum Input {
@@ -1584,7 +1592,7 @@ void PS1_LoadLevelMapBlock(MapData *mp);
 void FUN_80132304(undefined4 param_1,ushort height);
 void FUN_8013234c(undefined4 *param_1);
 void FUN_80132424(void);
-void FUN_801324cc(void);
+void PS1_LoadAllFixData(void);
 void PS1_LoadLevelEventBlock(void);
 void PS1_PlayVideo(Video video);
 void PS1_PlayVideoFile(Video video);
@@ -1752,7 +1760,7 @@ void FUN_80146564(uint *param_1,uint param_2,int *param_3,uint *param_4);
 void save_objects_flags(void);
 void restore_objects_flags(void);
 void snapToSprite(int param_1,Obj *param_2,uint param_3,int param_4,ushort param_5);
-Obj * findfirstObject(void);
+Obj * findfirstObject(ObjType objType);
 Obj * FUN_80146bb8(ObjType param_1);
 void FUN_80146c2c(int param_1,uint param_2);
 uint getbit(int param_1,uint param_2);
