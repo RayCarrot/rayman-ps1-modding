@@ -15,7 +15,7 @@ void INIT_NEW_GAME_Extended()
     deaths = 0;
 }
 
-void LoadGameOnDisk_Extended()
+void LoadDeaths()
 {
     // Load saved deaths count
     if (status_bar.wiz_digits[0] == SAVE_TAG) // Use this value to allow loading a save from before this patch - it will normally have a range of 0-9

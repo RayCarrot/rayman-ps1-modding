@@ -1,2 +1,2 @@
 .set noreorder
-j LoadGameOnDisk_Extended
+j LoadDeaths
