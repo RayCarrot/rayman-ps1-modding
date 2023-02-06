@@ -39,6 +39,7 @@ extern short num_level_choice;
 
 // Constants
 #define DEFAULT_COOLDOWN 10
+#define DEFAULT_ACTION_COOLDOWN 20
 #define MENU_STACK_SIZE 2
 
 // Level menu
@@ -159,14 +160,14 @@ void do_menu_actions(Menu *menu)
         {
             if (menu_stack_index > 0)
             {
-                input_cooldown = DEFAULT_COOLDOWN;
+                input_cooldown = DEFAULT_ACTION_COOLDOWN;
                 menu_stack_index--;
                 PlaySnd_old(0x4d);
             }
         }
         else if (TOUCHE(INPUT_CROSS))
         {
-            input_cooldown = DEFAULT_COOLDOWN;
+            input_cooldown = DEFAULT_ACTION_COOLDOWN;
 
             MenuItem *selectedItem = menu->items + menu->selectedItem;
             
