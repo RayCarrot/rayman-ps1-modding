@@ -1,2 +1,2 @@
 .set noreorder
-jal LoadGameOnDisk_Extended
+j LoadGameOnDisk_Extended

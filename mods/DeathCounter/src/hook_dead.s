@@ -1,2 +1,2 @@
 .set noreorder
-jal snifRayIsDead_Extended
+j snifRayIsDead_Extended

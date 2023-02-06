@@ -1,8 +1,5 @@
 #include <export.h>
 
-// TODO: Optimize code length by not overwriting function calls. Instead of using jal 
-//       we should use j to jump out at the end of a function and thus extending it
-
 #define SAVE_TAG 0xAA
 
 extern struct StatusBar status_bar;
@@ -14,18 +11,12 @@ uint deaths = 0;
 
 void INIT_NEW_GAME_Extended()
 {
-    // Call function we overwrote call for before
-    INIT_RAY_BEGIN();
-
     // Reset deaths to 0 on new game
     deaths = 0;
 }
 
 void LoadGameOnDisk_Extended()
 {
-    // Call function we overwrote call for before
-    POINTEUR_BOUTONS_OPTIONS_BIS();
-
     // Load saved deaths count
     if (status_bar.wiz_digits[0] == SAVE_TAG) // Use this value to allow loading a save from before this patch - it will normally have a range of 0-9
     {
@@ -52,9 +43,6 @@ void SaveDeaths()
 
 void snifRayIsDead_Extended()
 {
-    // Call function we overwrote call for before
-    terminateFistWhenRayDies();
-
     // Custom code, increment death counter
     deaths++;
 }
