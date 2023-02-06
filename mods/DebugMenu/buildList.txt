@@ -1,6 +1,5 @@
 // C files
-ntsc-u, exe, FntPrint, 0x0, src/dummy.c // Blank out FntPrint
-ntsc-u, exe, FntPrint, 0x8, src/menu.c // Overwrite remaining FntPrint function after the dummy code
+ntsc-u, exe, 0x801bb670, 0x8, src/menu.c // 2643 bytes of unused functions to overwrite
 
 // Assembly files
 ntsc-u, exe, 0x8012f860, 0x0, src/hook.s // Overwrite call to pause screen function
