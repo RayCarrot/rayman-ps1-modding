@@ -103,9 +103,9 @@ Menu *menu_stack[MENU_STACK_SIZE];
 bool is_mapping_shortcuts;
 bool has_mapped_shortcuts;
 ushort held_down_button;
-char *input_names[] = 
+char input_names[][6] = 
 {
-    0x00,
+    "",
     "left",
     "right",
     "up",
@@ -114,8 +114,8 @@ char *input_names[] =
     "\xf8", // Circle
     "~", // Square
     "%", // Triangle
-    0x00, // Start
-    0x00, // Select
+    "", // Start
+    "", // Select
     "r1",
     "r2",
     "l1",
@@ -322,8 +322,6 @@ void do_menu_action(MenuItem *menuItem)
 
 void do_menu_shortcuts(Menu *menu)
 {
-
-
     MenuItem *menuItem = menu->items;
 
     for (byte i = 0; i < menu->count; i++)
