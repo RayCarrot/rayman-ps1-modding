@@ -212,7 +212,7 @@ void do_menu_actions(Menu *menu)
                     break;
 
                 case MENU_TOGGLE:
-                    ((int (*)(MenuItem *, int isOn))selectedItem->param_0)(selectedItem, 1);
+                    ((int (*)(MenuItem *, int toggle))selectedItem->param_0)(selectedItem, 1);
                     break;
             }
 
@@ -259,7 +259,7 @@ void display_menu(Menu *menu)
         // Show toggles state if a toggle
         if (menuItem->type == MENU_TOGGLE)
         {
-            if (((int (*)(MenuItem *, int isOn))menuItem->param_0)(menuItem, 0))
+            if (((int (*)(MenuItem *, int toggle))menuItem->param_0)(menuItem, 0))
                 display_text("on", 120, yPos, 2, color);
             else
                 display_text("off", 120, yPos, 2, color);
