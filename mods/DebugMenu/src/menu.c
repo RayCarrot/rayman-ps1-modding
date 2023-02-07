@@ -18,16 +18,16 @@ enum MENUITEMTYPE { MENU_NONE, MENU_SUB_MENU, MENU_ACTION, MENU_TOGGLE };
 // Structs
 typedef struct 
 {
-    char *text;
+    char text[12];
     byte type;
-    ushort shortcutInput;
+    byte shortcutInput;
+    short param_1;
     void *param_0;
-    int param_1;
 } MenuItem;
 
 typedef struct
 {
-    char *text;
+    char text[8];
     byte count;
     byte selectedItem;
     MenuItem* items;
@@ -73,7 +73,7 @@ MENU(powers_menu, "powers",
     MENU_TOGGLE_PARAM("fist", powers_menu__toggle_power, 1 << 0),
     MENU_TOGGLE_PARAM("hang", powers_menu__toggle_power, 1 << 1),
     MENU_TOGGLE_PARAM("helico", powers_menu__toggle_power, 1 << 2),
-    MENU_TOGGLE_PARAM("super-helico", powers_menu__toggle_power, 1 << 3),
+    MENU_TOGGLE_PARAM("superhelico", powers_menu__toggle_power, 1 << 3),
     MENU_TOGGLE_PARAM("seed", powers_menu__toggle_power, 1 << 6),
     MENU_TOGGLE_PARAM("grab", powers_menu__toggle_power, 1 << 7),
     MENU_TOGGLE_PARAM("run", powers_menu__toggle_power, 1 << 8),
@@ -102,25 +102,8 @@ byte menu_stack_index = 0xFF;
 Menu *menu_stack[MENU_STACK_SIZE];
 bool is_mapping_shortcuts;
 bool has_mapped_shortcuts;
-ushort held_down_button;
-char input_names[][6] = 
-{
-    "",
-    "left",
-    "right",
-    "up",
-    "down",
-    "*", // Cross
-    "\xf8", // Circle
-    "~", // Square
-    "%", // Triangle
-    "", // Start
-    "", // Select
-    "r1",
-    "r2",
-    "l1",
-    "l2",
-};
+byte held_down_button;
+char input_names[] = "\0left\0right\0up\0down\0*\0\xf8\0~\0%\0\0\0r1\0r2\0l1\0l2"; // Single string to save space
 
 // Menu actions
 void level_menu__skip_level()
@@ -294,7 +277,27 @@ void display_menu(Menu *menu)
 
         if (menuItem->shortcutInput != INPUT_NONE)
         {
-            display_text(input_names[menuItem->shortcutInput], 180, yPos, 2, 0x01);
+            char *str = input_names;
+            byte index = menuItem->shortcutInput;
+
+            // Get string from combined string. Won't work for index 0, but it's unused anyway.
+            while (1)
+            {
+                if (*str == 0x00)
+                {
+                    index--;
+                    
+                    if (index == 0)
+                    {
+                        str++;
+                        break;
+                    }
+                }
+
+                str++;
+            }
+
+            display_text(str, 180, yPos, 2, 0x01);
         }
 
         yPos += MENU_LINE_HEIGHT;
