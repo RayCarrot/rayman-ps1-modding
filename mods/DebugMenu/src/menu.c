@@ -1,8 +1,9 @@
 #include <export.h>
 
 // Macros
-#define MENU_SUB_MENU(name, parameter) { .text=name, .type=MENU_SUB_MENU, .param=parameter}
-#define MENU_ACTION(name, parameter) { .text=name, .type=MENU_ACTION, .param=parameter}
+#define MENU_SUB_MENU(name, subMenu) { .text=name, .type=MENU_SUB_MENU, .param_0=subMenu}
+#define MENU_ACTION(name, func) { .text=name, .type=MENU_ACTION, .param_0=func}
+#define MENU_ACTION_PARAM(name, func, param) { .text=name, .type=MENU_ACTION, .param_0=func, .param_1=param}
 #define MENU_NONE(name) { .text=name, .type=MENU_NONE}
 #define MENU(varName, name, ...) MenuItem varName##Items[] = {\
         __VA_ARGS__\
@@ -10,14 +11,15 @@
   Menu varName = { .text = name, .count = sizeof(varName##Items)/sizeof(varName##Items[0]), .items = varName##Items };\
 
 // Enums
-enum MENUITEMTYPE { MENU_NONE, MENU_SUB_MENU, MENU_ACTION };
+enum MENUITEMTYPE { MENU_NONE, MENU_SUB_MENU, MENU_ACTION, MENU_TOGGLE };
 
 // Structs
 typedef struct 
 {
     char *text;
     enum MENUITEMTYPE type;
-    void *param;
+    void *param_0;
+    int param_1;
 } MenuItem;
 
 typedef struct
@@ -31,9 +33,8 @@ typedef struct
 // Function prototypes
 void level_menu__skip_level();
 void level_menu__exit_level();
-void level_menu__restart_level();
-void level_menu__prev_level();
-void level_menu__next_level();
+void level_menu__new_level(MenuItem *menuItem);
+void powers_menu__toggle_power(MenuItem *menuItem);
 void cheats_menu__place_ray();
 void cheats_menu__99_lives();
 void general_menu__checkpoint();
@@ -48,23 +49,36 @@ extern short num_level;
 extern short num_level_choice;
 extern Obj ray;
 extern SaveState save1;
+extern ushort RayEvts;
 
 // Constants
 #define DEFAULT_COOLDOWN 10
 #define DEFAULT_ACTION_COOLDOWN 20
-#define MENU_STACK_SIZE 2
+#define MENU_STACK_SIZE 3
 
 // Menus
 MENU(level_menu, "level",
     MENU_ACTION("skip", level_menu__skip_level),
     MENU_ACTION("exit", level_menu__exit_level),
-    MENU_ACTION("restart", level_menu__restart_level),
-    MENU_ACTION("prev", level_menu__prev_level),
-    MENU_ACTION("next", level_menu__next_level),
+    MENU_ACTION_PARAM("restart", level_menu__new_level, 0),
+    MENU_ACTION_PARAM("prev", level_menu__new_level, -1),
+    MENU_ACTION_PARAM("next", level_menu__new_level, 1),
+);
+MENU(powers_menu, "powers",
+    MENU_ACTION_PARAM("fist", powers_menu__toggle_power, 0),
+    MENU_ACTION_PARAM("hang", powers_menu__toggle_power, 1),
+    MENU_ACTION_PARAM("helico", powers_menu__toggle_power, 2),
+    MENU_ACTION_PARAM("super-helico", powers_menu__toggle_power, 3),
+    MENU_ACTION_PARAM("seed", powers_menu__toggle_power, 6),
+    MENU_ACTION_PARAM("grab", powers_menu__toggle_power, 7),
+    MENU_ACTION_PARAM("run", powers_menu__toggle_power, 8),
+    MENU_ACTION_PARAM("force-run", powers_menu__toggle_power, 12),
+    MENU_ACTION_PARAM("reversed", powers_menu__toggle_power, 13),
 );
 MENU(cheats_menu, "cheats",
     MENU_ACTION("place ray", cheats_menu__place_ray),
     MENU_ACTION("99 lives", cheats_menu__99_lives),
+    MENU_SUB_MENU("powers...", &powers_menu),
 );
 MENU(general_menu, "general",
     MENU_ACTION("checkpoint", general_menu__checkpoint),
@@ -73,6 +87,7 @@ MENU(main_menu, "main",
     MENU_SUB_MENU("level...", &level_menu),
     MENU_SUB_MENU("cheats...", &cheats_menu),
     MENU_SUB_MENU("general...", &general_menu),
+    MENU_NONE("display..."), // TODO: Implement
     MENU_NONE("options..."), // TODO: Implement
 );
 
@@ -92,23 +107,16 @@ void level_menu__exit_level()
     new_world = 1;
 }
 
-void level_menu__restart_level()
+void level_menu__new_level(MenuItem *menuItem)
 {
     new_level = 1;
-    num_level_choice = num_level;
+    // TODO: Add check in prev/next level action so the new level exists
+    num_level_choice = num_level + menuItem->param_1;
 }
 
-// TODO: Add check in prev/next level action so the new level exists
-void level_menu__prev_level()
+void powers_menu__toggle_power(MenuItem *menuItem)
 {
-    new_level = 1;
-    num_level_choice = num_level - 1;
-}
-
-void level_menu__next_level()
-{
-    new_level = 1;
-    num_level_choice = num_level + 1;
+    RayEvts ^= 1UL << menuItem->param_1;
 }
 
 void cheats_menu__place_ray()
@@ -188,11 +196,11 @@ void do_menu_actions(Menu *menu)
             switch (selectedItem->type)
             {
                 case MENU_SUB_MENU:
-                    change_menu(selectedItem->param);
+                    change_menu(selectedItem->param_0);
                     break;
 
                 case MENU_ACTION:
-                    ((void (*)())selectedItem->param)();
+                    ((void (*)(MenuItem *))selectedItem->param_0)(selectedItem);
                     break;
             }
 
