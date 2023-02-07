@@ -19,7 +19,8 @@ enum MENUITEMTYPE { MENU_NONE, MENU_SUB_MENU, MENU_ACTION, MENU_TOGGLE };
 typedef struct 
 {
     char *text;
-    enum MENUITEMTYPE type;
+    byte type;
+    ushort shortcutInput;
     void *param_0;
     int param_1;
 } MenuItem;
@@ -40,6 +41,7 @@ int powers_menu__toggle_power(MenuItem *menuItem, int toggle);
 void cheats_menu__place_ray();
 void cheats_menu__99_lives();
 void general_menu__checkpoint();
+void do_menu_action(MenuItem *menuItem);
 
 // External variables
 extern short ray_mode;
@@ -100,6 +102,27 @@ MENU(main_menu, "main",
 byte input_cooldown;
 byte menu_stack_index = 0xFF;
 Menu *menu_stack[MENU_STACK_SIZE];
+bool is_mapping_shortcuts;
+bool has_mapped_shortcuts;
+ushort held_down_shortcut;
+char *input_names[] = 
+{
+    0x00,
+    "left",
+    "right",
+    "up",
+    "down",
+    "*", // Cross
+    "\xf8", // Circle
+    "~", // Square
+    "%", // Triangle
+    0x00, // Start
+    0x00, // Select
+    "r1",
+    "r2",
+    "l1",
+    "l2",
+};
 
 // Menu actions
 void level_menu__skip_level()
@@ -127,6 +150,7 @@ int powers_menu__toggle_power(MenuItem *menuItem, int toggle)
     return (RayEvts & menuItem->param_1) != 0;
 }
 
+// TODO: Make this a toggle
 void cheats_menu__place_ray()
 {
     ray_mode = -ray_mode;
@@ -144,7 +168,7 @@ void cheats_menu__99_lives()
 
 void general_menu__checkpoint()
 {
-    ray.flags = ray.flags | 0x800;
+    ray.flags |= 0x800;
     restore_gendoor_link();
     saveGameState(0x0, &save1);
     correct_gendoor_link();
@@ -164,59 +188,72 @@ void do_menu_actions(Menu *menu)
     // Process inputs
     if (input_cooldown == 0)
     {
-        if (TOUCHE(INPUT_DOWN))
-        {
-            input_cooldown = DEFAULT_COOLDOWN;
-            
-            if (menu->selectedItem < menu->count - 1)
-                menu->selectedItem++;
-            else
-                menu->selectedItem = 0;
+        MenuItem *selectedItem = menu->items + menu->selectedItem;
 
-            PlaySnd_old(0x44);
+        if (TOUCHE(INPUT_SELECT) && (selectedItem->type == MENU_ACTION || selectedItem->type == MENU_TOGGLE))
+        {
+            is_mapping_shortcuts = 1;
+
+            for (ushort i = 1; i < 15; i++)
+            {
+                if (i != INPUT_START && i != INPUT_SELECT && TOUCHE(i))
+                {
+                    input_cooldown = DEFAULT_ACTION_COOLDOWN;
+
+                    selectedItem->shortcutInput = i;
+
+                    PlaySnd_old(0x44);
+                    has_mapped_shortcuts = 1;
+                    break;
+                }
+            }
         }
-        else if (TOUCHE(INPUT_UP))
+        else
         {
-            input_cooldown = DEFAULT_COOLDOWN;
+            // Remove mapped shortcut
+            if (is_mapping_shortcuts && !has_mapped_shortcuts)
+                selectedItem->shortcutInput = INPUT_NONE;
 
-            if (menu->selectedItem > 0)
-                menu->selectedItem--;
-            else
-                menu->selectedItem = menu->count - 1;
+            is_mapping_shortcuts = 0;
+            has_mapped_shortcuts = 0;
 
-            PlaySnd_old(0x44);
-        }
-        else if (TOUCHE(INPUT_CIRCLE))
-        {
-            if (menu_stack_index > 0)
+            if (TOUCHE(INPUT_DOWN))
+            {
+                input_cooldown = DEFAULT_COOLDOWN;
+                
+                if (menu->selectedItem < menu->count - 1)
+                    menu->selectedItem++;
+                else
+                    menu->selectedItem = 0;
+
+                PlaySnd_old(0x44);
+            }
+            else if (TOUCHE(INPUT_UP))
+            {
+                input_cooldown = DEFAULT_COOLDOWN;
+
+                if (menu->selectedItem > 0)
+                    menu->selectedItem--;
+                else
+                    menu->selectedItem = menu->count - 1;
+
+                PlaySnd_old(0x44);
+            }
+            else if (TOUCHE(INPUT_CIRCLE))
+            {
+                if (menu_stack_index > 0)
+                {
+                    input_cooldown = DEFAULT_ACTION_COOLDOWN;
+                    menu_stack_index--;
+                    PlaySnd_old(0x4d);
+                }
+            }
+            else if (TOUCHE(INPUT_CROSS))
             {
                 input_cooldown = DEFAULT_ACTION_COOLDOWN;
-                menu_stack_index--;
-                PlaySnd_old(0x4d);
+                do_menu_action(selectedItem);
+                PlaySnd_old(0x45);
             }
-        }
-        else if (TOUCHE(INPUT_CROSS))
-        {
-            input_cooldown = DEFAULT_ACTION_COOLDOWN;
-
-            MenuItem *selectedItem = menu->items + menu->selectedItem;
-            
-            switch (selectedItem->type)
-            {
-                case MENU_SUB_MENU:
-                    change_menu(selectedItem->param_0);
-                    break;
-
-                case MENU_ACTION:
-                    ((void (*)(MenuItem *))selectedItem->param_0)(selectedItem);
-                    break;
-
-                case MENU_TOGGLE:
-                    ((int (*)(MenuItem *, int toggle))selectedItem->param_0)(selectedItem, 1);
-                    break;
-            }
-
-            PlaySnd_old(0x45);
         }
     }
 
@@ -265,12 +302,71 @@ void display_menu(Menu *menu)
                 display_text("off", 120, yPos, 2, color);
         }
 
+        if (menuItem->shortcutInput != INPUT_NONE)
+        {
+            display_text(input_names[menuItem->shortcutInput], 180, yPos, 2, 0x01);
+        }
+
         yPos += MENU_LINE_HEIGHT;
         menuItem++;
     } 
 }
 
-int menu()
+void do_menu_action(MenuItem *menuItem)
+{
+    switch (menuItem->type)
+    {
+        case MENU_SUB_MENU:
+            change_menu(menuItem->param_0);
+            break;
+
+        case MENU_ACTION:
+            ((void (*)(MenuItem *))menuItem->param_0)(menuItem);
+            break;
+
+        case MENU_TOGGLE:
+            ((int (*)(MenuItem *, int toggle))menuItem->param_0)(menuItem, 1);
+            break;
+    }
+}
+
+void do_menu_shortcuts(Menu *menu)
+{
+    if (held_down_shortcut != INPUT_NONE)
+    {
+        if (!TOUCHE(held_down_shortcut))
+            held_down_shortcut = INPUT_NONE;
+        else
+            return;
+    }
+
+    MenuItem *menuItem = menu->items;
+
+    for (byte i = 0; i < menu->count; i++)
+    {
+        if (menuItem->type == MENU_SUB_MENU)
+            do_menu_shortcuts(menuItem->param_0);
+
+        if (menuItem->shortcutInput != INPUT_NONE)
+        {
+            if (TOUCHE(INPUT_SELECT) && TOUCHE(menuItem->shortcutInput))
+            {
+                do_menu_action(menuItem);
+                held_down_shortcut = menuItem->shortcutInput;
+                return;
+            }
+        }
+
+        menuItem++;
+    } 
+}
+
+void menu_shortcuts()
+{
+    do_menu_shortcuts(&main_menu);
+}
+
+void menu()
 {
     if (menu_stack_index == 0xFF)
         change_menu(&main_menu);
