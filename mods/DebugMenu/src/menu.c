@@ -256,7 +256,7 @@ void display_menu(Menu *menu)
         // Display the menu item
         display_text(menuItem->text, 20, yPos, 2, color);
 
-        // Show toggles state if a toggle
+        // Show toggled state if a toggle
         if (menuItem->type == MENU_TOGGLE)
         {
             if (((int (*)(MenuItem *, int toggle))menuItem->param_0)(menuItem, 0))
