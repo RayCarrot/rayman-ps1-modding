@@ -60,6 +60,10 @@ extern ushort RayEvts;
 #define MENU_MAX_ITEMS_ON_SCREEN 7
 #define MENU_SCROLL_START 3
 #define MENU_LINE_HEIGHT 20
+#define VALID_INPUTS_LENGTH 15
+#define SOUND_NAVIGATE 0x44
+#define SOUND_SELECT 0x45
+#define SOUND_RETURN 0x4d
 
 // Menus
 MENU(level_menu, "level",
@@ -172,7 +176,7 @@ void do_menu_actions(Menu *menu)
     {
         is_mapping_shortcuts = 1;
 
-        for (ushort i = 1; i < 15; i++)
+        for (ushort i = 1; i < VALID_INPUTS_LENGTH; i++)
         {
             if (i != INPUT_START && i != INPUT_SELECT && TOUCHE(i))
             {
@@ -180,7 +184,7 @@ void do_menu_actions(Menu *menu)
 
                 selectedItem->shortcutInput = i;
 
-                PlaySnd_old(0x44);
+                PlaySnd_old(SOUND_NAVIGATE);
                 has_mapped_shortcuts = 1;
                 break;
             }
@@ -204,7 +208,7 @@ void do_menu_actions(Menu *menu)
             else
                 menu->selectedItem = 0;
 
-            PlaySnd_old(0x44);
+            PlaySnd_old(SOUND_NAVIGATE);
         }
         else if (TOUCHE(INPUT_UP))
         {
@@ -215,7 +219,7 @@ void do_menu_actions(Menu *menu)
             else
                 menu->selectedItem = menu->count - 1;
 
-            PlaySnd_old(0x44);
+            PlaySnd_old(SOUND_NAVIGATE);
         }
         else if (TOUCHE(INPUT_CIRCLE))
         {
@@ -223,14 +227,14 @@ void do_menu_actions(Menu *menu)
             {
                 held_down_button = INPUT_CIRCLE;
                 menu_stack_index--;
-                PlaySnd_old(0x4d);
+                PlaySnd_old(SOUND_RETURN);
             }
         }
         else if (TOUCHE(INPUT_CROSS))
         {
             held_down_button = INPUT_CROSS;
             do_menu_action(selectedItem);
-            PlaySnd_old(0x45);
+            PlaySnd_old(SOUND_SELECT);
         }
     }
 }
