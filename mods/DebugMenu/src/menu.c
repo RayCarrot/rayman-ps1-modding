@@ -55,6 +55,9 @@ extern ushort RayEvts;
 #define DEFAULT_COOLDOWN 10
 #define DEFAULT_ACTION_COOLDOWN 20
 #define MENU_STACK_SIZE 3
+#define MENU_MAX_ITEMS_ON_SCREEN 7
+#define MENU_SCROLL_START 3
+#define MENU_LINE_HEIGHT 20
 
 // Menus
 MENU(level_menu, "level",
@@ -215,9 +218,23 @@ void do_menu_actions(Menu *menu)
 
 void display_menu(Menu *menu)
 {
+    short yPos;
+
     display_text(menu->text, 20, 65, 2, 0x02);
 
-    short yPos = 90;
+    if (menu->count > MENU_MAX_ITEMS_ON_SCREEN && menu->selectedItem > (MENU_SCROLL_START - 1))
+    {
+        int scrollPos = menu->selectedItem;
+
+        if (menu->count - scrollPos <= MENU_SCROLL_START)
+            scrollPos = menu->count - MENU_SCROLL_START;
+
+        yPos = 90 - (scrollPos * MENU_LINE_HEIGHT) + (MENU_SCROLL_START * MENU_LINE_HEIGHT);
+    }
+    else
+    {
+        yPos = 90;
+    }
 
     MenuItem *menuItem = menu->items;
 
@@ -225,7 +242,7 @@ void display_menu(Menu *menu)
     {
         display_text(menuItem->text, 20, yPos, 2, menu->selectedItem == i ? 0xe0 : 0x00);
 
-        yPos += 20;
+        yPos += MENU_LINE_HEIGHT;
         menuItem++;
     } 
 }
