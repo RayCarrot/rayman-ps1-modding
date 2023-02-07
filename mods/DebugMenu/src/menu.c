@@ -107,7 +107,22 @@ Menu *menu_stack[MENU_STACK_SIZE];
 bool is_mapping_shortcuts;
 bool has_mapped_shortcuts;
 byte held_down_button;
-char input_names[] = "\0left\0right\0up\0down\0*\0\xf8\0~\0%\0\0\0r1\0r2\0l1\0l2"; // Single string to save space
+char input_names[] =  // Single string to save space
+    "\0"
+    "left\0"
+    "right\0"
+    "up\0"
+    "down\0"
+    "*\0" // Cross
+    "\xf8\0" // Circle
+    "~\0" // Square
+    "%\0" // Triangle
+    "\0" // Start
+    "\0" // Select
+    "r1\0"
+    "r2\0"
+    "l1\0"
+    "l2";
 
 // Menu actions
 void level_menu__skip_level()
