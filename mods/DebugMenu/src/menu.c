@@ -56,8 +56,6 @@ extern SaveState save1;
 extern ushort RayEvts;
 
 // Constants
-#define DEFAULT_COOLDOWN 10
-#define DEFAULT_ACTION_COOLDOWN 20
 #define MENU_STACK_SIZE 3
 #define MENU_MAX_ITEMS_ON_SCREEN 7
 #define MENU_SCROLL_START 3
@@ -104,7 +102,7 @@ byte menu_stack_index = 0xFF;
 Menu *menu_stack[MENU_STACK_SIZE];
 bool is_mapping_shortcuts;
 bool has_mapped_shortcuts;
-ushort held_down_shortcut;
+ushort held_down_button;
 char *input_names[] = 
 {
     0x00,
@@ -185,81 +183,73 @@ void change_menu(Menu *menu)
 
 void do_menu_actions(Menu *menu)
 {
-    // Process inputs
-    if (input_cooldown == 0)
+    MenuItem *selectedItem = menu->items + menu->selectedItem;
+
+    if (TOUCHE(INPUT_SELECT) && (selectedItem->type == MENU_ACTION || selectedItem->type == MENU_TOGGLE))
     {
-        MenuItem *selectedItem = menu->items + menu->selectedItem;
+        is_mapping_shortcuts = 1;
 
-        if (TOUCHE(INPUT_SELECT) && (selectedItem->type == MENU_ACTION || selectedItem->type == MENU_TOGGLE))
+        for (ushort i = 1; i < 15; i++)
         {
-            is_mapping_shortcuts = 1;
-
-            for (ushort i = 1; i < 15; i++)
+            if (i != INPUT_START && i != INPUT_SELECT && TOUCHE(i))
             {
-                if (i != INPUT_START && i != INPUT_SELECT && TOUCHE(i))
-                {
-                    input_cooldown = DEFAULT_ACTION_COOLDOWN;
+                held_down_button = i;
 
-                    selectedItem->shortcutInput = i;
-
-                    PlaySnd_old(0x44);
-                    has_mapped_shortcuts = 1;
-                    break;
-                }
-            }
-        }
-        else
-        {
-            // Remove mapped shortcut
-            if (is_mapping_shortcuts && !has_mapped_shortcuts)
-                selectedItem->shortcutInput = INPUT_NONE;
-
-            is_mapping_shortcuts = 0;
-            has_mapped_shortcuts = 0;
-
-            if (TOUCHE(INPUT_DOWN))
-            {
-                input_cooldown = DEFAULT_COOLDOWN;
-                
-                if (menu->selectedItem < menu->count - 1)
-                    menu->selectedItem++;
-                else
-                    menu->selectedItem = 0;
+                selectedItem->shortcutInput = i;
 
                 PlaySnd_old(0x44);
-            }
-            else if (TOUCHE(INPUT_UP))
-            {
-                input_cooldown = DEFAULT_COOLDOWN;
-
-                if (menu->selectedItem > 0)
-                    menu->selectedItem--;
-                else
-                    menu->selectedItem = menu->count - 1;
-
-                PlaySnd_old(0x44);
-            }
-            else if (TOUCHE(INPUT_CIRCLE))
-            {
-                if (menu_stack_index > 0)
-                {
-                    input_cooldown = DEFAULT_ACTION_COOLDOWN;
-                    menu_stack_index--;
-                    PlaySnd_old(0x4d);
-                }
-            }
-            else if (TOUCHE(INPUT_CROSS))
-            {
-                input_cooldown = DEFAULT_ACTION_COOLDOWN;
-                do_menu_action(selectedItem);
-                PlaySnd_old(0x45);
+                has_mapped_shortcuts = 1;
+                break;
             }
         }
     }
+    else
+    {
+        // Remove mapped shortcut
+        if (is_mapping_shortcuts && !has_mapped_shortcuts)
+            selectedItem->shortcutInput = INPUT_NONE;
 
-    // Use a cooldown to avoid checking inputs every frame
-    if (input_cooldown > 0)
-        input_cooldown--;
+        is_mapping_shortcuts = 0;
+        has_mapped_shortcuts = 0;
+
+        if (TOUCHE(INPUT_DOWN))
+        {
+            held_down_button = INPUT_DOWN;
+            
+            if (menu->selectedItem < menu->count - 1)
+                menu->selectedItem++;
+            else
+                menu->selectedItem = 0;
+
+            PlaySnd_old(0x44);
+        }
+        else if (TOUCHE(INPUT_UP))
+        {
+            held_down_button = INPUT_UP;
+
+            if (menu->selectedItem > 0)
+                menu->selectedItem--;
+            else
+                menu->selectedItem = menu->count - 1;
+
+            PlaySnd_old(0x44);
+        }
+        else if (TOUCHE(INPUT_CIRCLE))
+        {
+            if (menu_stack_index > 0)
+            {
+                held_down_button = INPUT_CIRCLE;
+                menu_stack_index--;
+                PlaySnd_old(0x4d);
+            }
+        }
+        else if (TOUCHE(INPUT_CROSS))
+        {
+            held_down_button = INPUT_CROSS;
+            do_menu_action(selectedItem);
+            PlaySnd_old(0x45);
+        }
+    }
 }
 
 void display_menu(Menu *menu)
@@ -332,13 +322,7 @@ void do_menu_action(MenuItem *menuItem)
 
 void do_menu_shortcuts(Menu *menu)
 {
-    if (held_down_shortcut != INPUT_NONE)
-    {
-        if (!TOUCHE(held_down_shortcut))
-            held_down_shortcut = INPUT_NONE;
-        else
-            return;
-    }
+
 
     MenuItem *menuItem = menu->items;
 
@@ -352,7 +336,7 @@ void do_menu_shortcuts(Menu *menu)
             if (TOUCHE(INPUT_SELECT) && TOUCHE(menuItem->shortcutInput))
             {
                 do_menu_action(menuItem);
-                held_down_shortcut = menuItem->shortcutInput;
+                held_down_button = menuItem->shortcutInput;
                 return;
             }
         }
@@ -361,8 +345,29 @@ void do_menu_shortcuts(Menu *menu)
     } 
 }
 
+bool do_inputs()
+{
+    if (held_down_button != INPUT_NONE)
+    {
+        if (!TOUCHE(held_down_button))
+        {
+            held_down_button = INPUT_NONE;
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 void menu_shortcuts()
 {
+    if (!do_inputs())
+        return;
+
     do_menu_shortcuts(&main_menu);
 }
 
@@ -371,6 +376,8 @@ void menu()
     if (menu_stack_index == 0xFF)
         change_menu(&main_menu);
 
-    do_menu_actions(menu_stack[menu_stack_index]);
+    if (do_inputs())
+        do_menu_actions(menu_stack[menu_stack_index]);
+    
     display_menu(menu_stack[menu_stack_index]);
 }
