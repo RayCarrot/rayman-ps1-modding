@@ -4,6 +4,8 @@
 #define MENU_SUB_MENU(name, subMenu) { .text=name, .type=MENU_SUB_MENU, .param_0=subMenu}
 #define MENU_ACTION(name, func) { .text=name, .type=MENU_ACTION, .param_0=func}
 #define MENU_ACTION_PARAM(name, func, param) { .text=name, .type=MENU_ACTION, .param_0=func, .param_1=param}
+#define MENU_TOGGLE(name, func) { .text=name, .type=MENU_TOGGLE, .param_0=func}
+#define MENU_TOGGLE_PARAM(name, func, param) { .text=name, .type=MENU_TOGGLE, .param_0=func, .param_1=param}
 #define MENU_NONE(name) { .text=name, .type=MENU_NONE}
 #define MENU(varName, name, ...) MenuItem varName##Items[] = {\
         __VA_ARGS__\
@@ -34,7 +36,7 @@ typedef struct
 void level_menu__skip_level();
 void level_menu__exit_level();
 void level_menu__new_level(MenuItem *menuItem);
-void powers_menu__toggle_power(MenuItem *menuItem);
+int powers_menu__toggle_power(MenuItem *menuItem, int toggle);
 void cheats_menu__place_ray();
 void cheats_menu__99_lives();
 void general_menu__checkpoint();
@@ -68,15 +70,15 @@ MENU(level_menu, "level",
     MENU_ACTION_PARAM("next", level_menu__new_level, 1),
 );
 MENU(powers_menu, "powers",
-    MENU_ACTION_PARAM("fist", powers_menu__toggle_power, 0),
-    MENU_ACTION_PARAM("hang", powers_menu__toggle_power, 1),
-    MENU_ACTION_PARAM("helico", powers_menu__toggle_power, 2),
-    MENU_ACTION_PARAM("super-helico", powers_menu__toggle_power, 3),
-    MENU_ACTION_PARAM("seed", powers_menu__toggle_power, 6),
-    MENU_ACTION_PARAM("grab", powers_menu__toggle_power, 7),
-    MENU_ACTION_PARAM("run", powers_menu__toggle_power, 8),
-    MENU_ACTION_PARAM("force-run", powers_menu__toggle_power, 12),
-    MENU_ACTION_PARAM("reversed", powers_menu__toggle_power, 13),
+    MENU_TOGGLE_PARAM("fist", powers_menu__toggle_power, 1 << 0),
+    MENU_TOGGLE_PARAM("hang", powers_menu__toggle_power, 1 << 1),
+    MENU_TOGGLE_PARAM("helico", powers_menu__toggle_power, 1 << 2),
+    MENU_TOGGLE_PARAM("super-helico", powers_menu__toggle_power, 1 << 3),
+    MENU_TOGGLE_PARAM("seed", powers_menu__toggle_power, 1 << 6),
+    MENU_TOGGLE_PARAM("grab", powers_menu__toggle_power, 1 << 7),
+    MENU_TOGGLE_PARAM("run", powers_menu__toggle_power, 1 << 8),
+    MENU_TOGGLE_PARAM("force-run", powers_menu__toggle_power, 1 << 12),
+    MENU_TOGGLE_PARAM("reversed", powers_menu__toggle_power, 1 << 13),
 );
 MENU(cheats_menu, "cheats",
     MENU_ACTION("place ray", cheats_menu__place_ray),
@@ -117,9 +119,12 @@ void level_menu__new_level(MenuItem *menuItem)
     num_level_choice = num_level + menuItem->param_1;
 }
 
-void powers_menu__toggle_power(MenuItem *menuItem)
+int powers_menu__toggle_power(MenuItem *menuItem, int toggle)
 {
-    RayEvts ^= 1UL << menuItem->param_1;
+    if (toggle)
+        RayEvts ^= menuItem->param_1;
+
+    return (RayEvts & menuItem->param_1) != 0;
 }
 
 void cheats_menu__place_ray()
@@ -156,7 +161,7 @@ void change_menu(Menu *menu)
 
 void do_menu_actions(Menu *menu)
 {
-    // Allow selecting one of the lines using up and down buttons
+    // Process inputs
     if (input_cooldown == 0)
     {
         if (TOUCHE(INPUT_DOWN))
@@ -205,6 +210,10 @@ void do_menu_actions(Menu *menu)
                 case MENU_ACTION:
                     ((void (*)(MenuItem *))selectedItem->param_0)(selectedItem);
                     break;
+
+                case MENU_TOGGLE:
+                    ((int (*)(MenuItem *, int isOn))selectedItem->param_0)(selectedItem, 1);
+                    break;
             }
 
             PlaySnd_old(0x45);
@@ -219,6 +228,7 @@ void do_menu_actions(Menu *menu)
 void display_menu(Menu *menu)
 {
     short yPos;
+    byte color;
 
     display_text(menu->text, 20, 65, 2, 0x02);
 
@@ -240,7 +250,20 @@ void display_menu(Menu *menu)
 
     for (byte i = 0; i < menu->count; i++)
     {
-        display_text(menuItem->text, 20, yPos, 2, menu->selectedItem == i ? 0xe0 : 0x00);
+        // Get the color - have it be multi-colored if selected
+        color = menu->selectedItem == i ? 0xe0 : 0x00;
+
+        // Display the menu item
+        display_text(menuItem->text, 20, yPos, 2, color);
+
+        // Show toggles state if a toggle
+        if (menuItem->type == MENU_TOGGLE)
+        {
+            if (((int (*)(MenuItem *, int isOn))menuItem->param_0)(menuItem, 0))
+                display_text("on", 120, yPos, 2, color);
+            else
+                display_text("off", 120, yPos, 2, color);
+        }
 
         yPos += MENU_LINE_HEIGHT;
         menuItem++;
