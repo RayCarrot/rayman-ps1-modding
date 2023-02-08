@@ -1,0 +1,12 @@
+// C files
+ntsc-u, exe, SsUtKeyOnV, 0x0, src/timer.c // Overwrite some unused functions
+
+// Assembly files
+ntsc-u, exe, 0x801b9544, 0x0, src/hook_vsync.s // Extend VSYNC_OBJ_F0 which gets called from vsync
+ntsc-u, exe, 0x8014dc80, 0x0, src/hook_display_horloges.s // Extend horloges
+ntsc-u, exe, 0x8012ed9c, 0x0, src/hook_display_pause.s // Extend pause function
+ntsc-u, exe, 0x801a586c, 0x0, src/hook_options.s // Extend options display function
+ntsc-u, exe, 0x801a4ed0, 0x0, src/hook_start.s // Overwrite call to DO_FADE_OUT
+ntsc-u, exe, 0x801a0170, 0x0, src/hook_world.s // Extend DEPART_WORLD
+ntsc-u, exe, 0x8018e0ac, 0x0, src/hook_initworldmap.s // Extend INIT_CHEMIN
+ntsc-u, exe, 0x8012e004, 0x0, src/hook_display_worldmap.s // Extend DISPLAY_STAGE_NAMES
