@@ -187,7 +187,55 @@ struct CdlFILE {
     char name[16];
 };
 
-typedef struct LevelData LevelData, *PLevelData;
+typedef struct OptionsJeu OptionsJeu, *POptionsJeu;
+
+struct OptionsJeu {
+    undefined * Fire1ButtonFunc;
+    undefined * Fire0ButtonFunc;
+    undefined * Button4Func;
+    undefined * Button3Func;
+    ushort field4_0x10;
+    ushort field5_0x12;
+    ushort field6_0x14;
+    ushort field7_0x16;
+    ushort field8_0x18;
+    ushort field9_0x1a;
+    ushort field10_0x1c;
+    ushort field11_0x1e;
+};
+
+typedef struct TextToDisplay TextToDisplay, *PTextToDisplay;
+
+struct TextToDisplay {
+    char Text[48];
+    short ActualXPos;
+    short ActualYPos;
+    short XRelated;
+    short YRelated;
+    short XPos;
+    short YPos;
+    byte FontSize;
+    bool field8_0x3d;
+    bool IsFond;
+    byte field10_0x3f;
+};
+
+typedef struct Record Record, *PRecord;
+
+struct Record {
+    int current_offset;
+    int repeat_length;
+    int repeat_index;
+    int length;
+    byte * data;
+    bool is_recording;
+    bool is_playing;
+    bool is_finished;
+};
+
+typedef struct AllFixData AllFixData, *PAllFixData;
+
+typedef struct Font Font, *PFont;
 
 typedef struct Obj Obj, *PObj;
 
@@ -497,33 +545,10 @@ typedef struct AnimationLayer AnimationLayer, *PAnimationLayer;
 
 typedef struct AnimationFrame AnimationFrame, *PAnimationFrame;
 
-struct ObjState {
-    sbyte field0_0x0;
-    sbyte field1_0x1;
-    byte AnimIndex;
-    byte LinkedEtat;
-    byte LinkedSubEtat;
-    byte AnimSpeed;
-    byte SoundIndex;
-    byte Flags;
-};
-
-struct Sprite {
-    int img_buffer_offset;
-    byte id;
-    byte width;
-    byte height;
-    byte col_width;
-    byte col_height;
-    byte col_pos;
-    byte field7_0xa;
-    byte field8_0xb;
-    ushort clut;
-    ushort tpage;
-    byte page_x;
-    byte page_y;
-    undefined field13_0x12;
-    undefined field14_0x13;
+struct Font {
+    struct Sprite * sprites;
+    undefined * img_buffer;
+    int nb_sprites;
 };
 
 struct Obj {
@@ -584,10 +609,45 @@ struct Obj {
     undefined field54_0x66;
     undefined field55_0x67;
     undefined field56_0x68;
-    undefined field57_0x69;
+    byte field57_0x69;
     byte display_prio;
     byte timer;
     uint flags;
+};
+
+struct AllFixData {
+    struct Font alpha;
+    struct Font alpha2;
+    struct Obj objects[29];
+};
+
+struct ObjState {
+    sbyte field0_0x0;
+    sbyte field1_0x1;
+    byte AnimIndex;
+    byte LinkedEtat;
+    byte LinkedSubEtat;
+    byte AnimSpeed;
+    byte SoundIndex;
+    byte Flags;
+};
+
+struct Sprite {
+    int img_buffer_offset;
+    byte id;
+    byte width;
+    byte height;
+    byte col_width;
+    byte col_height;
+    byte col_pos;
+    byte field7_0xa;
+    byte field8_0xb;
+    ushort clut;
+    ushort tpage;
+    byte page_x;
+    byte page_y;
+    undefined field13_0x12;
+    undefined field14_0x13;
 };
 
 struct Animation {
@@ -604,65 +664,11 @@ struct AnimationFrame {
     byte height;
 };
 
-struct LevelData {
-    struct Obj * objects;
-    byte nb_objects;
-};
-
 struct AnimationLayer {
     bool flipped_x;
     byte x_pos;
     byte y_pos;
     byte sprite;
-};
-
-typedef struct AllFixData AllFixData, *PAllFixData;
-
-typedef struct Font Font, *PFont;
-
-struct Font {
-    struct Sprite * sprites;
-    undefined * img_buffer;
-    int nb_sprites;
-};
-
-struct AllFixData {
-    struct Font alpha;
-    struct Font alpha2;
-    struct Obj objects[29];
-};
-
-typedef struct OptionsJeu OptionsJeu, *POptionsJeu;
-
-struct OptionsJeu {
-    undefined * Fire1ButtonFunc;
-    undefined * Fire0ButtonFunc;
-    undefined * Button4Func;
-    undefined * Button3Func;
-    ushort field4_0x10;
-    ushort field5_0x12;
-    ushort field6_0x14;
-    ushort field7_0x16;
-    ushort field8_0x18;
-    ushort field9_0x1a;
-    ushort field10_0x1c;
-    ushort field11_0x1e;
-};
-
-typedef struct TextToDisplay TextToDisplay, *PTextToDisplay;
-
-struct TextToDisplay {
-    char Text[48];
-    short ActualXPos;
-    short ActualYPos;
-    short XRelated;
-    short YRelated;
-    short XPos;
-    short YPos;
-    byte FontSize;
-    bool field8_0x3d;
-    bool IsFond;
-    byte field10_0x3f;
 };
 
 typedef enum Input {
@@ -696,17 +702,6 @@ typedef enum Input {
     INPUT_END=255
 } Input;
 
-typedef struct Credit Credit, *PCredit;
-
-struct Credit {
-    undefined * text;
-    short x_pos;
-    short y_pos;
-    byte font;
-    byte cmd;
-    byte color;
-};
-
 typedef struct MapData MapData, *PMapData;
 
 struct MapData {
@@ -733,18 +728,11 @@ struct WorldInfo {
     undefined * LevelName;
 };
 
-typedef struct Record Record, *PRecord;
+typedef struct LevelData LevelData, *PLevelData;
 
-struct Record {
-    undefined4 field0_0x0;
-    undefined4 field1_0x4;
-    undefined4 field2_0x8;
-    undefined4 field3_0xc;
-    undefined4 CurrentDemoRecord;
-    undefined1 field5_0x14;
-    undefined1 field6_0x15;
-    undefined1 field7_0x16;
-    undefined field8_0x17;
+struct LevelData {
+    struct Obj * objects;
+    byte nb_objects;
 };
 
 typedef struct LoadInfoRay LoadInfoRay, *PLoadInfoRay;
@@ -857,6 +845,17 @@ typedef enum Video {
     VIDEO_WIN=5
 } Video;
 
+typedef struct Credit Credit, *PCredit;
+
+struct Credit {
+    undefined * text;
+    short x_pos;
+    short y_pos;
+    byte font;
+    byte cmd;
+    byte color;
+};
+
 typedef struct Poing Poing, *PPoing;
 
 struct Poing {
@@ -873,6 +872,24 @@ struct Poing {
     bool IsDoingBoum;
     undefined field11_0x12;
     undefined field12_0x13;
+};
+
+typedef struct SoundTableEntry SoundTableEntry, *PSoundTableEntry;
+
+struct SoundTableEntry {
+    byte field0_0x0;
+    byte field1_0x1;
+    byte field2_0x2;
+    byte field3_0x3;
+    byte field4_0x4;
+};
+
+typedef struct VoiceTableEntry VoiceTableEntry, *PVoiceTableEntry;
+
+struct VoiceTableEntry {
+    short field0_0x0;
+    short field1_0x2;
+    short field2_0x4;
 };
 
 typedef struct PS1_FileInfo PS1_FileInfo, *PPS1_FileInfo;
@@ -1543,6 +1560,7 @@ void FUN_8012ec94(void);
 void FUN_8012ece8(void);
 void FUN_8012ecf0(void);
 void PS1_ShowPauseScreen(void);
+int FUN_8012eda4(int param_1,short param_2);
 int PS1_LoadToVRAM(short width,short height,short x,short y,undefined4 data);
 void FUN_8012ee64(uint param_1,uint param_2,int param_3,int param_4,undefined4 param_5,int param_6);
 void DO_GROS_MOTEUR_NORMAL(void);
@@ -1617,10 +1635,26 @@ int but3pressed(void);
 undefined4 FUN_80133984(void);
 undefined4 FUN_801339f4(void);
 bool FUN_80133a64(void);
+int FUN_80133acc(void);
+int FUN_80133b08(void);
+int FUN_80133b44(void);
+int FUN_80133b80(void);
+int FUN_80133bd0(void);
+int FUN_80133c20(void);
+int FUN_80133c70(void);
+int FUN_80133cc0(void);
+int FUN_80133d10(void);
+int FUN_80133d60(void);
+int FUN_80133db0(void);
+int FUN_80133e00(void);
 int FUN_80133e50(void);
+int FUN_80133ea0(void);
+int FUN_80133ef0(void);
 int PS1_TOUCHE_0x9(void);
 int FUN_80133f90(void);
+int FUN_80133fe0(void);
 int PS1_TOUCHE_0xA(void);
+int FUN_80134080(void);
 int PS1_TOUCHE_0xE(void);
 int PS1_TOUCHE_0xC(void);
 int PS1_TOUCHE_0xB(void);
@@ -1632,13 +1666,16 @@ int PS1_TOUCHE_0x15(void);
 int PS1_TOUCHE_0x16(void);
 int PS1_TOUCHE_0x17(void);
 int PS1_TOUCHE_0x18(void);
+int FUN_80134440(void);
+int FUN_80134490(void);
 int PS1_TOUCHE_0x10(void);
+int FUN_80134530(void);
 int ValidButPressed(void);
 int StartButPressed(void);
 int SelectButPressed(void);
 void FUN_80134610(uint param_1);
 byte FUN_8013491c(void);
-void FUN_80134a00(uint *param_1);
+void PS1_DoDemo(Record *record);
 undefined * TOUCHE(Input param_1);
 undefined4 PS1_SpecialTOUCHE(uint param_1);
 void PS1_LoadBGBlock(void);
@@ -1807,7 +1844,7 @@ void allocate_toons(Obj *param_1,uint param_2);
 void special_flags_init(void);
 void FUN_80149094(Obj *param_1);
 void obj_hurt(Obj *obj);
-void Projectil_to_RM(int param_1,short *param_2,short *param_3,short param_4,short param_5);
+void Projectil_to_RM(Obj *obj,short *param_2,short *param_3,short param_4,short param_5);
 void INIT_TEXT_TO_DISPLAY(void);
 char deter_num_let(byte param_1);
 void calc_num_let_spr(char param_1,char *param_2);
@@ -1866,7 +1903,7 @@ void first_obj_init(int param_1);
 void obj_init(Obj *obj);
 void INIT_OBJECTS(char newLevel);
 int instantSpeed(short param_1);
-void SET_X_SPEED(Obj *obj,undefined4 param_2,short param_3);
+void SET_X_SPEED(Obj *obj);
 void REINIT_OBJECT(Obj *obj);
 void make_active(Obj *obj,bool doNova);
 bool in_action_zone(short param_1,short param_2,int param_3,char param_4);
@@ -1892,7 +1929,7 @@ void Spider_Atter(Obj *param_1);
 void trompetteAtter(undefined4 param_1);
 void NormalAtter(Obj *param_1);
 void OBJ_IN_THE_AIR(Obj *param_1);
-void FUN_80152c58(int param_1);
+void test_fall_in_water(Obj *obj);
 void MOVE_OBJECT(Obj *obj);
 void FUN_80153060(Obj *obj);
 void DO_ONE_OBJECT(Obj *obj);
@@ -1950,22 +1987,22 @@ void FUN_8015a7ec(int param_1,int param_2);
 void FUN_8015a824(void);
 void FUN_8015a8c8(void);
 void init_bonus_perfect(void);
-void FUN_8015a9a0(int param_1);
+void FUN_8015a9a0(Obj *obj);
 void new_level_init(void);
 void fix_numlevel(Obj *obj);
 void TEST_SIGNPOST(void);
 void DO_WIZARD(Obj *obj);
 undefined4 get_next_bonus_level(byte param_1);
 void TEST_WIZARD(Obj *obj);
-void allocate_splash(int param_1);
+void allocate_splash(Obj *baseObj);
 undefined4 can_free_fish(int param_1);
 void FUN_8015c4b8(int param_1);
-void DO_PYRANHA(Obj *param_1);
+void DO_PYRANHA(Obj *obj);
 void DO_BALLE(int param_1);
-void setStoneChipPos(int param_1,Obj *param_2,char *param_3);
-void allocateStoneChips(int param_1);
-void DO_STONE_EXPLOSION(int param_1);
-void DO_TIR(int param_1);
+void setStoneChipPos(Obj *param_1,Obj *param_2,char *param_3);
+void allocateStoneChips(Obj *obj);
+void DO_STONE_EXPLOSION(Obj *obj);
+void DO_TIR(Obj *param_1);
 void allocateStonemanStone(Obj *param_1,short param_2,char param_3);
 void DO_STONEMAN1_TIR(int param_1);
 void DO_STONEMAN2_TIR(int param_1);
@@ -1973,17 +2010,19 @@ void allocateStonewomanStone(Obj *param_1,short param_2);
 void DO_STONEWOMAN_TIR(int param_1);
 void allocateDard(Obj *param_1);
 void DO_SPIDER_TIR(int param_1);
+void DO_INTERACT_PLAT(Obj *param_1);
+void FUN_8015e0e8(Obj *param_1);
 Obj * oldest_planted(void);
 void DO_GROWING_PLATFORM(void);
-void DO_BIG_CLOWN_ATTAK(int param_1);
-void allocatedrop(int param_1);
-void DO_WAT_CLOWN_ATTAK(int param_1);
-void FUN_8015e804(Obj *param_1,char param_2);
-void FUN_8015e9cc(int param_1);
+void DO_BIG_CLOWN_ATTAK(Obj *obj);
+void allocatedrop(Obj *param_1);
+void DO_WAT_CLOWN_ATTAK(Obj *obj);
+void FUN_8015e804(Obj *obj,char param_2);
+void FUN_8015e9cc(Obj *obj);
 void FUN_8015ea7c(int param_1,short param_2);
 void FUN_8015ebe0(Obj *param_1);
 void DO_CLOWN_TNT_ATTACK(Obj *param_1);
-void allocate_badguy(int param_1,short param_2,short param_3,short param_4);
+void allocate_badguy(Obj *param_1,short param_2,short param_3,short param_4);
 Obj * allocateExplosion(int param_1);
 void FUN_8015f320(int param_1);
 void MARACAS_GO(Obj *param_1);
@@ -2008,6 +2047,8 @@ int allocate_gerbe(void);
 void start_pix_gerbe(int param_1,int param_2);
 void do_pix_gerbes(void);
 void START_2_PARTS_CYMBAL_ACTION(int param_1);
+void FUN_80161708(Obj *param_1);
+void FUN_80161718(Obj *param_1);
 void DO_MEDAILLON_TOON_GELE(void);
 void ALLOCATE_MEDAILLON_TOON(void);
 void INIT_LUCIOLE(void);
@@ -2027,7 +2068,7 @@ void initGameSave(void);
 void doneGameSave(void);
 void saveGameState(Obj *obj,SaveState *state);
 void restoreGameState(SaveState *param_1);
-void DO_PHOTOGRAPHE_CMD(void);
+void PS1_PhotographerCollision(void);
 int get_offset_in_save_zone(short eventIndex);
 void reset_save_zone_level(void);
 void take_bonus(ushort eventIndex);
@@ -2048,12 +2089,12 @@ void FUN_801660ac(void);
 void FUN_801660e8(void);
 void FUN_80166124(void);
 void FUN_8016617c(void);
-uint get_pan_snd(int param_1);
+uint get_pan_snd(Obj *obj);
 uint get_vol_snd(Obj *param_1);
 void FUN_8016633c(short param_1);
 void FUN_8016639c(short param_1);
 void FUN_801663d4(void);
-int FUN_801665a8(short param_1);
+int last_snd(short param_1);
 int get_pile_obj(short param_1);
 int FUN_80166724(short param_1);
 int get_voice_obj_snd(short param_1,short param_2);
@@ -2062,8 +2103,8 @@ void nettoie_pile_snd(void);
 void FUN_80166d20(short param_1);
 int FUN_80166e1c(short param_1,short param_2);
 int FUN_80166e58(short param_1,short param_2);
-void PlaySnd(short param_1,ushort objId);
-void PlaySnd_old(short param_1);
+void PlaySnd(short snd,short objId);
+void PlaySnd_old(short snd);
 void setvol(ushort param_1);
 void setpan(short param_1);
 void FUN_80168f38(void);
@@ -2120,28 +2161,32 @@ void DO_POING(Obj *param_1);
 void allocatePoingBoum(void);
 bool test_allowed(int param_1,short param_2,short param_3);
 void FUN_8016d00c(Obj *param_1);
-void DO_ONE_PINK_CMD(Obj *obj,undefined4 param_2,undefined2 param_3);
-void DO_SPIDER_COMMAND(Obj *param_1,undefined4 param_2,undefined2 param_3);
-void DO_STONEMAN_COMMAND(Obj *param_1,undefined4 param_2,undefined2 param_3);
+void DO_ONE_PINK_CMD(Obj *obj);
+void DO_SPIDER_COMMAND(Obj *param_1);
+void DO_STONEMAN_COMMAND(Obj *param_1);
+void FUN_8016d890(Obj *obj);
 void DO_MOVING_PLATFORM_COMMAND(Obj *obj);
-void DO_ONE_CMD_WAIT(Obj *param_1);
-void DO_ONE_CMD_LR_ATTENTE(Obj *obj,undefined4 param_2,undefined2 param_3);
+void FUN_8016dbe0(Obj *obj);
+void DO_ONE_CMD_WAIT(Obj *obj);
+void DO_ONE_CMD_LR_ATTENTE(Obj *obj);
 void DO_ONE_CMD_UPDOWN(Obj *param_1);
 void special_pour_liv(Obj *param_1);
 void DO_ONE_CMD(Obj *obj);
+void FUN_8016e274(Obj *obj);
 void DO_TEN_COMMAND(Obj *obj);
 void FUN_8016f05c(int param_1,short *param_2);
 undefined4 HAS_MIT_JUMP(int param_1);
 undefined4 FUN_8016f2cc(int param_1,int param_2);
-void FUN_8016f30c(Obj *param_1,int param_2,undefined2 param_3);
+void FUN_8016f30c(Obj *param_1,short param_2);
 void FUN_8016f4fc(Obj *param_1);
-undefined4 FUN_8016f954(Obj *param_1,undefined4 param_2,undefined2 param_3);
+undefined4 FUN_8016f954(Obj *param_1);
 void DO_MITE2_COMMAND(Obj *param_1);
 void DO_CLOWN_TNT_COMMAND(Obj *param_1);
 void DO_CLOWN_TNT2_COMMAND(int param_1);
 bool FUN_80171388(int param_1,short param_2);
 void FUN_80171dac(int param_1);
 void FUN_80172108(int param_1);
+void DO_PHOTOGRAPHE_CMD(Obj *obj);
 void FUN_801727d0(int param_1,short param_2);
 void FUN_80172820(int param_1);
 void FUN_801729b4(void);
@@ -2154,8 +2199,9 @@ void doBlackRaymanCommand(Obj *obj);
 void FUN_80174358(Obj *obj,undefined4 param_2,uint param_3,undefined param_4);
 void FUN_801745f4(Obj *param_1);
 void DO_ENSEIGNE_COMMAND(Obj *obj);
+void FUN_801749fc(Obj *param_1);
 void DO_JOE_COMMAND(Obj *obj);
-void move_fruit_in_water(Obj *obj,undefined4 param_2,undefined2 param_3);
+void move_fruit_in_water(Obj *obj);
 void DO_FALLING_OBJ_CMD(Obj *obj);
 void FUN_801754dc(Obj *param_1);
 void FUN_8017557c(int param_1,short param_2);
@@ -2200,7 +2246,7 @@ void skipToLabel(Obj *obj,char label,bool param_3);
 void FUN_8017bfec(undefined4 param_1,undefined1 param_2,bool param_3);
 void FUN_8017c03c(Obj *param_1,short param_2);
 void DO_TOTBT_REBOND(int param_1);
-void DO_PI_EXPLOSION2(int param_1);
+void DO_PI_EXPLOSION2(Obj *param_1);
 void DO_BBL_REBOND(int param_1);
 void FUN_8017c8f8(int param_1);
 void FUN_8017ca78(Obj *param_1,short param_2);
@@ -2226,7 +2272,7 @@ void DISPLAY_FOND_SELECT(void);
 void FUN_80180abc(void);
 void FUN_80180b04(int param_1,char param_2);
 void guetteurFollowsShip(int param_1);
-void DO_ONE_PAR_COMMAND(Obj *param_1,undefined4 param_2,undefined2 param_3);
+void DO_ONE_PAR_COMMAND(Obj *param_1);
 int FUN_80181020(int param_1,int param_2);
 void allocatePirateGuetteurBomb(Obj *param_1,short param_2,char param_3,byte param_4);
 void DO_PAR_TIR(int param_1);
@@ -2303,7 +2349,7 @@ bool testActionEnd(int param_1);
 int firstFloorBelow(Obj *obj);
 void FUN_8018b930(int param_1);
 void FUN_8018ba1c(Obj *param_1,int param_2);
-void FUN_8018bb2c(Obj *param_1,undefined4 param_2,short param_3);
+void FUN_8018bb2c(Obj *param_1);
 void FUN_8018bd3c(Obj *param_1);
 void CalcObjPosInWorldMap(Obj *obj);
 void DoScrollInWorldMap(short param_1,short param_2);
@@ -2337,14 +2383,14 @@ void POINTEUR_BOUTONS_OPTIONS_BIS(void);
 void FUN_8018f090(short param_1,short param_2,short param_3,undefined param_4);
 void INIT_CONTINUE(void);
 void CHEAT_MODE_CONTINUE(void);
-void MAIN_CONTINUE_PRG(undefined4 param_1,undefined4 param_2,undefined2 param_3);
+void MAIN_CONTINUE_PRG(void);
 void FIN_CONTINUE_PRG(void);
 void MAIN_NO_MORE_CONTINUE_PRG(void);
 void INIT_VIGNET(void);
 void INIT_CREDITS(void);
 void DO_CREDITS(void);
 void FUN_80190998(void);
-void DO_LOADER_ANIM(undefined4 param_1,undefined4 param_2,undefined2 param_3);
+void DO_LOADER_ANIM(void);
 void SPECIAL_INIT(void);
 void FUN_80190ee4(int param_1,int param_2);
 void set_rubis_list(void);
@@ -2372,7 +2418,7 @@ int FUN_80192e18(undefined2 param_1,int param_2,int param_3);
 int FUN_80192ebc(ushort param_1,short param_2,short param_3);
 undefined4 calc_typ_trav(Obj *obj,char param_2);
 undefined calc_typ_travd(Obj *param_1,char param_2);
-void FUN_80193434(Obj *param_1);
+void TEST_FIN_BLOC(Obj *obj);
 undefined4 TEST_IS_ON_RESSORT_BLOC(int param_1);
 undefined4 FUN_8019395c(int param_1);
 void CALC_MOV_ON_BLOC(Obj *obj);
@@ -2436,7 +2482,7 @@ void FUN_8019adb8(Obj *param_1);
 int FUN_8019b070(Obj *param_1,Obj *param_2);
 void AllocateDarkPhase2(int param_1);
 void DO_DARK2_AFFICHE_TEXT(void);
-void DO_DARK_PHASE2_COMMAND(Obj *param_1);
+void DO_DARK_PHASE2_COMMAND(Obj *obj);
 void DO_DARK2_SORT_COMMAND(Obj *param_1);
 void FUN_8019c464(short param_1,short param_2,undefined1 param_3,short param_4);
 void AllocateFlammes(short param_1);
@@ -2519,6 +2565,7 @@ void PS1_GenerateAndDisplayPassword(void);
 void FUN_801a36b4(void);
 void DO_MENU(void);
 void FUN_801a391c(void);
+void FUN_801a39ec(void);
 void PS1_ShowDemoText(void);
 bool PS1_DemoLoop(void);
 void PS1_PlayDemo(void);
@@ -2530,6 +2577,7 @@ undefined4 FUN_801a453c(void);
 undefined4 selection_save_option_prg(void);
 void DO_SAVE_CHOICE(void);
 void AFFICHE_ECRAN_SAVE(void);
+undefined4 FUN_801a4d38(void);
 void FUN_801a4e90(void);
 void FUN_801a4ee8(void);
 void INIT_SAVE_CHOICE(void);
