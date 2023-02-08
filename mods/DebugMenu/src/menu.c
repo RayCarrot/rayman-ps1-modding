@@ -1,5 +1,18 @@
 #include <export.h>
 
+// TODO: Save assigned shortcuts in memory card
+// TODO: Returning to world map crashes game?
+// TODO: Disable other inputs when holding down SELECT for shortcuts
+// TODO: Allow using debug menu on world map. We need to implement pausing functionality then. 
+
+// TODO: Menu options:
+//       - Fist power level and gold fist toggle
+//       - Small Rayman toggle
+//       - Unlock all levels and maybe even a toggle for each one?
+//       - Instant death
+//       - Display options which shows useful variable values while playing
+//       ...
+
 // Macros
 #define MENU_SUB_MENU(name, subMenu) { .text=name, .type=MENU_SUB_MENU, .param_0=subMenu}
 #define MENU_ACTION(name, func) { .text=name, .type=MENU_ACTION, .param_0=func}
