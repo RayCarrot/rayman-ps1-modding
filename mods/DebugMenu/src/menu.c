@@ -299,19 +299,10 @@ void display_menu(Menu *menu)
             char *str = input_names;
             byte index = menuItem->shortcutInput;
 
-            // Get string from combined string. Won't work for index 0, but it's unused anyway.
-            while (1)
+            while (index) 
             {
-                if (*str == 0x00)
-                {
+                if ( !*str ) 
                     index--;
-                    
-                    if (index == 0)
-                    {
-                        str++;
-                        break;
-                    }
-                }
 
                 str++;
             }
