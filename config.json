@@ -5,7 +5,8 @@
         "optimization": 4,
         "debug": 1,
         "psyq": 0,
-        "8mb": 1
+        "8mb": 1,
+        "ccflags": "-fshort-enums"
     },
     "versions": [
         {
