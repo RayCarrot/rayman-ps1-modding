@@ -36,7 +36,7 @@ void display_timer()
     f = frames % 60;
 
     sprintf(str, "%02d:%02d:%02d:%02d", h, m, s, f);
-    display_text(str, 10, 230, 2, 0);
+    display_text(str, 230, 230, 2, 0);
 }
 
 void display_timer_level()
