@@ -1,0 +1,7 @@
+// C files
+ntsc-u, exe, 0x801c97b4, 0x0, src/mod.c // Overwrite unused InvSquareRoot table
+
+// Assembly files
+ntsc-u, exe, 0x80198e40, 0x0, src/hook_phase1.s // Extend goto_phase1
+ntsc-u, exe, 0x80199144, 0x0, src/hook_phase5.s // Extend goto_phase5
+ntsc-u, exe, 0x80199b50, 0x0, src/disable_run_restore.s // Disable restore run power
