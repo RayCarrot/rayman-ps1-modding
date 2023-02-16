@@ -1,6 +1,6 @@
 #include <export.h>
 
-byte RayEvts[2];
+extern byte RayEvts[2];
 
 void disable_run()
 {
