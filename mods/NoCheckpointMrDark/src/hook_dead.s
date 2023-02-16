@@ -1,0 +1,2 @@
+.set noreorder
+j terminateFistWhenRayDies_Extended
