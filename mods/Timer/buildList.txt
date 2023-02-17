@@ -10,3 +10,4 @@ ntsc-u, exe, 0x801a4ed0, 0x0, src/hook_start.s // Overwrite call to DO_FADE_OUT
 ntsc-u, exe, 0x801a0170, 0x0, src/hook_world.s // Extend DEPART_WORLD
 ntsc-u, exe, 0x8018e0ac, 0x0, src/hook_initworldmap.s // Extend INIT_CHEMIN
 ntsc-u, exe, 0x8012e004, 0x0, src/hook_display_worldmap.s // Extend DISPLAY_STAGE_NAMES
+ntsc-u, exe, 0x801599d4, 0x0, src/hook_initdead.s // Extend INIT_MOTEUR_DEAD

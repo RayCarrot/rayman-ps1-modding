@@ -1,7 +1,7 @@
 #include <export.h>
 
 // Enums
-enum TIMERMODE { TIMER_OFF, TIMER_GAME, TIMER_LEVEL };
+enum TIMERMODE { TIMER_OFF, TIMER_GAME, TIMER_LEVEL, TIMER_DEATH };
 
 // Constants
 #define DEFAULT_COOLDOWN 15
@@ -45,18 +45,14 @@ void display_timer_level()
     // the worldmap. The reason for this is because drawing text on
     // the worldmap too early on causes the sprite clipping for the
     // medallions not to work. Not sure why.
-    if (timer_mode == TIMER_OFF || !isInLevel)
-        return;
-
-    display_timer();
+    if (timer_mode != TIMER_OFF && isInLevel)
+        display_timer();
 }
 
 void display_timer_worldmap()
 {
-    if (timer_mode != TIMER_GAME)
-        return;
-
-    display_timer();
+    if (timer_mode == TIMER_GAME)
+        display_timer();
 }
 
 void set_timer_mode()
@@ -79,7 +75,7 @@ void set_timer_mode()
         {
             input_cooldown = DEFAULT_COOLDOWN;
             
-            if (timer_mode < 2)
+            if (timer_mode < 3)
             {
                 PlaySnd_old(SOUND_NAVIGATE);
                 timer_mode++;
@@ -104,6 +100,10 @@ void set_timer_mode()
         case TIMER_LEVEL:
             text = "l2 | r2 timer: level";
             break;
+
+        case TIMER_DEATH:
+            text = "l2 | r2 timer: death";
+            break;
     }
 
     display_text(text, 80, 180, 2, 15);
@@ -122,11 +122,17 @@ void enter_level()
 {
     isInLevel = 1;
     
-    if (timer_mode == TIMER_LEVEL)
+    if (timer_mode == TIMER_LEVEL || timer_mode == TIMER_DEATH)
         frames = 0;
 }
 
 void init_world_map()
 {
     isInLevel = 0;
+}
+
+void init_dead()
+{
+    if (timer_mode == TIMER_DEATH)
+        frames = 0;
 }
