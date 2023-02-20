@@ -51,7 +51,7 @@ void DISPLAY_FIXE_Extended(Obj *divObj)
 {
     // Rayman
     //display_sprite_NoClip(obj, 0x1b, 8, 10, 0); // Original sprite
-    DrawSpriteNormalEtX(raytmp.sprites + 124, 8, 10, 1); // x: 8, y: 10, flag: flipX
+    PS1_DrawSprite(raytmp.sprites + 124, 8, 10, 1); // x: 8, y: 10, flag: flipX
 
     // Tings
     display_sprite_NoClip(divObj, 0x38, 0xfc, 10, 0);

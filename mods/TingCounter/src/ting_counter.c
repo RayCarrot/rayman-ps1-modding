@@ -50,7 +50,7 @@ void SaveTings()
     status_bar.wiz_digits[0] = SAVE_TAG;
 }
 
-void setTingStateAndIncreaseCounter(int obj, int substate)
+void setTingStateAndIncreaseCounter(Obj *obj, int substate)
 {
     // Call function we overwrote call for before
     set_sub_etat(obj, substate);
