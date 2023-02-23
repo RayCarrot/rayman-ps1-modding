@@ -257,6 +257,32 @@ typedef struct ObjState ObjState, *PObjState;
 
 typedef struct CmdContext CmdContext, *PCmdContext;
 
+typedef enum BlocType {
+    BTYP_NONE=0,
+    BTYP_CHDIR=1 // reactionary,
+    BTYP_SOLID_RIGHT_45=2,
+    BTYP_SOLID_LEFT_45=3,
+    BTYP_SOLID_RIGHT1_30=4,
+    BTYP_SOLID_RIGHT2_30=5,
+    BTYP_SOLID_LEFT1_30=6,
+    BTYP_SOLID_LEFT2_30=7,
+    BTYP_HURT=8,
+    BTYP_RESSORT=9 // bounce,
+    BTYP_WATER=10,
+    BTYP_LIANE=12 // climb,
+    BTYP_SOLID_PASSTHROUGH=14,
+    BTYP_SOLID=15,
+    BTYP_SLIPPERY_RIGHT_45=18,
+    BTYP_SLIPPERY_LEFT_45=19,
+    BTYP_SLIPPERY_RIGHT1_30=20,
+    BTYP_SLIPPERY_RIGHT2_30=21,
+    BTYP_SLIPPERY_LEFT1_30=22,
+    BTYP_SLIPPERY_LEFT2_30=23,
+    BTYP_SPIKES=24,
+    BTYP_CLIFF=25,
+    BTYP_SLIPPERY=30
+} BlocType;
+
 typedef enum ObjCommand {
     GO_LEFT=0,
     GO_RIGHT=1,
@@ -594,8 +620,7 @@ struct Obj {
     short id;
     short screen_x_pos;
     short screen_y_pos;
-    undefined field12_0x26;
-    undefined field13_0x27;
+    short field12_0x26;
     short init_x_pos;
     short init_y_pos;
     short speed_x;
@@ -603,19 +628,19 @@ struct Obj {
     ushort nb_sprites;
     short cmd_offset;
     short nb_cmd;
-    short field21_0x36; // For Rayman this is the current follow obj id
+    short field20_0x36; // For Rayman this is the current follow obj id
     short follow_y;
     short follow_x;
-    short field24_0x3c;
-    short field25_0x3e;
+    short field23_0x3c;
+    short field24_0x3e;
     short ray_dist;
-    short field27_0x42;
-    short field28_0x44;
+    short field26_0x42;
+    short field27_0x44;
     short scale;
     ushort zdc;
     short active_timer;
-    byte btypes[5];
-    undefined field33_0x51;
+    enum BlocType btypes[5];
+    undefined field32_0x51;
     byte offset_bx;
     byte offset_by;
     byte anim_index;
@@ -625,8 +650,8 @@ struct Obj {
     byte sub_etat;
     byte init_sub_etat;
     enum ObjCommand cmd;
-    byte field43_0x5b;
-    byte field44_0x5c;
+    byte field42_0x5b;
+    byte field43_0x5c;
     enum ChangeAnimMode change_anim_mode;
     byte offset_hy;
     byte follow_sprite;
@@ -639,7 +664,7 @@ struct Obj {
     byte detect_zone;
     byte detect_zone_flag;
     byte cmd_context_index;
-    byte field57_0x69;
+    byte field56_0x69;
     byte display_prio;
     byte timer;
     uint flags;
@@ -729,15 +754,6 @@ typedef enum Input {
     INPUT_UNUSED_1A=26,
     INPUT_READ=255
 } Input;
-
-typedef struct MapData MapData, *PMapData;
-
-struct MapData {
-    short width;
-    short height;
-    int length;
-    short * map;
-};
 
 typedef struct WorldInfo WorldInfo, *PWorldInfo;
 
@@ -7965,18 +7981,6 @@ struct RenderData {
     undefined field6869_0x6cbb;
 };
 
-typedef struct SaxNoteEntry SaxNoteEntry, *PSaxNoteEntry;
-
-struct SaxNoteEntry {
-    byte field0_0x0;
-    undefined field1_0x1;
-    short field2_0x2;
-    short field3_0x4;
-    short field4_0x6;
-    undefined field5_0x8;
-    undefined field6_0x9;
-};
-
 typedef struct BBAttackEntry BBAttackEntry, *PBBAttackEntry;
 
 struct BBAttackEntry {
@@ -8003,6 +8007,18 @@ struct CouteauxInfo {
     byte field13_0xf;
     byte field14_0x10;
     undefined field15_0x11;
+};
+
+typedef struct SaxNoteEntry SaxNoteEntry, *PSaxNoteEntry;
+
+struct SaxNoteEntry {
+    byte field0_0x0;
+    undefined field1_0x1;
+    short field2_0x2;
+    short field3_0x4;
+    short field4_0x6;
+    undefined field5_0x8;
+    undefined field6_0x9;
 };
 
 typedef struct SaxData SaxData, *PSaxData;
@@ -8104,9 +8120,20 @@ struct ActiveObjects {
     short num_active_objects;
 };
 
+typedef struct Obj * Obj_0x3E;
+
 typedef struct Obj * Obj_0x3C;
 
 typedef struct Obj * Obj_0x42;
+
+typedef struct MapData MapData, *PMapData;
+
+struct MapData {
+    short width;
+    short height;
+    int length;
+    short * map;
+};
 
 typedef struct BackgroundPosition BackgroundPosition, *PBackgroundPosition;
 
@@ -8603,7 +8630,7 @@ void FUN_80132148(void);
 void FUN_80132150(void);
 void FUN_80132158(void);
 void FUN_80132160(void);
-void FUN_80132168(short param_1);
+void PS1_SetMusicVolume(short param_1);
 void FUN_801321fc(void);
 void FUN_80132244(void);
 void PS1_LoadLevelMapBlock(MapData *mp);
@@ -8844,7 +8871,7 @@ void GET_ANIM_POS(Obj *param_1,short *x,short *y,ushort *w,ushort *h);
 undefined4 FUN_801473d4(Obj *param_1);
 undefined4 FUN_801473dc(void);
 void add_actobj(short objId);
-undefined BTYP_0(int param_1,int param_2);
+undefined BTYP_0(int x,int y);
 void set_sub_etat(Obj *obj,byte subEtat);
 void set_main_etat(Obj *param_1,byte etat);
 void set_main_and_sub_etat(Obj *obj,byte main_etat,byte sub_etat);
@@ -9124,8 +9151,8 @@ void stop_all_snd(void);
 void FUN_8016617c(void);
 uint get_pan_snd(Obj *obj);
 uint get_vol_snd(Obj *param_1);
-void FUN_8016633c(short param_1);
-void FUN_8016639c(short param_1);
+void PS1_SetSoundVolume(short param_1);
+void PS1_SetStereoEnabled(short param_1);
 void FUN_801663d4(void);
 void FUN_80166578(void);
 int last_snd(short param_1);
@@ -9199,7 +9226,7 @@ void DO_POING(Obj *obj);
 void allocatePoingBoum(void);
 void FUN_8016cd28(void);
 bool test_allowed(int param_1,short param_2,short param_3);
-void FUN_8016d00c(Obj *param_1);
+void obj_jump(Obj *obj);
 void DO_ONE_PINK_CMD(Obj *obj);
 void FUN_8016d418(Obj *obj);
 void DO_SPIDER_COMMAND(Obj *param_1);
@@ -9394,7 +9421,7 @@ int FUN_80181020(int param_1,int param_2);
 void allocatePirateGuetteurBomb(Obj *param_1,short param_2,char param_3,byte param_4);
 void DO_PAR_TIR(int param_1);
 void DO_PAR_POING_COLLISION(Obj *param_1,short param_2);
-void FUN_80181844(Obj *param_1);
+void PAR_REACT_TO_RAY_IN_ZONE(Obj *obj);
 void DO_PAR_BOMB_COMMAND(Obj *obj);
 void allocateRayLandingSmoke(void);
 void recale_ray_on_liane(ushort param_1);
@@ -9424,14 +9451,14 @@ void RAY_RESPOND_TO_BUTTON4(void);
 void RAY_RESPOND_TO_BUTTON3(void);
 void RAY_RESPOND_TO_FIRE0(void);
 void RAY_RESPOND_TO_FIRE1(void);
-int FUN_80185fc0(short param_1);
-void FUN_80186070(short param_1,short *param_2,undefined2 *param_3);
+int RAY_BALANCE_ANIM(short param_1);
+void abs_sinus_cosinus(short param_1,short *param_2,short *param_3);
 void SET_RAY_BALANCE(void);
-void FUN_801861c0(Obj *param_1);
-void FUN_80186448(void);
+void RAY_GOING_BALANCE(Obj *obj);
+void RAY_BALANCE(void);
 void RAY_FIN_BALANCE(void);
 void RayTestBlocSH(void);
-void FUN_80186b84(void);
+void remoteControlRay(void);
 void STOPPE_RAY_CONTRE_PAROIS(uint param_1);
 void RAY_IN_THE_AIR(void);
 void terminateFistWhenRayDies(void);
@@ -9443,14 +9470,14 @@ void RepousseRay(void);
 undefined4 RayEstIlBloque(void);
 void stackRay(void);
 void RAY_SURF(void);
-void FUN_80188570(void);
+void DO_SURF_CHANGE_HAIRS(void);
 void FUN_80188610(void);
 void DO_PIEDS_RAYMAN(void);
 void FUN_80188620(void);
 void FUN_80188628(void);
 void DO_MORT_DE_RAY(void);
 void findMereDenisWeapon(void);
-void setBossScrollLimits(Obj *param_1);
+void PS1_setBossScrollLimits_spacemama(Obj *param_1);
 bool mereDenisCanAttak(int param_1);
 int setMereDenisAtScrollBorder(Obj *obj,char param_2);
 void setCirclePointToReach(void);
@@ -9497,8 +9524,8 @@ void RESPOND_TO_UP(void);
 void RESPOND_TO_DOWN(void);
 void RESPOND_TO_RIGHT(void);
 void RESPOND_TO_LEFT(void);
-void FUN_8018e1a4(void);
-void FUN_8018e1fc(void);
+void MoveRayInWorldMap(void);
+void DO_RAYMAN_IN_WLD_MAP(void);
 void DO_CHEMIN(void);
 void INIT_PASTILLES_SAUVE(void);
 void PASTILLES_SAUVE_SAVED(short param_1);
@@ -9506,7 +9533,7 @@ void FIN_WORLD_CHOICE(void);
 void DETER_WORLD_AND_LEVEL(void);
 void INIT_NEW_GAME(void);
 void POINTEUR_BOUTONS_OPTIONS_BIS(void);
-void FUN_8018f090(short param_1,short param_2,short param_3,undefined param_4);
+void PS1_DisplayPadButton(short button,short param_2,short param_3,undefined param_4);
 void INIT_CONTINUE(void);
 void CHEAT_MODE_CONTINUE(void);
 void MAIN_CONTINUE_PRG(void);
@@ -9546,12 +9573,12 @@ undefined4 calc_typ_trav(Obj *obj,byte param_2);
 undefined calc_typ_travd(Obj *obj,bool param_2);
 void TEST_FIN_BLOC(Obj *obj);
 undefined4 TEST_IS_ON_RESSORT_BLOC(int param_1);
-undefined4 FUN_8019395c(int param_1);
+int IS_ON_RESSORT_BLOC(Obj *obj);
 void CALC_MOV_ON_BLOC(Obj *obj);
 void recale_position(Obj *param_1);
 void getIdealStingCoords(int param_1,short *param_2,short *param_3);
 bool closeEnoughToSting(int param_1,uint param_2,uint param_3);
-void FUN_8019423c(Obj *param_1);
+void PS1_setBossScrollLimits_moskito(Obj *param_1);
 bool moskitoCanAttak(Obj *obj);
 int setMoskitoAtScrollBorder(int param_1,char param_2);
 void prepareNewMoskitoAttack(Obj *param_1);
@@ -9561,13 +9588,13 @@ void doMoskitoCommand(Obj *obj);
 byte tellNextMoskitoAction(void);
 void changeMoskitoPhase(int param_1);
 void doMoskitoHit(Obj *obj);
-void FUN_80195e80(int param_1,int param_2);
+void DO_BAT_FLASH(int x,int y);
 void DO_BAT_LEFT_FLASH(Obj *param_1);
 void DO_BAT_RIGHT_FLASH(Obj *param_1);
 void DO_BAT_LEFT_RIGHT_FLASH(Obj *param_1);
 bool bat_dir(int param_1);
 void bat_init_scroll(int param_1);
-void FUN_80196518(void);
+void bat_done_scroll(void);
 void DO_BAT_COMMAND(Obj *obj);
 void BAT_ray_in_zone(Obj *obj);
 void DO_BAT_POING_COLLISION(Obj *obj);
@@ -9604,7 +9631,7 @@ void allocateSTOSKO(void);
 void allocateMOSKITOMAMA(void);
 void allocateMOSKITOSAXO(void);
 void doMOSAMScommand(Obj *obj);
-void FUN_80199e00(int param_1);
+void allocateStoskoClaw(Obj *param_1);
 void doSTOSKOcommand(Obj *obj);
 void doBBF2command(Obj *param_1,ushort param_2);
 void DO_HYB_BBF2_POING_COLLISION(Obj *obj);
@@ -9615,17 +9642,17 @@ void AllocateDarkPhase2(Obj *obj);
 void DO_DARK2_AFFICHE_TEXT(void);
 void DO_DARK_PHASE2_COMMAND(Obj *obj);
 void DO_DARK2_SORT_COMMAND(Obj *param_1);
-void FUN_8019c464(short param_1,short param_2,undefined1 param_3,short param_4);
+void allocate_DARK2_SORT(short param_1,short param_2,undefined1 param_3,short param_4);
 void DoFlammeCommand(Obj *obj);
 void AllocateFlammes(short param_1);
-void FUN_8019c804(void);
+void AllocateToons(void);
 void DO_DARK2_TOONS_COMMAND(Obj *obj);
 void ToonDonnePoing(int param_1);
 void ngaweFollowsShip(Obj *obj);
 void ngaweTriesToGrabShip(Obj *obj);
 void allocatePirateNgaweRing(Obj *param_1,short param_2,char param_3);
 void DO_NGW_TIR(Obj *obj);
-void FUN_8019d558(Obj *param_1);
+void NGW_REACT_TO_RAY_IN_ZONE(Obj *obj);
 void DO_ONE_NGW_COMMAND(Obj *obj);
 void DO_NGW_POING_COLLISION(Obj *obj);
 void DO_ONE_NGW_RING_COMMAND(Obj *obj);
@@ -9660,7 +9687,7 @@ void FUN_8019fd40(void);
 bool FUN_8019fda0(void);
 void FUN_8019fdd0(void);
 void FUN_8019fe8c(void);
-void FUN_8019fecc(void);
+void PS1_SetLevelto_4_1(void);
 void FIRST_INIT(void);
 void DEPART_WORLD(void);
 void DEPART_LEVEL(void);
@@ -9705,6 +9732,7 @@ void PS1_ClearPassword(void);
 void FUN_801a2c78(void);
 void FUN_801a2d40(void);
 void FUN_801a3064(void);
+undefined4 FUN_801a3458(void);
 void FUN_801a3550(void);
 void PS1_GenerateAndDisplayPassword(void);
 void FUN_801a36b4(void);
