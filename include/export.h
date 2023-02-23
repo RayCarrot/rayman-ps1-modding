@@ -259,7 +259,7 @@ typedef struct CmdContext CmdContext, *PCmdContext;
 
 typedef enum BlocType {
     BTYP_NONE=0,
-    BTYP_CHDIR=1 // reactionary,
+    BTYP_CHDIR=1, // reactionary
     BTYP_SOLID_RIGHT_45=2,
     BTYP_SOLID_LEFT_45=3,
     BTYP_SOLID_RIGHT1_30=4,
@@ -267,9 +267,9 @@ typedef enum BlocType {
     BTYP_SOLID_LEFT1_30=6,
     BTYP_SOLID_LEFT2_30=7,
     BTYP_HURT=8,
-    BTYP_RESSORT=9 // bounce,
+    BTYP_RESSORT=9, // bounce
     BTYP_WATER=10,
-    BTYP_LIANE=12 // climb,
+    BTYP_LIANE=12, // climb
     BTYP_SOLID_PASSTHROUGH=14,
     BTYP_SOLID=15,
     BTYP_SLIPPERY_RIGHT_45=18,
