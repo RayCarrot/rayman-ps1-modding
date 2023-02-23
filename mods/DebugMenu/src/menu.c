@@ -58,7 +58,7 @@ void do_menu_action(MenuItem *menuItem);
 
 // External variables
 extern short ray_mode;
-extern bool PS1_IsPaused;
+extern bool in_pause;
 extern StatusBar status_bar;
 extern bool new_world;
 extern bool new_level;
@@ -167,7 +167,7 @@ int powers_menu__toggle_power(MenuItem *menuItem, int toggle)
 void cheats_menu__place_ray()
 {
     ray_mode = -ray_mode;
-    PS1_IsPaused = 0;
+    in_pause = 0;
 }
 
 void cheats_menu__99_lives()
