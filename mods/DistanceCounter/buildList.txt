@@ -1,0 +1,15 @@
+// C files
+ntsc-u, exe, SsUtKeyOnV, 0x0, src/distance_counter.c // Overwrite some unused functions
+
+// Assembly files
+ntsc-u, exe, 0x8018ec58, 0x0, src/hook_newgame.s // Overwrite call to INIT_RAY_BEGIN
+ntsc-u, exe, 0x8016b8b0, 0x0, src/hook_loadgame.s // Overwrite call to POINTEUR_BOUTONS_OPTIONS_BIS
+ntsc-u, exe, 0x8016aeb4, 0x0, src/hook_savegame.s // Overwrite call to FntPrint
+
+ntsc-u, exe, 0x801b9544, 0x0, src/hook_vsync.s // Extend VSYNC_OBJ_F0 which gets called from vsync
+
+ntsc-u, exe, 0x8014dc80, 0x0, src/hook_display_horloges.s // Extend horloges
+ntsc-u, exe, 0x8012ed9c, 0x0, src/hook_display_pause.s // Extend pause function
+ntsc-u, exe, 0x801619e0, 0x0, src/hook_medallion.s // Extend DO_MEDAILLON_TOON_GELE
+
+ntsc-u, exe, 0x8012e004, 0x0, src/hook_display_worldmap.s // Extend DISPLAY_STAGE_NAMES

@@ -6238,3 +6238,4 @@ IndexSerie = 0x801faae8;
 VENT_X = 0x801faaf0;
 VENT_Y = 0x801faaf8;
 PS1_ValidPassword = 0x801fab08;
+PS1_IsPaused = 0x801cee80;
