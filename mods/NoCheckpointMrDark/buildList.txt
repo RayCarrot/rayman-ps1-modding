@@ -1,5 +1,0 @@
-// C files
-ntsc-u, exe, 0x801331a4, 0x0, src/mod.c // Overwrite unused file function (size 0x110)
-
-// Assembly files
-ntsc-u, exe, 0x801876e0, 0x0, src/hook_dead.s // Extend terminateFistWhenRayDies
