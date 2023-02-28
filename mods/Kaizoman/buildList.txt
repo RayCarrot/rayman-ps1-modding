@@ -25,3 +25,6 @@ ntsc-u, exe, 0x80199b50,    0x0, src/dark_disable_run/disable_run_restore.s
 
 ntsc-u, exe, 0x801331a4,    0x0, src/dark_no_checkpoint/dead.c // Overwrite unused file function (size 0x110)
 ntsc-u, exe, 0x801876e0,    0x0, src/dark_no_checkpoint/hook_dead.s
+
+add, Timer
+add, DeathCounter

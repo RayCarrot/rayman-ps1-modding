@@ -12,6 +12,6 @@ Changes:
 - Added credits lines to the start
 - Disable run and remove checkpoints in Mr Dark fight
 
-Additionally the following mods should be applied:
+Additionally the following mods get built with this one:
 - DeathCounter
 - Timer
