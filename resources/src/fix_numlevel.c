@@ -509,5 +509,4 @@ void fix_numlevel(Obj *obj)
         num_level_choice++;
 
     new_level = 1;
-    return;
 }

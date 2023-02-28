@@ -1,5 +1,5 @@
 #include <export.h>
-#include "constants.h"
+#include "common.h"
 
 extern byte You_Win;
 extern byte fin_du_jeu;
@@ -15,8 +15,6 @@ extern short new_level;
 extern byte finBosslevel[2];
 extern byte RayEvts[2];
 extern WorldInfo t_world_info[24];
-
-void check_final_level_unlock();
 
 void fix_numlevel(Obj *obj)
 {
@@ -510,12 +508,4 @@ void fix_numlevel(Obj *obj)
         num_level_choice++;
 
     new_level = 1;
-    return;
-}
-
-void check_final_level_unlock()
-{
-    // Unlock Mr Dark's Dare
-    if ((t_world_info[17].state & 1) == 0 && REQUIRED_CAGES_FOR_DARK <= Nb_total_cages && (finBosslevel[0] & 0x40) != 0) 
-        t_world_info[17].state |= 4;
 }

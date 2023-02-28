@@ -1,4 +1,7 @@
-ntsc-u, exe, fix_numlevel,          0x0, src/worldmap/fix_numlevel.c
+// NOTE: The places where multiple files are compiled together it matters which one the first is. I'm not sure if the order
+//       it compiles can be known to always be the same as defined here, but for now this works.
+
+ntsc-u, exe, fix_numlevel,          0x0, src/worldmap/fix_numlevel.c src/worldmap/common.c
 ntsc-u, exe, t_world_info,          0x0, src/worldmap/t_world_info.c
 ntsc-u, exe, 0x80125028,            0x0, src/worldmap/t_world_info_strings.c
 ntsc-u, exe, 0x8018df8c,            0x0, src/worldmap/nop_dark_unlock_check.s
