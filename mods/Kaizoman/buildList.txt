@@ -3,7 +3,7 @@ ntsc-u, exe, t_world_info,          0x0, src/worldmap/t_world_info.c
 ntsc-u, exe, 0x80125028,            0x0, src/worldmap/t_world_info_strings.c
 ntsc-u, exe, 0x8018df8c,            0x0, src/worldmap/nop_dark_unlock_check.s
 ntsc-u, exe, 0x8018d52c,            0x0, src/worldmap/hook_INIT_STAGE_NAME.s
-ntsc-u, exe, INIT_WORLD_STAGE_NAME, 0x0, src/worldmap/INIT_WORLD_STAGE_NAME.c src/worldmap/INIT_WORLD_STAGE_NAME_strings.c
+ntsc-u, exe, INIT_WORLD_STAGE_NAME, 0x0, src/worldmap/INIT_WORLD_STAGE_NAME.c src/worldmap/INIT_WORLD_STAGE_NAME_strings.c src/inputs/inputs.c
 
 ntsc-u, exe, 0x80173cec,            0x0, src/dark_rayman/nop_kill_anim.s
 ntsc-u, exe, 0x801982ec,            0x0, src/dark_rayman/modify_anim_frame_check.s
@@ -26,6 +26,8 @@ ntsc-u, exe, 0x80199b50,            0x0, src/dark_disable_run/disable_run_restor
 
 ntsc-u, exe, 0x801331a4,            0x0, src/dark_no_checkpoint/dead.c // Overwrite unused file function (size 0x110)
 ntsc-u, exe, 0x801876e0,            0x0, src/dark_no_checkpoint/hook_dead.s
+
+ntsc-u, exe, 0x8019f840,            0x0, src/inputs/hook_inputs.s
 
 add, Timer
 add, DeathCounter
