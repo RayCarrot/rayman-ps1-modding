@@ -19,6 +19,9 @@ uint distance = 0;
 
 const int PRECISION = 100;
 
+void draw_meter_text();
+
+
 void INIT_NEW_GAME_Extended()
 {
     // Call function we overwrote call for before
