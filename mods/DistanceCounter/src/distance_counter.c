@@ -7,7 +7,7 @@
 
 extern struct StatusBar status_bar;
 extern struct Obj ray;
-extern char PS1_IsPaused;
+extern char in_pause;
 extern bool gele;
 extern bool dans_la_map_monde;
 extern short ray_mode;
@@ -71,13 +71,13 @@ void update_distance() {
 
     // ray_mode 3 or 4 means rayman is dying (4 for dying on bzzit)
     // loop_time is non-zero in the magician bonus game end screen
-    if (!PS1_IsPaused && !gele && ray_mode!=3 && ray_mode!=4 && loop_time==0) {
+    if (!in_pause && !gele && ray_mode!=3 && ray_mode!=4 && loop_time==0) {
         int distSq = (ray.speed_x * PRECISION * ray.speed_x * PRECISION) + (ray.speed_y * PRECISION * ray.speed_y * PRECISION);
         distance += SquareRoot0(distSq);
     }
 
     // Allow resetting the tracker by pressing select while the game is paused
-    if (PS1_IsPaused && TOUCHE(INPUT_SELECT)) {
+    if (in_pause && TOUCHE(INPUT_SELECT)) {
         distance = 0;
     }
 }
@@ -91,7 +91,7 @@ void draw_meter_text() {
 
     display_text(str, 320 - textWidth, 230, 2, 0);
     
-    if (PS1_IsPaused) {
+    if (in_pause) {
         
         char selectstr[23] = "press select to reset\0";
         textWidth = PS1_CalcTextWidth(selectstr, 2);
