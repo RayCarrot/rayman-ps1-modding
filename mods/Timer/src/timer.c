@@ -1,29 +1,38 @@
 #include <export.h>
 
 // Enums
-enum TIMERMODE { TIMER_OFF, TIMER_GAME, TIMER_LEVEL, TIMER_DEATH };
+enum TIMERMODE { TIMER_OFF, TIMER_GAME, TIMER_WORLD, TIMER_LEVEL, TIMER_DEATH };
 
 // Constants
+#define NUM_TIMER_MODES 5
 #define DEFAULT_COOLDOWN 15
 #define FRAMERATE 60
 #define SOUND_NAVIGATE 0x44
+
+// External variables
+extern bool dans_la_map_monde;
+extern byte dark_phase;
+extern byte world_index;
+extern short new_world;
 
 // Variables
 uint frames = 0;
 enum TIMERMODE timer_mode = TIMER_OFF;
 byte input_cooldown = 0;
-bool isInLevel = 0; // TODO: Use dans_la_map_monde instead? Is that consistent enough?
-
-// Function prototypes
-void display_timer();
+bool is_running = 0;
+bool entered_level = 0;
 
 void update_timer()
 {
-    frames++;
+    if (is_running)
+        frames++;
 }
 
 void display_timer()
 {
+    if (timer_mode == TIMER_OFF)
+        return;
+
     int sec, h, m, s, f;
     char str[12];
 
@@ -41,24 +50,15 @@ void display_timer()
 
 void display_timer_level()
 {
-    // Do not display timer in a level if the mod is off or we're on
-    // the worldmap. The reason for this is because drawing text on
-    // the worldmap too early on causes the sprite clipping for the
-    // medallions not to work. Not sure why.
-    if (timer_mode != TIMER_OFF && isInLevel)
-        display_timer();
-}
-
-void display_timer_worldmap()
-{
-    if (timer_mode == TIMER_GAME)
+    // Do not display timer if we're on the worldmap. The reason for 
+    // this is because drawing text on the worldmap too early on causes 
+    // the sprite clipping for the medallions not to work. Not sure why.
+    if (!dans_la_map_monde)
         display_timer();
 }
 
 void set_timer_mode()
 {
-    char* text;
-
     if (input_cooldown == 0)
     {
         if (TOUCHE(INPUT_L2))
@@ -75,7 +75,7 @@ void set_timer_mode()
         {
             input_cooldown = DEFAULT_COOLDOWN;
             
-            if (timer_mode < 3)
+            if (timer_mode < (NUM_TIMER_MODES - 1))
             {
                 PlaySnd_old(SOUND_NAVIGATE);
                 timer_mode++;
@@ -86,53 +86,86 @@ void set_timer_mode()
     if (input_cooldown > 0)
         input_cooldown--;
 
+    char text[22] = "l2 | r2 timer: ";
+
     switch (timer_mode)
     {
         default:
         case TIMER_OFF:
-            text = "l2 | r2 timer: off";
+            strcat((char *)&text, "off");
             break;
 
         case TIMER_GAME:
-            text = "l2 | r2 timer: game";
+            strcat((char *)&text, "game");
             break;
 
         case TIMER_LEVEL:
-            text = "l2 | r2 timer: level";
+            strcat((char *)&text, "level");
+            break;
+
+        case TIMER_WORLD:
+            strcat((char *)&text, "world");
             break;
 
         case TIMER_DEATH:
-            text = "l2 | r2 timer: death";
+            strcat((char *)&text, "death");
             break;
     }
 
-    display_text(text, 80, 180, 2, 15);
+    display_text((char *)&text, 80, 180, 2, 15);
 }
 
 void start_game()
 {
     frames = 0;
-    isInLevel = 0;
+    entered_level = 0;
+    is_running = timer_mode == TIMER_GAME;
 
     // Call function we overwrote
     DO_FADE_OUT();
 }
 
 void enter_level()
-{
-    isInLevel = 1;
-    
+{    
     if (timer_mode == TIMER_LEVEL || timer_mode == TIMER_DEATH)
+    {
         frames = 0;
-}
-
-void init_world_map()
-{
-    isInLevel = 0;
+        is_running = 1;
+    }
+    else if (timer_mode == TIMER_WORLD && !entered_level)
+    {
+        frames = 0;
+        is_running = 1;
+        entered_level = 1;
+    }
 }
 
 void init_dead()
 {
     if (timer_mode == TIMER_DEATH)
         frames = 0;
+}
+
+void change_dark_phase()
+{
+    if (dark_phase == 5 && timer_mode == TIMER_GAME)
+        is_running = 0;
+}
+
+void exit_level()
+{
+    if (!new_world)
+        return;
+
+    if (timer_mode == TIMER_LEVEL)
+    {
+        is_running = 0;
+    }
+    else if (timer_mode == TIMER_WORLD)
+    {
+        if (world_index == 3 || world_index == 5 || world_index == 7 || world_index == 10 || world_index == 13 || world_index == 16 || world_index == 17)
+        {
+            is_running = 0;
+        }
+    }
 }
