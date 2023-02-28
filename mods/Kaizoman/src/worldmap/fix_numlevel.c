@@ -242,12 +242,9 @@ void fix_numlevel(Obj *obj)
                 case 6:
                     new_world = 1;
                     
-                    // Unlock Allegro Presto and save point
+                    // Unlock Allegro Presto
                     if ((t_world_info[5].state & 1) == 0) 
-                    {
                         t_world_info[5].state |= 4;
-                        t_world_info[19].state |= 4;
-                    }
                     break;
                 
                 // Bonus: Allegro Presto 3
@@ -263,9 +260,12 @@ void fix_numlevel(Obj *obj)
                 case 11:
                     new_world = 1;
 
-                    // Unlock Twilight Gulch
+                    // Unlock Twilight Gulch and save point
                     if ((t_world_info[8].state & 1) == 0) 
+                    {
                         t_world_info[8].state |= 4;
+                        t_world_info[19].state |= 4;
+                    }
                     break;
                 
                 // End: Gong Heights
@@ -329,12 +329,9 @@ void fix_numlevel(Obj *obj)
                 case 5:
                     new_world = 1;
 
-                    // Unlock Mr Stone's Peaks and save point
+                    // Unlock Mr Stone's Peaks
                     if ((t_world_info[10].state & 1) == 0) 
-                    {
                         t_world_info[10].state |= 4;
-                        t_world_info[21].state |= 4;
-                    }
                     break;
 
                 // Bonus: Mr Stone's Peaks 4
@@ -386,9 +383,12 @@ void fix_numlevel(Obj *obj)
                 case 4:
                     new_world = 1;
 
-                    // Unlock Pencil Pentathlon
+                    // Unlock Pencil Pentathlon and save point
                     if ((t_world_info[12].state & 1) == 0) 
+                    {
                         t_world_info[12].state |= 4;
+                        t_world_info[21].state |= 4;
+                    }
                     break;
 
                 // End: Pencil Pentathlon
