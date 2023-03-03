@@ -12,7 +12,7 @@ This project is made to help with modding the PS1 version of Rayman 1 using the 
 Each mod folder has a `MOD.BAT` which allows building the mod.
 
 ### Symbols
-Every mod will include the files under the `include` folder. For this project this contains the `export.h` file which is a header file exported from Ghidra.
+Every mod will include the files under the `include` folder. For this project this contains the `export.h` file which is a header file exported from Ghidra. The `resources` folder includes additional reusable files which can be copied into and modified for your mods.
 
 ### Creating a mod
 To create a mod the easiest to do is to first run the clean command on an existing mod and then copy its folder. The most important thing to keep in mind is to not make your code too big or else it can overwrite existing code in the game.

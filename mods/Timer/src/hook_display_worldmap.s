@@ -1,2 +1,2 @@
 .set noreorder
-j display_timer_worldmap
+j display_timer

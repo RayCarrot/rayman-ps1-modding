@@ -257,6 +257,32 @@ typedef struct ObjState ObjState, *PObjState;
 
 typedef struct CmdContext CmdContext, *PCmdContext;
 
+typedef enum BlocType {
+    BTYP_NONE=0,
+    BTYP_CHDIR=1, // reactionary
+    BTYP_SOLID_RIGHT_45=2,
+    BTYP_SOLID_LEFT_45=3,
+    BTYP_SOLID_RIGHT1_30=4,
+    BTYP_SOLID_RIGHT2_30=5,
+    BTYP_SOLID_LEFT1_30=6,
+    BTYP_SOLID_LEFT2_30=7,
+    BTYP_HURT=8,
+    BTYP_RESSORT=9, // bounce
+    BTYP_WATER=10,
+    BTYP_LIANE=12, // climb
+    BTYP_SOLID_PASSTHROUGH=14,
+    BTYP_SOLID=15,
+    BTYP_SLIPPERY_RIGHT_45=18,
+    BTYP_SLIPPERY_LEFT_45=19,
+    BTYP_SLIPPERY_RIGHT1_30=20,
+    BTYP_SLIPPERY_RIGHT2_30=21,
+    BTYP_SLIPPERY_LEFT1_30=22,
+    BTYP_SLIPPERY_LEFT2_30=23,
+    BTYP_SPIKES=24,
+    BTYP_CLIFF=25,
+    BTYP_SLIPPERY=30
+} BlocType;
+
 typedef enum ObjCommand {
     GO_LEFT=0,
     GO_RIGHT=1,
@@ -295,9 +321,9 @@ typedef enum ObjCommand {
 } ObjCommand;
 
 typedef enum ChangeAnimMode {
-    None=0,
-    ResetIfNewAnim=1,
-    Reset=2
+    ANIMMODE_NONE=0,
+    ANIMMODE_RESET_IF_NEW=1,
+    ANIMMODE_RESET=2
 } ChangeAnimMode;
 
 typedef enum ObjType {
@@ -586,16 +612,15 @@ struct Obj {
     struct Animation * animations;
     undefined * img_buffer;
     struct ObjState * * eta;
-    undefined * cmds;
-    undefined * cmd_labels;
+    byte * cmds;
+    byte * cmd_labels;
     struct CmdContext cmd_contexts[1];
     short x_pos;
     short y_pos;
     short id;
     short screen_x_pos;
     short screen_y_pos;
-    undefined field12_0x26;
-    undefined field13_0x27;
+    short field12_0x26;
     short init_x_pos;
     short init_y_pos;
     short speed_x;
@@ -603,19 +628,19 @@ struct Obj {
     ushort nb_sprites;
     short cmd_offset;
     short nb_cmd;
-    short field21_0x36; // For Rayman this is the current follow obj id
+    short field20_0x36; // For Rayman this is the current follow obj id
     short follow_y;
     short follow_x;
-    short field24_0x3c;
-    short field25_0x3e;
+    short field23_0x3c;
+    short field24_0x3e;
     short ray_dist;
-    short field27_0x42;
-    short field28_0x44;
+    short field26_0x42;
+    short test_block_index;
     short scale;
     ushort zdc;
     short active_timer;
-    byte btypes[5];
-    undefined field33_0x51;
+    enum BlocType btypes[5];
+    undefined field32_0x51;
     byte offset_bx;
     byte offset_by;
     byte anim_index;
@@ -625,8 +650,8 @@ struct Obj {
     byte sub_etat;
     byte init_sub_etat;
     enum ObjCommand cmd;
-    byte field43_0x5b;
-    byte field44_0x5c;
+    byte gravity_value_1;
+    byte gravity_value_2;
     enum ChangeAnimMode change_anim_mode;
     byte offset_hy;
     byte follow_sprite;
@@ -639,7 +664,7 @@ struct Obj {
     byte detect_zone;
     byte detect_zone_flag;
     byte cmd_context_index;
-    byte field57_0x69;
+    byte field56_0x69;
     byte display_prio;
     byte timer;
     uint flags;
@@ -652,11 +677,11 @@ struct AllFixData {
 };
 
 struct ObjState {
-    byte speed_x_right;
-    byte speed_x_left;
+    char speed_x_right;
+    char speed_x_left;
     byte anim_index;
-    byte linked_main_etat;
-    byte linked_sub_etat;
+    byte next_main_etat;
+    byte next_sub_etat;
     byte anim_speed;
     byte sound;
     byte flags;
@@ -693,7 +718,7 @@ struct AnimationFrame {
 };
 
 struct AnimationLayer {
-    bool flipped_x;
+    bool flip_x;
     byte x_pos;
     byte y_pos;
     byte sprite;
@@ -730,15 +755,6 @@ typedef enum Input {
     INPUT_READ=255
 } Input;
 
-typedef struct MapData MapData, *PMapData;
-
-struct MapData {
-    short width;
-    short height;
-    int length;
-    short * map;
-};
-
 typedef struct WorldInfo WorldInfo, *PWorldInfo;
 
 struct WorldInfo {
@@ -766,10 +782,10 @@ struct LevelData {
 typedef struct LoadInfoRay LoadInfoRay, *PLoadInfoRay;
 
 struct LoadInfoRay {
-    byte LivesCount;
-    byte TingsCount;
-    byte Cages;
-    byte Continues;
+    byte num_lives;
+    byte num_wiz;
+    byte num_cages;
+    byte num_continues;
 };
 
 typedef struct StatusBar StatusBar, *PStatusBar;
@@ -786,82 +802,37 @@ struct StatusBar {
 typedef struct SaveState SaveState, *PSaveState;
 
 struct SaveState {
-    undefined field0_0x0;
-    undefined field1_0x1;
-    undefined field2_0x2;
-    undefined field3_0x3;
-    undefined field4_0x4;
-    undefined field5_0x5;
-    undefined field6_0x6;
-    undefined field7_0x7;
-    undefined field8_0x8;
-    undefined field9_0x9;
-    undefined field10_0xa;
-    undefined field11_0xb;
-    undefined field12_0xc;
-    undefined field13_0xd;
-    undefined field14_0xe;
-    undefined field15_0xf;
-    undefined field16_0x10;
-    undefined field17_0x11;
-    undefined field18_0x12;
-    undefined field19_0x13;
-    undefined field20_0x14;
-    undefined field21_0x15;
-    undefined field22_0x16;
-    undefined field23_0x17;
-    undefined field24_0x18;
-    undefined field25_0x19;
-    undefined field26_0x1a;
-    undefined field27_0x1b;
-    undefined field28_0x1c;
-    undefined field29_0x1d;
-    undefined field30_0x1e;
-    undefined field31_0x1f;
-    undefined field32_0x20;
-    undefined field33_0x21;
-    undefined field34_0x22;
-    undefined field35_0x23;
-    undefined field36_0x24;
-    undefined field37_0x25;
-    undefined field38_0x26;
-    undefined field39_0x27;
-    undefined field40_0x28;
-    undefined field41_0x29;
-    undefined field42_0x2a;
-    undefined field43_0x2b;
-    undefined field44_0x2c;
-    undefined field45_0x2d;
-    undefined field46_0x2e;
-    undefined field47_0x2f;
-    undefined2 field48_0x30;
-    undefined2 field49_0x32;
-    undefined2 XMap;
-    undefined2 YMap;
-    ushort field52_0x38;
-    short RayXPos;
-    short RayYPos;
-    short RayScreenXPos;
-    short RayScreenYPos;
-    ushort field57_0x42;
-    short ObjIndex;
-    short ObjXPos;
-    short ObjYPos;
-    byte ObjLinks[256];
-    undefined field62_0x14a;
-    byte field63_0x14b;
-    byte RayCollisionTypes[5]; // Created by retype action
-    byte RayAnimIndex;
-    byte RayAnimFrame;
-    byte RayEtat;
-    byte RaySubEtat;
-    byte PoingSubEtat;
-    byte field70_0x156;
-    byte field71_0x157;
-    byte field72_0x158;
-    sbyte DeadTime;
-    byte field74_0x15a;
-    byte TingsCount;
+    uint triggered_objects[8];
+    short nb_floc[8];
+    undefined2 vent_x;
+    undefined2 vent_y;
+    short x_map;
+    short y_map;
+    byte time;
+    undefined field7_0x39;
+    short ray_x_pos;
+    short ray_y_pos;
+    short ray_screen_x;
+    short ray_screen_y;
+    ushort ray_flip_x;
+    short save_obj_id;
+    short save_obj_x_pos;
+    short save_obj_y_pos;
+    byte link_init[256];
+    undefined1 save_obj_detect_zone_flag;
+    byte field18_0x14b;
+    enum BlocType ray_btypes[5];
+    byte ray_anim_index;
+    byte ray_anim_frame;
+    byte ray_main_etat;
+    byte ray_sub_etat;
+    byte poing_sub_etat;
+    byte rayevts_0;
+    byte rayevts_1;
+    byte rayevts_2;
+    byte dead_time;
+    bool has_saved;
+    byte num_wiz;
 };
 
 typedef enum Video {
@@ -876,7 +847,7 @@ typedef enum Video {
 typedef struct Credit Credit, *PCredit;
 
 struct Credit {
-    undefined * text;
+    char * text;
     short x_pos;
     short y_pos;
     byte font;
@@ -887,17 +858,17 @@ struct Credit {
 typedef struct Poing Poing, *PPoing;
 
 struct Poing {
-    int Int_00;
+    int field0_0x0;
     short field1_0x4;
-    short SpeedX;
-    short Charge;
+    short speed_x;
+    short charge;
     short field4_0xa;
-    byte PoingSubEtat;
-    bool IsReturning;
-    bool IsActive;
-    byte Damage;
-    bool IsChargingFist;
-    bool IsDoingBoum;
+    byte sub_etat;
+    bool is_returning;
+    bool is_active;
+    byte damage;
+    bool is_charging;
+    bool is_boum;
     undefined field11_0x12;
     undefined field12_0x13;
 };
@@ -928,9 +899,9 @@ struct SoundTableEntry {
     byte flags;
 };
 
-typedef struct PS1_FileInfo PS1_FileInfo, *PPS1_FileInfo;
+typedef struct FileInfo FileInfo, *PFileInfo;
 
-struct PS1_FileInfo {
+struct FileInfo {
     undefined * path;
     undefined * dest;
     undefined * dest_debug;
@@ -7965,24 +7936,11 @@ struct RenderData {
     undefined field6869_0x6cbb;
 };
 
-typedef struct SaxNoteEntry SaxNoteEntry, *PSaxNoteEntry;
-
-struct SaxNoteEntry {
-    byte field0_0x0;
-    undefined field1_0x1;
-    short field2_0x2;
-    short field3_0x4;
-    short field4_0x6;
-    undefined field5_0x8;
-    undefined field6_0x9;
-};
-
 typedef struct BBAttackEntry BBAttackEntry, *PBBAttackEntry;
 
 struct BBAttackEntry {
-    short field0_0x0;
-    byte field1_0x2;
-    undefined field2_0x3;
+    short attack;
+    byte wait_for_fin_atan;
 };
 
 typedef struct CouteauxInfo CouteauxInfo, *PCouteauxInfo;
@@ -8006,6 +7964,26 @@ struct CouteauxInfo {
     undefined field15_0x11;
 };
 
+typedef struct SaxAttackEntry SaxAttackEntry, *PSaxAttackEntry;
+
+struct SaxAttackEntry {
+    byte next_note;
+    byte time;
+    short field2_0x2;
+};
+
+typedef struct SaxNoteEntry SaxNoteEntry, *PSaxNoteEntry;
+
+struct SaxNoteEntry {
+    byte field0_0x0;
+    undefined field1_0x1;
+    short field2_0x2;
+    short field3_0x4;
+    short field4_0x6;
+    undefined field5_0x8;
+    undefined field6_0x9;
+};
+
 typedef struct SaxData SaxData, *PSaxData;
 
 struct SaxData {
@@ -8025,7 +8003,7 @@ struct SaxData {
 typedef struct BB1Data BB1Data, *PBB1Data;
 
 struct BB1Data {
-    short field0_0x0;
+    short speed_x;
     short field1_0x2;
     byte field2_0x4;
     byte saved_main_etat;
@@ -8036,12 +8014,23 @@ struct BB1Data {
     byte field8_0xe;
 };
 
-typedef struct SaxAttackEntry SaxAttackEntry, *PSaxAttackEntry;
+typedef struct RayStack RayStack, *PRayStack;
 
-struct SaxAttackEntry {
-    byte NextNote;
-    byte Time;
-    short field2_0x2;
+struct RayStack {
+    short x_pos;
+    short y_pos;
+    short poing_x_pos;
+    short poing_y_pos;
+    byte main_etat;
+    byte sub_etat;
+    byte anim_index;
+    byte anim_frame;
+    byte flip_x;
+    byte poing_anim_index;
+    byte poing_anim_frame;
+    byte poing_flip_x;
+    bool poing_is_active;
+    byte scale;
 };
 
 typedef struct CommandTableEntry CommandTableEntry, *PCommandTableEntry;
@@ -8054,11 +8043,38 @@ struct CommandTableEntry {
 
 typedef struct Obj * Obj_0x55;
 
+typedef struct VitrauxInfo VitrauxInfo, *PVitrauxInfo;
+
+struct VitrauxInfo {
+    short x_pos;
+    short y_pos;
+    byte obj_id;
+    byte index; // 0-4
+    byte field4_0x6;
+    byte mode; // 0 is inactive, 1 is getting less bright and 2 is getting brighter
+    ushort value; // goes from 100 to 0
+};
+
+typedef struct Obj * Obj_0x5C;
+
 typedef struct Obj * Obj_0x54;
 
 typedef struct Obj * Obj_0x53;
 
 typedef struct Obj * Obj_0x6C;
+
+typedef struct Obj * Obj_0x1E;
+
+typedef struct ZDC ZDC, *PZDC;
+
+struct ZDC {
+    short x_pos;
+    short y_pos;
+    byte width;
+    byte height;
+    byte flags;
+    byte sprite;
+};
 
 typedef struct Obj * Obj_0x60;
 
@@ -8094,9 +8110,20 @@ struct ActiveObjects {
     short num_active_objects;
 };
 
+typedef struct Obj * Obj_0x3E;
+
 typedef struct Obj * Obj_0x3C;
 
 typedef struct Obj * Obj_0x42;
+
+typedef struct MapData MapData, *PMapData;
+
+struct MapData {
+    short width;
+    short height;
+    int length;
+    short * map;
+};
 
 typedef struct BackgroundPosition BackgroundPosition, *PBackgroundPosition;
 
@@ -8508,9 +8535,11 @@ void FUN_8012d030(undefined4 param_1,undefined4 param_2,short param_3,short para
 void FUN_8012d27c(void);
 void FUN_8012d2b0(undefined2 param_1);
 void FUN_8012d4c0(short param_1,short param_2);
+bool FUN_8012d96c(void);
+bool FUN_8012d9c0(void);
 void FUN_8012da14(void);
-undefined4 continue_fonction(void);
-void FUN_8012dc9c(void);
+int continue_fonction(void);
+void DO_CONTINUE(void);
 undefined4 select_level_prg(void);
 int SELECT_LEVEL(short param_1);
 void DISPLAY_STAGE_NAMES(void);
@@ -8530,13 +8559,13 @@ bool loader_anim_prg(void);
 void DO_GROS_RAYMAN(void);
 void FUN_8012ece8(void);
 void FUN_8012ecf0(void);
-void PS1_ShowPauseScreen(void);
+void DO_AFFICHE_PAUSE(void);
 int FUN_8012eda4(int param_1,short param_2);
 int PS1_LoadToVRAM(short width,short height,short x,short y,u_long *data);
-void FUN_8012ee64(uint param_1,uint param_2,int param_3,int param_4,undefined4 param_5,int param_6);
+void PS1_LoadVRAMBlock(uint param_1,uint param_2,int param_3,int param_4,undefined4 param_5,int param_6);
 void FUN_8012f2cc(void);
-void FUN_8012f2d4(void);
-void FUN_8012f540(void);
+void PouvoirsParMap(void);
+void PS1_ResetSaveZone(void);
 void FUN_8012f570(void);
 void DO_GROS_MOTEUR_NORMAL(void);
 void DO_MAIN_LOOP(void);
@@ -8554,6 +8583,7 @@ void FUN_801305ec(void);
 void PS1_InitMusic(void);
 void FUN_8013066c(void);
 void FUN_80130684(void);
+void FUN_801309b0(void);
 undefined4 FUN_801309b8(uint param_1,uint param_2,byte *param_3,uint param_4);
 void FUN_80130a98(undefined *param_1,undefined *param_2,undefined *param_3);
 void FUN_80130b18(uint param_1,CdlLOC *param_2);
@@ -8567,26 +8597,30 @@ void PS1_PlayMusic(void);
 void playLevelMusic(undefined2 world,undefined2 level);
 void start_cd_gros_rayman(void);
 void start_cd_suspence(void);
-void FUN_80131c70(void);
+void start_cd_credits(void);
 void FUN_80131c94(void);
 void start_cd_gagne(void);
 void FUN_80131d18(void);
 void PS1_PlayCDTrack_0_3(void);
-void FUN_80131d70(void);
-void FUN_80131d94(void);
+void start_cd_gameover(void);
+void start_cd_continue(void);
 int FUN_80131db8(void);
 void FUN_80131dc8(void);
-void FUN_80131df0(void);
+void stop_cd(void);
 void FUN_80131e18(void);
 void FUN_80131e40(void);
 void FUN_80131e5c(void);
 void FUN_80131e94(void);
 void FUN_8013202c(void);
 void change_audio_track_moskito_acc(void);
-void FUN_80132098(void);
-void FUN_801320d0(void);
+void change_audio_track_moskito_dec(void);
+void change_audio_track_puit(void);
 void FUN_80132110(void);
-void FUN_80132168(short param_1);
+void FUN_80132148(void);
+void FUN_80132150(void);
+void FUN_80132158(void);
+void FUN_80132160(void);
+void PS1_SetMusicVolume(short param_1);
 void FUN_801321fc(void);
 void FUN_80132244(void);
 void PS1_LoadLevelMapBlock(MapData *mp);
@@ -8604,9 +8638,9 @@ void FUN_80132ea0(u_long *param_1,Video video);
 void FUN_80133010(void);
 void FUN_80133018(void);
 void FUN_80133048(undefined4 param_1,int param_2,byte param_3);
-undefined4 PS1_InitFiles(PS1_FileInfo *files,int count,char *name);
-int FUN_801331a4(PS1_FileInfo *param_1,int param_2,undefined4 param_3);
-int PS1_LoadFiles(PS1_FileInfo *files,int fileIndex,int count);
+undefined4 PS1_InitFiles(FileInfo *files,int count,char *name);
+int FUN_801331a4(FileInfo *param_1,int param_2,undefined4 param_3);
+int PS1_LoadFiles(FileInfo *files,int fileIndex,int count);
 int FUN_80133498(undefined *param_1,uchar *param_2,undefined *param_3,undefined4 param_4);
 int readinput(void);
 int upjoy(void);
@@ -8668,7 +8702,7 @@ byte FUN_8013491c(void);
 void PS1_DoDemo(Record *record);
 void FUN_80134be0(void);
 undefined * TOUCHE(Input param_1);
-undefined4 PS1_SpecialTOUCHE(uint param_1);
+undefined4 PS1_SpecialTOUCHE(Input param_1);
 void PS1_LoadFondSprites(void);
 void PS1_LoadFondDataAndPalettes(void);
 void PS1_LoadFond(void);
@@ -8684,7 +8718,7 @@ int FUN_80137a4c(uint param_1);
 void DRAW_MAP(void);
 void FUN_80137cc8(int param_1,int param_2);
 void allume_vitraux(byte (*param_1) [5]);
-void FUN_80138360(int param_1);
+void FUN_80138360(byte *vitrailClignotement);
 void FUN_80138718(char param_1);
 void FUN_80138b84(short param_1,int param_2,short param_3,short param_4);
 void FUN_80139014(ushort param_1,ushort param_2,short param_3,short param_4,short param_5,short param_6);
@@ -8715,7 +8749,7 @@ void DrawWldPointPlan2Normal(undefined2 param_1,undefined2 param_2);
 void FUN_8013af14(void);
 void DISPLAY_POINT(short param_1,short param_2);
 void DISPLAY_PTS_TO_PLAN2(int x1,int y1,int x2,int y2,short percentage);
-void DISPLAY_PLATEAU(void);
+void DISPLAY_PLATEAU(Obj *param_1);
 void draw_flocon1_Normal(short param_1,short param_2);
 void draw_flocon2_Normal(short param_1,short param_2);
 void draw_flocon3_Normal(undefined2 param_1,undefined2 param_2);
@@ -8730,7 +8764,7 @@ void FUN_8013b4d4(undefined2 param_1,undefined2 param_2);
 void display_flocons_behind(void);
 void display_flocons_before(void);
 void display_pix_gerbes(void);
-void DISPLAY_CYMBALE(int *param_1,char param_2);
+void DISPLAY_CYMBALE(Obj *param_1,bool param_2);
 void DISPLAY_ALL_OBJECTS(void);
 byte PS1_deter_num_let_old(byte param_1);
 byte PS1_calc_let_Width(short sprite,byte font);
@@ -8744,25 +8778,25 @@ void DISPLAY_BLACKBOX(undefined2 param_1,undefined2 param_2,undefined2 param_3,u
 void display_text_sin(char *param_1,ushort param_2,short param_3,short param_4,byte param_5,byte param_6);
 void display_text(char *text,ushort xPos,short yPos,byte fontSize,uint param_5);
 void display_box_text(TextToDisplay *txt);
-void FUN_8013e238(void);
+void CLRSCR(void);
 void display_etoile(int param_1,int param_2);
 void display_grp_stars(void);
 void DISPLAY_TEXT_FEE(void);
 void DisplayJumellesNormal(void);
 void FUN_8013eb38(short param_1,short param_2,short param_3,short param_4);
-void FUN_8013eb88(int param_1,short param_2);
-void FUN_8013f0c0(void);
+void DISPLAY_SAVE_SPRITES(int param_1,short param_2);
+void DISPLAY_SAVE_POING(void);
 void display_time(short param_1);
 void FUN_8013f460(void);
 void DISPLAY_CONTINUE_SPR(void);
 void FUN_8013f8f8(void);
 void FUN_8013f950(void);
-void FUN_8013f9f0(undefined2 param_1,undefined2 param_2,undefined param_3,undefined param_4,undefined param_5,char param_6);
-void FUN_8013fa48(uint param_1,ushort param_2,int param_3);
-ushort get_nb_zdc(int param_1);
-ushort get_zdc_index(int param_1);
-undefined * get_zdc(undefined4 param_1,short param_2);
-int FUN_8013fad0(void);
+void PS1_SetZDC(short param_1,short param_2,byte param_3,byte param_4,byte param_5,char param_6);
+void PS1_SetTypeZDC(uint objType,ushort param_2,int param_3);
+ushort get_nb_zdc(Obj *param_1);
+ushort get_zdc_index(Obj *obj);
+ZDC * get_zdc(Obj *obj,short param_2);
+int get_ZDCPTR(void);
 bool in_coll_sprite_list(Obj *obj,ushort param_2);
 undefined4 box_inter_v_line(short param_1,short param_2,short param_3,short param_4,short param_5,short param_6,short param_7);
 undefined4 box_inter_h_line(short param_1,short param_2,short param_3,short param_4,short param_5,short param_6,short param_7);
@@ -8770,7 +8804,7 @@ bool inter_box(int param_1,int param_2,int param_3,int param_4,short param_5,sho
 void GET_OBJ_ZDC(Obj *obj,short *x,short *y,short *w,short *h);
 int GET_SPRITE_ZDC(Obj *param_1,short param_2,short *param_3,short *param_4,short *param_5,short *param_6);
 int BOX_HIT_SPECIAL_ZDC(short param_1,short param_2,short param_3,short param_4,Obj *param_5);
-int BOX_IN_COLL_ZONES(short param_1,short param_2,short param_3,short param_4,short param_5,Obj *param_6);
+int BOX_IN_COLL_ZONES(short param_1,short param_2,short param_3,short param_4,short param_5,Obj *obj);
 uint COLL_BOX_SPRITE(short param_1,short param_2,short param_3,short param_4,Obj *param_5);
 int CHECK_BOX_COLLISION(short param_1,short x,short y,short w,short h,Obj *obj);
 int possible_sprite(Obj *obj,int index);
@@ -8783,27 +8817,27 @@ void do_boum(void);
 void DO_PNG_COLL_STONEMAN(Obj *obj);
 void DO_PNG_COLL_STONEWOMAN(Obj *obj);
 void DO_POING_COLLISION(void);
-int FUN_8014386c(short param_1,short param_2,short param_3,short param_4,Obj *param_5);
+int COLL_BOX_ALL_SPRITES(short param_1,short param_2,short param_3,short param_4,Obj *param_5);
 bool COLL_RAY_PIC(void);
 void COLL_RAY_BLK_MORTEL(void);
 void RAY_KO(void);
 void RAY_HIT(char param_1,Obj *obj);
 void standard_frontZone(Obj *obj,short *x,short *w);
 void SET_DETECT_ZONE_FLAG(Obj *obj);
-void goToRay(Obj *param_1);
-void unleashMonsterHost(int param_1);
+void goToRay(Obj *obj);
+void unleashMonsterHost(Obj *obj);
 void DO_COLL_RAY_CYMBALE(Obj *param_1);
-void FUN_8014501c(void);
-void PS1_ObjectCollisions(void);
+void DoAudioStartRaymanCollision(Obj *param_1);
+void PS1_DoRaymanCollision(void);
 void DO_COLLISIONS(void);
 void DO_OBJ_COLLISIONS(Obj *param_1,short param_2);
 void set2bits(uint *param_1,uint param_2,int param_3);
 void read2bits(uint *value,uint pos,int *b1,uint *b2);
 void save_objects_flags(void);
 void restore_objects_flags(void);
-void snapToSprite(Obj *param_1,Obj *param_2,uint param_3,int param_4,ushort param_5);
+void snapToSprite(Obj *obj1,Obj *obj2,uint param_3,int param_4,ushort param_5);
 Obj * findfirstObject(ObjType objType);
-Obj * FUN_80146bb8(ObjType param_1);
+Obj * findfirstInactiveObject(ObjType param_1);
 void setbit(int param_1,uint param_2);
 void clearbit(int param_1,uint param_2);
 uint getbit(int param_1,uint param_2);
@@ -8812,10 +8846,10 @@ int sinus(short param_1);
 int sinYspeed(int param_1,int param_2,short param_3,ushort *param_4);
 int ashl16(ushort param_1,uint param_2);
 int ashr16(ushort param_1,uint param_2);
-int FUN_80146eec(uint param_1,uint param_2);
-int ashr32(uint param_1,uint param_2);
+int ashl32(uint param_1,uint param_2);
+int ashr32(uint value,uint shift);
 void set_proj_center(undefined2 param_1,undefined2 param_2);
-int FUN_80146f6c(short param_1,ushort param_2);
+int get_proj_dist(short param_1,ushort param_2);
 int get_proj_dist2(short param_1,short param_2);
 int get_proj_x(short param_1,short param_2);
 int get_proj_y(short param_1,short param_2);
@@ -8824,34 +8858,34 @@ int inverse_proj_x(short param_1,short param_2);
 int inverse_proj_y(short param_1,short param_2);
 int vblToEOA(int param_1,uint param_2);
 void GET_ANIM_POS(Obj *param_1,short *x,short *y,ushort *w,ushort *h);
-undefined4 FUN_801473d4(void);
+undefined4 FUN_801473d4(Obj *param_1);
 undefined4 FUN_801473dc(void);
 void add_actobj(short objId);
-undefined BTYP_0(int param_1,int param_2);
+undefined PS1_BTYPAbsPos(int x,int y);
 void set_sub_etat(Obj *obj,byte subEtat);
 void set_main_etat(Obj *param_1,byte etat);
 void set_main_and_sub_etat(Obj *obj,byte main_etat,byte sub_etat);
-short get_center_x(int param_1);
-short get_center_y(int param_1,int param_2);
+short get_center_x(Obj *obj);
+short get_center_y(Obj *obj);
 byte on_block_chdir(Obj *obj,short param_2,short param_3);
 void CALC_FOLLOW_SPRITE_SPEED(Obj *obj,Animation *anim1,Animation *anim2,short param_4);
 int GET_SPRITE_POS(Obj *obj,int spriteIndex,short *x,short *y,ushort *w,ushort *h);
 void GET_RAY_ZDC(Obj *ray,short *x,short *y,short *w,short *h);
-void GET_BB1_ZDCs(Obj *param_1,short *param_2,short *param_3,short *param_4,short *param_5,short *param_6,short *param_7,short *param_8,short *param_9);
+void GET_BB1_ZDCs(Obj *obj,short *param_2,short *param_3,short *param_4,short *param_5,short *param_6,short *param_7,short *param_8,short *param_9);
 int myRand(int param_1);
 void calc_obj_dir(Obj *obj);
 bool OBJ_IN_ZONE(Obj *obj);
 void calc_obj_pos(Obj *obj);
-void makeUturn(Obj *param_1);
-ushort BTYP_1(short xPos,short yPos);
+void makeUturn(Obj *obj);
+ushort BTYP(short xPos,short yPos);
 void calc_btyp_square(Obj *obj);
-void FUN_80148710(Obj *param_1);
+void DO_OBJ_REBOND_EN_X(Obj *obj);
 uint calc_btyp(Obj *obj);
 void init_obj_in_the_air(Obj *obj);
 void make_my_fruit_go_down(Obj *obj,short param_2);
 void allocate_toons(Obj *param_1,uint param_2);
 void special_flags_init(void);
-void FUN_80149094(Obj *param_1);
+void switchOff(Obj *obj);
 void obj_hurt(Obj *obj);
 void Projectil_to_RM(Obj *obj,short *param_2,short *param_3,short param_4,short param_5);
 void del_actobj(Obj *param_1);
@@ -8866,16 +8900,16 @@ void Bresenham(code *param_1,short param_2,short param_3,short param_4,short par
 void LOAD_CONFIG(void);
 void init_finBossLevel(void);
 void Change_Wait_Anim(void);
-void FUN_8014a32c(void);
-void PS1_CopySauveRayEvts(void);
+void PS1_SetSauveRayEvts(void);
+void PS1_RestoreSauveRayEvts(void);
 void pmamaFollowsShip(Obj *param_1);
 void init_couteaux(void);
 void reset_couteaux(void);
 bool check_couteaux(void);
-byte FUN_8014a7d4(Obj *param_1);
+byte find_couteau(Obj *obj);
 int x_pos(ushort param_1,uint param_2);
 int y_pos(int param_1,short param_2);
-int y_floor(ushort param_1,uint param_2);
+int y_floor(uint param_1,uint param_2);
 void init_move_couteau(Obj *param_1);
 void init_lance_couteau(uint param_1);
 uint couteau_frame(ushort param_1,uint param_2);
@@ -8905,10 +8939,10 @@ int get_allowed_time(void);
 void calc_left_time(void);
 void fades(void);
 void FUN_8014e27c(void);
-int FUN_8014e35c(int param_1);
-void FUN_8014e398(void);
-void FUN_8014e414(void);
-void FUN_8014e47c(void);
+int frapsol(int param_1);
+void DO_SCREEN_TREMBLE(void);
+void DO_SCREEN_TREMBLE3(void);
+void DO_SCREEN_TREMBLE2(void);
 void DO_SCROLL(ushort *param_1,short *param_2);
 void allocateLandingSmoke(Obj *param_1);
 int Prio(Obj *event);
@@ -8919,27 +8953,27 @@ int instantSpeed(short param_1);
 void SET_X_SPEED(Obj *obj);
 void REINIT_OBJECT(Obj *obj);
 void make_active(Obj *obj,bool doNova);
-bool in_action_zone(short param_1,short param_2,int param_3,char param_4);
+bool in_action_zone(short x,short y,Obj *obj,char param_4);
 void kill_obj(Obj *obj);
-void SET_ACTIVE_FLAG(short x,short y,Obj *obj);
-undefined4 DO_PESANTEUR(int param_1);
+void SET_ACTIVE_FLAG(undefined2 x,undefined2 y,Obj *obj);
+undefined4 DO_PESANTEUR(Obj *obj);
 void FUN_80150c5c(int param_1,uint param_2);
 void DO_ANIM(Obj *obj);
 int prof_in_bloc(int param_1);
 void do_boing(Obj *param_1,char param_2,undefined1 param_3);
-byte underSlope(int param_1);
-void DO_STONEBOMB_REBOND(int param_1);
-void DO_THROWN_BOMB_REBOND(Obj *param_1,short param_2,ushort param_3);
-void DO_FRUIT_REBOND(Obj *param_1,short param_2,ushort param_3);
-void Drop_Atter(Obj *param_1);
-void BadGuyAtter(Obj *param_1);
+byte underSlope(Obj *obj);
+void DO_STONEBOMB_REBOND(Obj *obj);
+void DO_THROWN_BOMB_REBOND(Obj *obj,short param_2,ushort param_3);
+void DO_FRUIT_REBOND(Obj *obj,short param_2,ushort param_3);
+void Drop_Atter(Obj *obj);
+void BadGuyAtter(Obj *obj);
 void MiteAtter(Obj *param_1);
-void Clown_Music_Atter(Obj *param_1);
-void LidolPinkAtter(Obj *param_1);
-void stoneDogAtter(Obj *param_1);
+void Clown_Music_Atter(Obj *obj);
+void LidolPinkAtter(Obj *obj);
+void stoneDogAtter(Obj *obj);
 void stoneDogBounces(int param_1);
-void Spider_Atter(Obj *param_1);
-void trompetteAtter(Obj *param_1);
+void Spider_Atter(Obj *obj);
+void trompetteAtter(Obj *obj);
 void NormalAtter(Obj *param_1);
 void OBJ_IN_THE_AIR(Obj *obj);
 void test_fall_in_water(Obj *obj);
@@ -8966,10 +9000,10 @@ void RAY_FOLLOW(void);
 void DO_FIXE(void);
 void deactivate_ship_links(void);
 undefined4 linkListHoldsAGendoor(int param_1);
-undefined4 FUN_8015666c(int param_1);
-undefined4 FUN_80156710(int param_1);
+undefined4 FUN_8015666c(Obj *obj);
+undefined4 FUN_80156710(Obj *obj);
 void correct_gendoor_link(void);
-void suppressFromLinkList(int param_1);
+void suppressFromLinkList(Obj *obj);
 void correct_link(void);
 void INIT_RAY_BEGIN(void);
 void INIT_RAY(char newLevel);
@@ -9018,9 +9052,9 @@ void allocateStoneChips(Obj *obj);
 void DO_STONE_EXPLOSION(Obj *obj);
 void DO_TIR(Obj *param_1);
 void allocateStonemanStone(Obj *param_1,short param_2,char param_3);
-void DO_STONEMAN1_TIR(int param_1);
+void DO_STONEMAN1_TIR(Obj *obj);
 void DO_STONEMAN2_TIR(Obj *obj);
-void allocateStonewomanStone(Obj *param_1,short param_2);
+void allocateStonewomanStone(Obj *obj,short param_2);
 void DO_STONEWOMAN_TIR(int param_1);
 void allocateDard(Obj *param_1);
 void DO_SPIDER_TIR(Obj *obj);
@@ -9037,9 +9071,9 @@ void allocateEclatPS(Obj *param_1,short param_2);
 void DO_PI_EXPLOSION(Obj *obj);
 void DO_CLOWN_TNT_ATTACK(Obj *param_1);
 void allocate_badguy(Obj *param_1,short param_2,short param_3,short param_4);
-Obj * allocateExplosion(Obj *param_1);
+Obj * allocateExplosion(Obj *obj);
 void BombExplosion(Obj *obj);
-void MARACAS_GO(Obj *param_1);
+void MARACAS_GO(Obj *obj);
 int ANGLE_RAYMAN(Obj *obj);
 Obj * allocateNOVA(void);
 void DO_NOVA(Obj *obj);
@@ -9054,13 +9088,13 @@ void set_snow_sequence(ushort param_1,undefined2 param_2);
 void set_SNSEQ_list(short param_1);
 void DO_SNOW_SEQUENCE(void);
 void DO_REDEYE_FIRE(short param_1,short param_2,undefined2 param_3);
-void calc_esquive_poing(int param_1,short *param_2,short *param_3,short *param_4);
+void calc_esquive_poing(Obj *obj,short *param_2,short *param_3,short *param_4);
 void DO_PTI_ESQUIVE(Obj *obj);
-void DO_MITE2_ESQUIVE(Obj *param_1);
+void DO_MITE2_ESQUIVE(Obj *obj);
 int allocate_gerbe(void);
 void start_pix_gerbe(int param_1,int param_2);
 void do_pix_gerbes(void);
-void START_2_PARTS_CYMBAL_ACTION(int param_1);
+void START_2_PARTS_CYMBAL_ACTION(Obj *obj);
 void DO_CAGE2(Obj *obj);
 void DO_CAGE(Obj *obj);
 void DO_MEDAILLON_TOON(Obj *obj);
@@ -9082,7 +9116,7 @@ void test_fin_cling(void);
 void initGameSave(void);
 void doneGameSave(void);
 void saveGameState(Obj *obj,SaveState *state);
-void restoreGameState(SaveState *param_1);
+void restoreGameState(SaveState *state);
 void PS1_PhotographerCollision(void);
 int get_offset_in_save_zone(short eventIndex);
 void reset_save_zone_level(void);
@@ -9093,22 +9127,22 @@ void FUN_801646d4(void);
 void DO_SPECIAL_PLATFORM(Obj *obj);
 void FUN_80165884(void);
 void FUN_801658e0(void);
-void FUN_80165990(int param_1);
+void manage_snd_event(Obj *obj);
 void PS1_LoadAllFixSound(void);
 void FUN_80165c5c(ushort param_1);
-void FUN_80165eb4(short param_1,short param_2);
-void FUN_80165f78(short param_1);
+void PS1_PlaySnd(short param_1,short param_2);
+void PS1_StopPlayingSnd(short param_1);
 int FUN_80165fcc(int param_1);
 void FUN_80166018(void);
 void FUN_80166060(short param_1);
 void FUN_801660ac(void);
 void FUN_801660e8(void);
-void FUN_80166124(void);
+void stop_all_snd(void);
 void FUN_8016617c(void);
 uint get_pan_snd(Obj *obj);
 uint get_vol_snd(Obj *param_1);
-void FUN_8016633c(short param_1);
-void FUN_8016639c(short param_1);
+void PS1_SetSoundVolume(short param_1);
+void PS1_SetStereoEnabled(short param_1);
 void FUN_801663d4(void);
 void FUN_80166578(void);
 int last_snd(short param_1);
@@ -9180,13 +9214,13 @@ void alter_fist_speed(int param_1);
 void switch_off_fist(Obj *poingObj);
 void DO_POING(Obj *obj);
 void allocatePoingBoum(void);
-void FUN_8016cd28(void);
-bool test_allowed(int param_1,short param_2,short param_3);
-void FUN_8016d00c(Obj *param_1);
+void PS1_DisplayVRAM(void);
+bool test_allowed(Obj *obj,short param_2,short param_3);
+void obj_jump(Obj *obj);
 void DO_ONE_PINK_CMD(Obj *obj);
 void FUN_8016d418(Obj *obj);
 void DO_SPIDER_COMMAND(Obj *param_1);
-void DO_STONEMAN_COMMAND(Obj *param_1);
+void DO_STONEMAN_COMMAND(Obj *obj);
 void DO_STONEDOG_COMMAND(Obj *obj);
 void DO_MOVING_PLATFORM_COMMAND(Obj *obj);
 void DO_TRP_COMMAND(Obj *obj);
@@ -9207,10 +9241,11 @@ void fix_mit_Xspeed(Obj *obj,short param_2);
 void DO_MIT_ATTAK(Obj *obj);
 undefined4 IS_MIT_PAF(Obj *obj);
 void DO_MIT_COMMAND(Obj *obj);
-void DO_MITE2_COMMAND(Obj *param_1);
+void DO_MITE2_COMMAND(Obj *obj);
 void DO_ROLL_EYES(Obj *obj);
+bool FUN_801707cc(Obj *obj,short param_2);
 void DO_BAG1_COMMAND(Obj *param_1);
-void DO_CLOWN_TNT_COMMAND(Obj *param_1);
+void DO_CLOWN_TNT_COMMAND(Obj *obj);
 void DO_CLOWN_TNT2_COMMAND(int param_1);
 void DO_CLOWN_TNT3_COMMAND(Obj *param_1);
 void DO_ECLAIR_COMMAND(Obj *param_1);
@@ -9226,8 +9261,8 @@ void FUN_80172108(int param_1);
 void DO_EAU_QUI_MONTE(Obj *obj);
 void DO_PHOTOGRAPHE_CMD(Obj *obj);
 void DO_REDUCTEUR(Obj *obj);
-void FUN_801727d0(int param_1,short param_2);
-void FUN_80172820(int param_1);
+void wait_for_dialogue_fee(Obj *obj,short time);
+void DO_FEE_ETAPE(Obj *obj);
 void FUN_801729b4(void);
 void DO_FEE(Obj *param_1);
 undefined4 IS_STONEWOMAN_WAIT(Obj *obj);
@@ -9266,8 +9301,8 @@ void DO_NOTE_REBOND(Obj *param_1);
 void allocateNote(int param_1);
 byte PrepareAtak(void);
 void SAXO_TIRE(int param_1);
-void FUN_80176380(Obj *param_1);
-void FUN_8017647c(Obj *param_1);
+void DO_SAXO_COUP(Obj *obj);
+void DO_SAXO2_COUP(Obj *obj);
 void SetSaxoCollNoteBox(Obj *obj);
 void DO_SAXO_COMMAND(Obj *obj);
 void DO_SAXO_ATTER(Obj *obj);
@@ -9276,9 +9311,9 @@ void DO_SAXO2_ATTER(Obj *param_1);
 void DO_SAXO_MARCHE(short hp);
 void DO_SAXO3_COMMAND(Obj *obj);
 void DO_SAXO3_DEBUT(Obj *obj);
-undefined4 FUN_80177f9c(void);
+int saxo2_get_eject_sens(void);
 void get_spi_zdc(int param_1,short *param_2,short *param_3,undefined2 *param_4,undefined2 *param_5);
-void DO_SPIDER_PLAFOND(Obj *obj,int param_2);
+void DO_SPIDER_PLAFOND(Obj *obj);
 void DO_SPIDER_PLAFOND_POING_COLLISION(Obj *obj);
 void SPIDER_PLAFOND_REACT(Obj *obj);
 void DO_DARD_PLAFOND_ALWAYS(Obj *obj);
@@ -9332,7 +9367,7 @@ undefined readOneCommand(Obj *param_1);
 undefined skipOneCommand(Obj *obj);
 void GET_OBJ_CMD(Obj *obj);
 void pushCmdContext(Obj *obj,ushort count);
-void skipToLabel(Obj *obj,char label,bool param_3);
+void skipToLabel(Obj *obj,byte label,bool param_3);
 void pushToLabel(Obj *obj,byte label,bool param_3);
 void DO_TOTEM_TOUCHE(Obj *obj,short param_2);
 void DO_TOTEM_COMMAND(Obj *param_1);
@@ -9344,38 +9379,39 @@ void allocateTir(Obj *param_1,short param_2);
 void CreateFirstBBL(void);
 void INIT_BBMONT(Obj *obj);
 void DO_BBL_COMMAND(Obj *obj);
-void FUN_8017d304(Obj *param_1);
+void BBMONT_ECLAIR(Obj *obj);
 void BBMONT_ETINCELLES(Obj *param_1);
-void FUN_8017d714(undefined4 param_1);
-void FUN_8017d734(undefined4 param_1);
+void BBMONT_TIRE(undefined4 param_1);
+void Cree_BBL(undefined4 param_1);
 void BB_Attaque(Obj *param_1);
 void Fin_BB_Attaque(undefined4 param_1);
-void FUN_8017d998(Obj *param_1);
-void DO_BBMONT_ATTER(Obj *param_1);
+void BB_Atan(Obj *obj);
+void DO_BBMONT_ATTER(Obj *obj);
 void DO_BBMONT_COMMAND(Obj *obj);
 void DO_BBMONT_TOUCHE(Obj *obj);
 void DO_BBMONT2_COMMAND(Obj *obj);
 void DO_BBMONT2_MARCHE(short hp);
-void DO_BBMONT2_ATTER(Obj *param_1);
+void DO_BBMONT2_ATTER(Obj *obj);
 void DO_BBMONT3_COMMAND(Obj *obj);
-void DO_BBMONT3_ATTER(Obj *param_1);
+void DO_BBMONT3_ATTER(Obj *obj);
 void DO_BBMONT4_COMMAND(Obj *obj);
+void FUN_801802d8(void);
 void SYNCHRO_LOOP(code *param_1);
 void FUN_8018058c(u_long *param_1,undefined4 param_2,undefined4 param_3,short x,short y,short h,short w);
 void DISPLAY_FOND3(void);
 void FUN_80180804(u_long *param_1,undefined4 param_2,undefined4 param_3,short param_4,short param_5,short param_6,short param_7);
 void FUN_801809fc(void);
-void FUN_80180a7c(void);
+void DISPLAY_FOND_CONTINUE(void);
 void DISPLAY_FOND_SELECT(void);
 void PS1_ClearScreen(void);
 void FUN_80180b04(int param_1,char param_2);
 void guetteurFollowsShip(Obj *obj);
 void DO_ONE_PAR_COMMAND(Obj *obj);
-int FUN_80181020(int param_1,int param_2);
-void allocatePirateGuetteurBomb(Obj *param_1,short param_2,char param_3,byte param_4);
+int hasGuetteurABomb(Obj *obj,int param_2);
+void allocatePirateGuetteurBomb(Obj *param_1,undefined4 param_2,char param_3,byte param_4);
 void DO_PAR_TIR(int param_1);
 void DO_PAR_POING_COLLISION(Obj *param_1,short param_2);
-void FUN_80181844(Obj *param_1);
+void PAR_REACT_TO_RAY_IN_ZONE(Obj *obj);
 void DO_PAR_BOMB_COMMAND(Obj *obj);
 void allocateRayLandingSmoke(void);
 void recale_ray_on_liane(ushort param_1);
@@ -9391,8 +9427,8 @@ void RAY_SWIP(void);
 void RAY_STOP(void);
 void RAY_HELICO(void);
 void Make_Ray_Hang(short param_1,short param_2);
-byte FUN_80183e80(int param_1);
-byte FUN_80183ec0(int param_1);
+byte AIR(int param_1);
+byte MUR(int param_1);
 void CAN_RAY_HANG_BLOC(void);
 void RAY_TOMBE(void);
 void RAY_RESPOND_TO_DOWN(void);
@@ -9405,14 +9441,14 @@ void RAY_RESPOND_TO_BUTTON4(void);
 void RAY_RESPOND_TO_BUTTON3(void);
 void RAY_RESPOND_TO_FIRE0(void);
 void RAY_RESPOND_TO_FIRE1(void);
-int FUN_80185fc0(short param_1);
-void FUN_80186070(short param_1,short *param_2,undefined2 *param_3);
+int RAY_BALANCE_ANIM(short param_1);
+void abs_sinus_cosinus(short param_1,short *param_2,short *param_3);
 void SET_RAY_BALANCE(void);
-void FUN_801861c0(Obj *param_1);
-void FUN_80186448(void);
+void RAY_GOING_BALANCE(Obj *obj);
+void RAY_BALANCE(void);
 void RAY_FIN_BALANCE(void);
 void RayTestBlocSH(void);
-void FUN_80186b84(void);
+void remoteControlRay(void);
 void STOPPE_RAY_CONTRE_PAROIS(uint param_1);
 void RAY_IN_THE_AIR(void);
 void terminateFistWhenRayDies(void);
@@ -9424,14 +9460,14 @@ void RepousseRay(void);
 undefined4 RayEstIlBloque(void);
 void stackRay(void);
 void RAY_SURF(void);
-void FUN_80188570(void);
-void FUN_80188610(void);
+void DO_SURF_CHANGE_HAIRS(void);
+void RAY_PREPARE_PIEDS(void);
 void DO_PIEDS_RAYMAN(void);
-void FUN_80188620(void);
-void FUN_80188628(void);
+void DO_PIEDS_COLLISION(void);
+void allocatePiedBoum(void);
 void DO_MORT_DE_RAY(void);
 void findMereDenisWeapon(void);
-void setBossScrollLimits(Obj *param_1);
+void PS1_setBossScrollLimits_spacemama(Obj *param_1);
 bool mereDenisCanAttak(int param_1);
 int setMereDenisAtScrollBorder(Obj *obj,char param_2);
 void setCirclePointToReach(void);
@@ -9441,7 +9477,7 @@ void mereDenisDropBomb(Obj *obj);
 void snapWeaponAnimState(Obj *obj,uint param_2);
 void swapMereDenisCollZones(Obj *obj,bool param_2);
 byte prepareNewMereDenisAttack(Obj *param_1);
-void snapLaserToWeapon(int param_1,char param_2);
+void snapLaserToWeapon(Obj *param_1,char param_2);
 void allocateSpaceMamaLaser(Obj *param_1,ObjType param_2);
 void doMereDenisCommand(Obj *obj);
 void changeMereDenisPhase(void);
@@ -9478,8 +9514,8 @@ void RESPOND_TO_UP(void);
 void RESPOND_TO_DOWN(void);
 void RESPOND_TO_RIGHT(void);
 void RESPOND_TO_LEFT(void);
-void FUN_8018e1a4(void);
-void FUN_8018e1fc(void);
+void MoveRayInWorldMap(void);
+void DO_RAYMAN_IN_WLD_MAP(void);
 void DO_CHEMIN(void);
 void INIT_PASTILLES_SAUVE(void);
 void PASTILLES_SAUVE_SAVED(short param_1);
@@ -9487,7 +9523,7 @@ void FIN_WORLD_CHOICE(void);
 void DETER_WORLD_AND_LEVEL(void);
 void INIT_NEW_GAME(void);
 void POINTEUR_BOUTONS_OPTIONS_BIS(void);
-void FUN_8018f090(short param_1,short param_2,short param_3,undefined param_4);
+void PS1_DisplayPadButton(short button,short param_2,short param_3,undefined param_4);
 void INIT_CONTINUE(void);
 void CHEAT_MODE_CONTINUE(void);
 void MAIN_CONTINUE_PRG(void);
@@ -9521,18 +9557,18 @@ void DO_SKO(Obj *obj);
 void SKO_ray_in_zone(Obj *obj);
 void DO_SKO_HIT(Obj *obj);
 bool MURDUR(short param_1,short param_2);
-int dist_to_bloc_floor(undefined2 param_1,int param_2,int param_3);
+int dist_to_bloc_floor(ushort type,int x,int y);
 int bloc_floor(ushort param_1,short param_2,short param_3);
 undefined4 calc_typ_trav(Obj *obj,byte param_2);
 undefined calc_typ_travd(Obj *obj,bool param_2);
 void TEST_FIN_BLOC(Obj *obj);
 undefined4 TEST_IS_ON_RESSORT_BLOC(int param_1);
-undefined4 FUN_8019395c(int param_1);
+int IS_ON_RESSORT_BLOC(Obj *obj);
 void CALC_MOV_ON_BLOC(Obj *obj);
 void recale_position(Obj *param_1);
 void getIdealStingCoords(int param_1,short *param_2,short *param_3);
 bool closeEnoughToSting(int param_1,uint param_2,uint param_3);
-void FUN_8019423c(Obj *param_1);
+void PS1_setBossScrollLimits_moskito(Obj *param_1);
 bool moskitoCanAttak(Obj *obj);
 int setMoskitoAtScrollBorder(int param_1,char param_2);
 void prepareNewMoskitoAttack(Obj *param_1);
@@ -9542,18 +9578,18 @@ void doMoskitoCommand(Obj *obj);
 byte tellNextMoskitoAction(void);
 void changeMoskitoPhase(int param_1);
 void doMoskitoHit(Obj *obj);
-void FUN_80195e80(int param_1,int param_2);
+void DO_BAT_FLASH(int x,int y);
 void DO_BAT_LEFT_FLASH(Obj *param_1);
 void DO_BAT_RIGHT_FLASH(Obj *param_1);
 void DO_BAT_LEFT_RIGHT_FLASH(Obj *param_1);
 bool bat_dir(int param_1);
 void bat_init_scroll(int param_1);
-void FUN_80196518(void);
+void bat_done_scroll(void);
 void DO_BAT_COMMAND(Obj *obj);
 void BAT_ray_in_zone(Obj *obj);
 void DO_BAT_POING_COLLISION(Obj *obj);
 int bat_get_eject_sens(void);
-void DO_PIRATE_POELLE(Obj *obj,int param_2);
+void DO_PIRATE_POELLE(Obj *obj);
 void DO_PIRATE_POELLE_POING_COLLISION(Obj *obj);
 void PIRATE_POELLE_REACT(Obj *obj);
 void PlaceDarkPhase1et2(Obj *obj);
@@ -9580,33 +9616,33 @@ bool test_block_chdir(Obj *obj,short *param_2,short offX,short offY);
 void DO_MOVING_WITH_INDICATOR_COMMAND(Obj *obj);
 void DO_IDC_COMMAND(Obj *obj);
 void DO_LEV_POING_COLLISION(Obj *obj);
-void START_UFO(Obj *param_1);
+void START_UFO(Obj *obj);
 void allocateSTOSKO(void);
 void allocateMOSKITOMAMA(void);
 void allocateMOSKITOSAXO(void);
 void doMOSAMScommand(Obj *obj);
-void FUN_80199e00(int param_1);
+void allocateStoskoClaw(Obj *param_1);
 void doSTOSKOcommand(Obj *obj);
-void doBBF2command(Obj *param_1,ushort param_2);
+void doBBF2command(Obj *obj,ushort param_2);
 void DO_HYB_BBF2_POING_COLLISION(Obj *obj);
-void AllocateTirBBF2(Obj *param_1);
+void AllocateTirBBF2(Obj *obj);
 void DO_HYB_BBF2_LAS(Obj *param_1);
-int OBJ_IN_COL_ZDC(Obj *param_1,Obj *param_2);
+int OBJ_IN_COL_ZDC(Obj *obj1,Obj *obj2);
 void AllocateDarkPhase2(Obj *obj);
 void DO_DARK2_AFFICHE_TEXT(void);
 void DO_DARK_PHASE2_COMMAND(Obj *obj);
 void DO_DARK2_SORT_COMMAND(Obj *param_1);
-void FUN_8019c464(short param_1,short param_2,undefined1 param_3,short param_4);
+void allocate_DARK2_SORT(short param_1,short param_2,undefined1 param_3,short param_4);
 void DoFlammeCommand(Obj *obj);
 void AllocateFlammes(short param_1);
-void FUN_8019c804(void);
+void AllocateToons(void);
 void DO_DARK2_TOONS_COMMAND(Obj *obj);
-void ToonDonnePoing(int param_1);
+void ToonDonnePoing(Obj *obj);
 void ngaweFollowsShip(Obj *obj);
 void ngaweTriesToGrabShip(Obj *obj);
 void allocatePirateNgaweRing(Obj *param_1,short param_2,char param_3);
 void DO_NGW_TIR(Obj *obj);
-void FUN_8019d558(Obj *param_1);
+void NGW_REACT_TO_RAY_IN_ZONE(Obj *obj);
 void DO_ONE_NGW_COMMAND(Obj *obj);
 void DO_NGW_POING_COLLISION(Obj *obj);
 void DO_ONE_NGW_RING_COMMAND(Obj *obj);
@@ -9622,9 +9658,9 @@ void LOAD_FND(void);
 void FUN_8019e770(void);
 void PS1_LoadVideoTables(void);
 void PS1_LoadFont(void);
-void LogoInit(void);
+void LOAD_SCREEN(void);
 void FUN_8019e914(void);
-void FUN_8019e994(void);
+void LOAD_CONTINUE_SCREEN(void);
 void FUN_8019ea10(void);
 void LOAD_SAVE_SCREEN(void);
 void FUN_8019eb30(void);
@@ -9641,16 +9677,16 @@ void FUN_8019fd40(void);
 bool FUN_8019fda0(void);
 void FUN_8019fdd0(void);
 void FUN_8019fe8c(void);
-void FUN_8019fecc(void);
+void PS1_SetLevelto_4_1(void);
 void FIRST_INIT(void);
 void DEPART_WORLD(void);
 void DEPART_LEVEL(void);
-void FUN_801a027c(void);
-void FUN_801a02bc(void);
-void FUN_801a0328(void);
+void DEPART_DEAD_LOOP(void);
+void FIN_DEAD_LOOP(void);
+void PS1_StopLevelMusic(void);
 void PS1_InitRenderData(RenderData *renderData);
 void FUN_801a0750(void);
-void PS1_sprintf(short param_1,char *param_2);
+void atoi(short param_1,char *param_2);
 void FUN_801a07b0(void);
 void FUN_801a07ec(void);
 void FUN_801a0828(void);
@@ -9686,9 +9722,10 @@ void PS1_ClearPassword(void);
 void FUN_801a2c78(void);
 void FUN_801a2d40(void);
 void FUN_801a3064(void);
+undefined4 FUN_801a3458(void);
 void FUN_801a3550(void);
 void PS1_GenerateAndDisplayPassword(void);
-void FUN_801a36b4(void);
+void DEPART_INIT_LOOP(void);
 void DO_MENU(void);
 void FUN_801a391c(void);
 void FUN_801a39ec(void);
@@ -9698,6 +9735,7 @@ void PS1_PlayDemo(void);
 void FUN_801a3cb4(void);
 void FUN_801a3f54(void);
 void FUN_801a42e8(void);
+undefined4 FUN_801a4458(void);
 void FUN_801a44ec(void);
 undefined4 saisie_nom_prg(void);
 undefined4 selection_save_option_prg(void);
@@ -9710,7 +9748,7 @@ void INIT_SAVE_CHOICE(void);
 void INIT_SAVE_CONTINUE(void);
 void DO_COMMANDE_SAVE(void);
 void SELECTION_SAVE_OPTION(void);
-void FUN_801a5f94(void);
+void INIT_AFFICHE_ECRAN_SAVE(void);
 void SAISIE_NOM(void);
 void REALISATION_ACTION(void);
 void FUN_801a6808(void);
