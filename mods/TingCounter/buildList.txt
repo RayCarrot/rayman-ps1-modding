@@ -1,10 +1,17 @@
 // C files
 ntsc-u, exe, FntPrint, 0x0, src/dummy.c // Blank out FntPrint
+pal-e, exe, FntPrint, 0x0, src/dummy.c // Blank out FntPrint
 ntsc-u, exe, FntPrint, 0x8, src/ting_counter.c // Overwrite remaining FntPrint function after the dummy code
+pal-e, exe, FntPrint, 0x8, src/ting_counter.c // Overwrite remaining FntPrint function after the dummy code
 
 // Assembly files
 ntsc-u, exe, 0x8018ec58, 0x0, src/hook_newgame.s // Overwrite call to INIT_RAY_BEGIN
+pal-e, exe, 0x801939f0, 0x0, src/hook_newgame.s // Overwrite call to INIT_RAY_BEGIN
 ntsc-u, exe, 0x8016b8b0, 0x0, src/hook_loadgame.s // Overwrite call to POINTEUR_BOUTONS_OPTIONS_BIS
+pal-e, exe, 0x80170440, 0x0, src/hook_loadgame.s // Overwrite call to POINTEUR_BOUTONS_OPTIONS_BIS
 ntsc-u, exe, 0x8016aeb4, 0x0, src/hook_savegame.s // Overwrite call to FntPrint
+pal-e, exe, 0x8016fac8, 0x0, src/hook_savegame.s // Overwrite call to FntPrint
 ntsc-u, exe, 0x80145288, 0x0, src/hook_ting.s // Overwrite call to set_sub_etat
+pal-e, exe, 0x8014a584, 0x0, src/hook_ting.s // Overwrite call to set_sub_etat
 ntsc-u, exe, 0x8013ace8, 0x0, src/hook_hud.s // Overwrite some of the hud code
+pal-e, exe, 0x8013ff3c, 0x0, src/hook_hud.s // Overwrite some of the hud code
