@@ -2,35 +2,57 @@
 //       it compiles can be known to always be the same as defined here, but for now this works.
 
 ntsc-u, exe, fix_numlevel,          0x0, src/worldmap/fix_numlevel.c src/worldmap/common.c
+pal-e, exe, fix_numlevel,          0x0, src/worldmap/fix_numlevel.c src/worldmap/common.c
 ntsc-u, exe, t_world_info,          0x0, src/worldmap/t_world_info.c
+pal-e, exe, t_world_info,          0x0, src/worldmap/t_world_info.c
 ntsc-u, exe, 0x80125028,            0x0, src/worldmap/t_world_info_strings.c
+pal-e, exe, 0x80123000,            0x0, src/worldmap/t_world_info_strings.c // PAL version doesn't have hardcoded strings
 ntsc-u, exe, 0x8018df8c,            0x0, src/worldmap/nop_dark_unlock_check.s
+pal-e, exe, 0x80192d04,            0x0, src/worldmap/nop_dark_unlock_check.s
 ntsc-u, exe, 0x8018d52c,            0x0, src/worldmap/hook_INIT_STAGE_NAME.s
+pal-e, exe, 0x80192308,            0x0, src/worldmap/hook_INIT_STAGE_NAME.s
 ntsc-u, exe, INIT_WORLD_STAGE_NAME, 0x0, src/worldmap/INIT_WORLD_STAGE_NAME.c src/worldmap/INIT_WORLD_STAGE_NAME_strings.c src/inputs/inputs.c
+pal-e, exe, INIT_WORLD_STAGE_NAME, 0x0, src/worldmap/INIT_WORLD_STAGE_NAME.c src/worldmap/INIT_WORLD_STAGE_NAME_strings.c src/inputs/inputs.c
 
 ntsc-u, exe, 0x80173cec,            0x0, src/dark_rayman/nop_kill_anim.s
+pal-e, exe, 0x80178880,            0x0, src/dark_rayman/nop_kill_anim.s
 ntsc-u, exe, 0x801982ec,            0x0, src/dark_rayman/modify_anim_frame_check.s
+pal-e, exe, 0x8019cd0c,            0x0, src/dark_rayman/modify_anim_frame_check.s
 ntsc-u, exe, 0x801985f0,            0x0, src/dark_rayman/nop_start_pos.s
+pal-e, exe, 0x8019d010,            0x0, src/dark_rayman/nop_start_pos.s
 
 ntsc-u, exe, 0x8018771c,            0x0, src/infinite_lives/nop_lose_life.s
+pal-e, exe, 0x8018c840,            0x0, src/infinite_lives/nop_lose_life.s
 
 ntsc-u, exe, 0x80158d0c,            0x0, src/infinite_bonus_lives/force_earn_life_branch.s
+pal-e, exe, 0x8015e0cc,            0x0, src/infinite_bonus_lives/force_earn_life_branch.s
 
 ntsc-u, exe, dyingSequence,         0x0, src/moskito/dyingSequence.c
+pal-e, exe, dyingSequence,         0x0, src/moskito/dyingSequence.c
 ntsc-u, exe, 0x80194920,            0x0, src/moskito/increase_bzzit_health.s
+pal-e, exe, 0x80199334,            0x0, src/moskito/increase_bzzit_health.s
 
 ntsc-u, exe, credits,               0x0, src/credits/credits.c src/credits/credits_strings.c
+//pal-e, exe, credits,               0x0, src/credits/credits.c src/credits/credits_strings.c // conflicts in pal version
 ntsc-u, exe, 0x801908b8,            0x0, src/credits/increase_credits_length.s
+pal-e, exe, 0x80195250,            0x0, src/credits/increase_credits_length.s
 
 ntsc-u, exe, 0x801c97b4,            0x0, src/dark_disable_run/run.c // Overwrite unused InvSquareRoot table
+pal-e, exe, 0x801c8c28,            0x0, src/dark_disable_run/run.c // Overwrite unused InvSquareRoot table
 ntsc-u, exe, 0x80198e40,            0x0, src/dark_disable_run/hook_phase1.s
+pal-e, exe, 0x8019d860,            0x0, src/dark_disable_run/hook_phase1.s
 ntsc-u, exe, 0x80199144,            0x0, src/dark_disable_run/hook_phase5.s
+pal-e, exe, 0x8019db98,            0x0, src/dark_disable_run/hook_phase5.s
 ntsc-u, exe, 0x80199b50,            0x0, src/dark_disable_run/disable_run_restore.s
+pal-e, exe, 0x8019e5a4,            0x0, src/dark_disable_run/disable_run_restore.s
 
 ntsc-u, exe, 0x801331a4,            0x0, src/dark_no_checkpoint/dead.c // Overwrite unused file function (size 0x110)
+pal-e, exe, 0x80138638,            0x0, src/dark_no_checkpoint/dead.c // Overwrite unused file function (size 0x110)
 ntsc-u, exe, 0x801876e0,            0x0, src/dark_no_checkpoint/hook_dead.s
+pal-e, exe, 0x8018c804,            0x0, src/dark_no_checkpoint/hook_dead.s
 
 ntsc-u, exe, 0x8019f840,            0x0, src/inputs/hook_inputs.s
+pal-e, exe, 0x801a4458,            0x0, src/inputs/hook_inputs.s
 
 add, Timer
 add, DeathCounter

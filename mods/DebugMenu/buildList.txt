@@ -1,6 +1,9 @@
 // C files
 ntsc-u, exe, 0x801bb670, 0x8, src/menu.c // 2643 bytes of unused functions to overwrite
+pal-e, exe, RotMatrixYXZ, 0x8, src/menu.c // 2643 bytes of unused functions to overwrite
 
 // Assembly files
 ntsc-u, exe, 0x8012f860, 0x0, src/hook_pause.s // Overwrite call to pause screen function
+pal-e, exe, 0x801349a8, 0x0, src/hook_pause.s // Overwrite call to pause screen function
 ntsc-u, exe, 0x8015a250, 0x0, src/hook_moteur2.s // Extend DO_MOTEUR2
+pal-e, exe, 0x8015f620, 0x0, src/hook_moteur2.s // Extend DO_MOTEUR2

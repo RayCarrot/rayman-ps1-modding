@@ -18,6 +18,16 @@
                 ],
                 "build_id": 0
             }
+        },
+		{
+            "pal-e": {
+                "name": "ray-e.bin",
+                "symbols": [
+                    "funcs-e.txt",
+                    "addrs-e.txt"
+                ],
+                "build_id": 1
+            }
         }
     ]
 }
