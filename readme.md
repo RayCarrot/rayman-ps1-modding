@@ -16,6 +16,9 @@ Every mod will include the files under the `include` folder. For this project th
 
 The `resources` folder includes additional reusable files which can be copied into and modified for your mods. Usually these are re-implementations of game functions which can then be used to more easily rewrite them.
 
+### Versions
+Currently the NTSC and PAL versions are supported. In the future it is planned to add support for the remaining versions (DemoDemo vol. 3, DemoDemo vol. 6, NTSC-J and Rayman 2 2D prototype). Once they are added they will use separate `export.h` files and thus any mod that targets them alongside other versions will require conditional compilation based on version. Many functions are however the same across them making it not too difficult to multi-target your mods. In cases were structs are changes many of the fields still remain the same.
+
 ### Creating a mod
 To create a mod the easiest to do is to first run the clean command on an existing mod and then copy its folder. The most important thing to keep in mind is to not make your code too big or else it can overwrite existing code in the game.
 
