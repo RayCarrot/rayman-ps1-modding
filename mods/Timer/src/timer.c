@@ -33,6 +33,17 @@ void update_timer()
         frames++;
 }
 
+void stop_level_music()
+{
+    bool wasRunning = is_running;
+    is_running = 0;
+
+    // We don't want to count the timer during this
+    PS1_StopLevelMusic();
+    
+    is_running = wasRunning;
+}
+
 void display_timer()
 {
     if (timer_mode == TIMER_OFF)
