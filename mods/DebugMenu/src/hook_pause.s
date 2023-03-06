@@ -1,2 +1,2 @@
 .set noreorder
-jal menu
+jal DO_DMENUS

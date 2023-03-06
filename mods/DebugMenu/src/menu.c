@@ -1,72 +1,17 @@
 #include <export.h>
+#include "menu.h"
+#include "menus/main_menu.h"
+#include "globals.h"
 
 // TODO: Save assigned shortcuts in memory card
-// TODO: Returning to world map crashes game?
+// TODO: Polygon count of 200 might get reached in final boss due to text shadows
 // TODO: Disable other inputs when holding down SELECT for shortcuts
-// TODO: Allow using debug menu on world map. We need to implement pausing functionality then. 
 
 // TODO: Menu options:
 //       - Fist power level and gold fist toggle
-//       - Small Rayman toggle
-//       - Unlock all levels and maybe even a toggle for each one?
 //       - Instant death
 //       - Display options which shows useful variable values while playing
 //       ...
-
-// Macros
-#define MENU_SUB_MENU(name, subMenu) { .text=name, .type=MENU_SUB_MENU, .param_0=subMenu}
-#define MENU_ACTION(name, func) { .text=name, .type=MENU_ACTION, .param_0=func}
-#define MENU_ACTION_PARAM(name, func, param) { .text=name, .type=MENU_ACTION, .param_0=func, .param_1=param}
-#define MENU_TOGGLE(name, func) { .text=name, .type=MENU_TOGGLE, .param_0=func}
-#define MENU_TOGGLE_PARAM(name, func, param) { .text=name, .type=MENU_TOGGLE, .param_0=func, .param_1=param}
-#define MENU_NONE(name) { .text=name, .type=MENU_NONE}
-#define MENU(varName, name, ...) MenuItem varName##Items[] = {\
-        __VA_ARGS__\
-    };\
-  Menu varName = { .text = name, .count = sizeof(varName##Items)/sizeof(varName##Items[0]), .items = varName##Items };\
-
-// Enums
-enum MENUITEMTYPE { MENU_NONE, MENU_SUB_MENU, MENU_ACTION, MENU_TOGGLE };
-
-// Structs
-typedef struct 
-{
-    char text[12];
-    byte type;
-    byte shortcutInput;
-    short param_1;
-    void *param_0;
-} MenuItem;
-
-typedef struct
-{
-    char text[8];
-    byte count;
-    byte selectedItem;
-    MenuItem* items;
-} Menu;
-
-// Function prototypes
-void level_menu__skip_level();
-void level_menu__exit_level();
-void level_menu__new_level(MenuItem *menuItem);
-int powers_menu__toggle_power(MenuItem *menuItem, int toggle);
-void cheats_menu__place_ray();
-void cheats_menu__99_lives();
-void general_menu__checkpoint();
-void do_menu_action(MenuItem *menuItem);
-
-// External variables
-extern short ray_mode;
-extern bool in_pause;
-extern StatusBar status_bar;
-extern bool new_world;
-extern bool new_level;
-extern short num_level;
-extern short num_level_choice;
-extern Obj ray;
-extern SaveState save1;
-extern ushort RayEvts;
 
 // Constants
 #define MENU_STACK_SIZE 3
@@ -77,41 +22,6 @@ extern ushort RayEvts;
 #define SOUND_NAVIGATE 0x44
 #define SOUND_SELECT 0x45
 #define SOUND_RETURN 0x4d
-
-// Menus
-MENU(level_menu, "level",
-    MENU_ACTION("skip", level_menu__skip_level),
-    MENU_ACTION("exit", level_menu__exit_level),
-    MENU_ACTION_PARAM("restart", level_menu__new_level, 0),
-    MENU_ACTION_PARAM("prev", level_menu__new_level, -1),
-    MENU_ACTION_PARAM("next", level_menu__new_level, 1),
-);
-MENU(powers_menu, "powers",
-    MENU_TOGGLE_PARAM("fist", powers_menu__toggle_power, 1 << 0),
-    MENU_TOGGLE_PARAM("hang", powers_menu__toggle_power, 1 << 1),
-    MENU_TOGGLE_PARAM("helico", powers_menu__toggle_power, 1 << 2),
-    MENU_TOGGLE_PARAM("superhelico", powers_menu__toggle_power, 1 << 3),
-    MENU_TOGGLE_PARAM("seed", powers_menu__toggle_power, 1 << 6),
-    MENU_TOGGLE_PARAM("grab", powers_menu__toggle_power, 1 << 7),
-    MENU_TOGGLE_PARAM("run", powers_menu__toggle_power, 1 << 8),
-    MENU_TOGGLE_PARAM("force-run", powers_menu__toggle_power, 1 << 12),
-    MENU_TOGGLE_PARAM("reversed", powers_menu__toggle_power, 1 << 13),
-);
-MENU(cheats_menu, "cheats",
-    MENU_ACTION("place ray", cheats_menu__place_ray),
-    MENU_ACTION("99 lives", cheats_menu__99_lives),
-    MENU_SUB_MENU("powers...", &powers_menu),
-);
-MENU(general_menu, "general",
-    MENU_ACTION("checkpoint", general_menu__checkpoint),
-);
-MENU(main_menu, "main",
-    MENU_SUB_MENU("level...", &level_menu),
-    MENU_SUB_MENU("cheats...", &cheats_menu),
-    MENU_SUB_MENU("general...", &general_menu),
-    MENU_NONE("display..."), // TODO: Implement
-    MENU_NONE("options..."), // TODO: Implement
-);
 
 // Variables
 byte input_cooldown;
@@ -137,57 +47,26 @@ char input_names[] =  // Single string to save space
     "l1\0"
     "l2";
 
-// Menu actions
-void level_menu__skip_level()
+void DO_DMENUS()
 {
-    ChangeLevel();
-}
+    if (menu_stack_index == 0xFF)
+        CHANGE_DMENU(&main_menu);
 
-void level_menu__exit_level()
-{
-    new_world = 1;
-}
-
-void level_menu__new_level(MenuItem *menuItem)
-{
-    new_level = 1;
-    // TODO: Add check in prev/next level action so the new level exists
-    num_level_choice = num_level + menuItem->param_1;
-}
-
-int powers_menu__toggle_power(MenuItem *menuItem, int toggle)
-{
-    if (toggle)
-        RayEvts ^= menuItem->param_1;
-
-    return (RayEvts & menuItem->param_1) != 0;
-}
-
-// TODO: Make this a toggle
-void cheats_menu__place_ray()
-{
-    ray_mode = -ray_mode;
-    in_pause = 0;
-}
-
-void cheats_menu__99_lives()
-{
-    status_bar.num_lives = 99;
+    if (check_inputs())
+        DO_DMENU(menu_stack[menu_stack_index]);
     
-    // Since we're paused we need to manually
-    // update the hud for it to show
-    DO_FIXE();
+    DISPLAY_DMENU(menu_stack[menu_stack_index]);
 }
 
-void general_menu__checkpoint()
+void DO_DMENUS_SHORTCUTS()
 {
-    ray.flags |= 0x800;
-    restore_gendoor_link();
-    saveGameState(0x0, &save1);
-    correct_gendoor_link();
+    if (!check_inputs())
+        return;
+
+    DO_DMENU_SHORTCUTS(&main_menu);
 }
 
-void change_menu(Menu *menu)
+void CHANGE_DMENU(Menu *menu)
 {
     if ((byte)(menu_stack_index + 1) >= MENU_STACK_SIZE)
         return;
@@ -196,7 +75,7 @@ void change_menu(Menu *menu)
     menu_stack[menu_stack_index] = menu;
 }
 
-void do_menu_actions(Menu *menu)
+void DO_DMENU(Menu *menu)
 {
     MenuItem *selectedItem = menu->items + menu->selectedItem;
 
@@ -261,13 +140,31 @@ void do_menu_actions(Menu *menu)
         else if (TOUCHE(INPUT_CROSS))
         {
             held_down_button = INPUT_CROSS;
-            do_menu_action(selectedItem);
+            DO_DMENU_ACTION(selectedItem);
             PlaySnd_old(SOUND_SELECT);
         }
     }
 }
 
-void display_menu(Menu *menu)
+void DO_DMENU_ACTION(MenuItem *menuItem)
+{
+    switch (menuItem->type)
+    {
+        case MENU_SUB_MENU:
+            CHANGE_DMENU(menuItem->param_0);
+            break;
+
+        case MENU_ACTION:
+            ((void (*)(MenuItem *))menuItem->param_0)(menuItem);
+            break;
+
+        case MENU_TOGGLE:
+            ((int (*)(MenuItem *, int toggle))menuItem->param_0)(menuItem, 1);
+            break;
+    }
+}
+
+void DISPLAY_DMENU(Menu *menu)
 {
     short yPos;
     byte color;
@@ -325,41 +222,23 @@ void display_menu(Menu *menu)
 
         yPos += MENU_LINE_HEIGHT;
         menuItem++;
-    } 
-}
-
-void do_menu_action(MenuItem *menuItem)
-{
-    switch (menuItem->type)
-    {
-        case MENU_SUB_MENU:
-            change_menu(menuItem->param_0);
-            break;
-
-        case MENU_ACTION:
-            ((void (*)(MenuItem *))menuItem->param_0)(menuItem);
-            break;
-
-        case MENU_TOGGLE:
-            ((int (*)(MenuItem *, int toggle))menuItem->param_0)(menuItem, 1);
-            break;
     }
 }
 
-void do_menu_shortcuts(Menu *menu)
+void DO_DMENU_SHORTCUTS(Menu *menu)
 {
     MenuItem *menuItem = menu->items;
 
     for (byte i = 0; i < menu->count; i++)
     {
         if (menuItem->type == MENU_SUB_MENU)
-            do_menu_shortcuts(menuItem->param_0);
+            DO_DMENU_SHORTCUTS(menuItem->param_0);
 
         if (menuItem->shortcutInput != INPUT_NONE)
         {
             if (TOUCHE(INPUT_SELECT) && TOUCHE(menuItem->shortcutInput))
             {
-                do_menu_action(menuItem);
+                DO_DMENU_ACTION(menuItem);
                 held_down_button = menuItem->shortcutInput;
                 return;
             }
@@ -369,7 +248,7 @@ void do_menu_shortcuts(Menu *menu)
     } 
 }
 
-bool do_inputs()
+bool check_inputs()
 {
     if (held_down_button != INPUT_NONE)
     {
@@ -385,23 +264,4 @@ bool do_inputs()
     }
 
     return 1;
-}
-
-void menu_shortcuts()
-{
-    if (!do_inputs())
-        return;
-
-    do_menu_shortcuts(&main_menu);
-}
-
-void menu()
-{
-    if (menu_stack_index == 0xFF)
-        change_menu(&main_menu);
-
-    if (do_inputs())
-        do_menu_actions(menu_stack[menu_stack_index]);
-    
-    display_menu(menu_stack[menu_stack_index]);
 }
