@@ -1,0 +1,5 @@
+// C files
+common, exe, SsUtKeyOnV, 0x0, src/menezis.c // Overwrite some unused functions
+
+// Assembly files
+ntsc-u, exe, 0x8012ff20, 0x0, src/hook.s // Overwrite call to DO_CONTINUE
