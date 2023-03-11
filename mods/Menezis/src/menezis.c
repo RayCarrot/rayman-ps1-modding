@@ -29,6 +29,8 @@ void INIT_MENEZIS()
         actors[i].color = 0;
         actors[i].type = -1;
         actors[i].active = 0;
+        actors[i].iframes = 0;
+        actors[i].hit_points = 0;
     }
 
     byte actorIndex = 0;
@@ -62,6 +64,7 @@ void INIT_MENEZIS()
         actors[actorIndex].text[0] = ENEMY_BASIC_TEXT;
         actors[actorIndex].color = ENEMY_BASIC_COLOR;
         actors[actorIndex].active = 1;
+        actors[actorIndex].hit_points = 2;
         actorIndex++;
     }
 }
@@ -97,6 +100,8 @@ bool menezis_loop()
 {
     CLRSCR();
 
+    readinput();
+
     for (byte i = 0; i < sizeof(actors) / sizeof(Actor); i++)
     {
         DO_ACTOR(&actors[i]);
@@ -106,8 +111,6 @@ bool menezis_loop()
     {
         DISPLAY_ACTOR(&actors[i]);
     }
-
-    readinput();
 
     return 0;
 }
@@ -144,9 +147,10 @@ void DO_ACTOR(Actor *actor)
                     if (actors[i].type == ACTOR_SHOT && !actors[i].active)
                     {
                         actors[i].x_pos = actor->x_pos;
-                        actors[i].y_pos = actor->y_pos;
+                        actors[i].y_pos = actor->y_pos - 5;
                         actors[i].speed_x = SHOT_SPEED;
                         actors[i].active = 1;
+                        actors[i].iframes = SHOT_IFRAMES;
                         shot_cooldown = SHOT_COOLDOWN;
                         break;
                     }
@@ -156,14 +160,50 @@ void DO_ACTOR(Actor *actor)
 
         case ACTOR_SHOT:
             if (actor->x_pos >= SCREEN_WIDTH)
+            {
                 actor->active = 0;
+            }
+            else if (actor->iframes == 0)
+            {
+                short shotX, shotY, shotW, shotH;
+                short enemyX, enemyY, enemyW, enemyH;
+
+                getLetterPos(actor->text[0], actor->x_pos, actor->y_pos, &shotX, &shotY, &shotW, &shotH);
+
+                for (byte i = 0; i < sizeof(actors) / sizeof(Actor); i++)
+                {
+                    if (actors[i].type == ACTOR_ENEMY_BASIC && actors[i].active && actors[i].iframes == 0)
+                    {
+                        getLetterPos(actors[i].text[0], actors[i].x_pos, actors[i].y_pos, &enemyX, &enemyY, &enemyW, &enemyH);
+
+                        if (inter_box(shotX, shotY, shotW, shotH, enemyX, enemyY, enemyW, enemyH))
+                        {
+                            actors[i].iframes = ENEMY_BASIC_IFRAMES;
+                            actors[i].hit_points--;
+                            actor->active = 0;
+                            break;
+                        }
+                    }
+                }
+            }
             break;
         
         case ACTOR_ENEMY_BASIC:
-            if (actor->x_pos >= SCREEN_WIDTH || actor->x_pos < 0)
-                actor->speed_x = -actor->speed_x;
-            if (actor->y_pos > SCREEN_HEIGHT || actor->y_pos < 0)
-                actor->speed_y = -actor->speed_y;
+            if (actor->hit_points)
+            {
+                if (actor->x_pos >= SCREEN_WIDTH || actor->x_pos < 0)
+                    actor->speed_x = -actor->speed_x;
+                if (actor->y_pos > SCREEN_HEIGHT || actor->y_pos < 0)
+                    actor->speed_y = -actor->speed_y;
+            }
+            else
+            {
+                actor->speed_x = 0;
+                actor->speed_y = 4;
+
+                if (actor->y_pos > SCREEN_HEIGHT)
+                    actor->active = 0;
+            }
             break;
         
         default:
@@ -172,12 +212,36 @@ void DO_ACTOR(Actor *actor)
 
     actor->x_pos += actor->speed_x;
     actor->y_pos += actor->speed_y;
+
+    if (actor->iframes > 0)
+        actor->iframes--;
 }
 
 void DISPLAY_ACTOR(Actor *actor)
 {
+    byte color;
+
     if (!actor->active)
         return;
 
-    display_text(actor->text, actor->x_pos, actor->y_pos, ACTOR_FONT, actor->color);
+    if ((actor->iframes & 1) != 0)
+        color = ACTOR_IFRAMES_COLOR;
+    else
+        color = actor->color;
+
+    display_text(actor->text, actor->x_pos, actor->y_pos, ACTOR_FONT, color);
+}
+
+void getLetterPos(char letter, short letterX, short letterY, short *x, short *y, short *w, short *h)
+{
+    Sprite *sprite;
+
+    sprite = &alpha2.sprites[deter_num_let(letter)];
+    
+    *x = letterX + (sprite->sprite_pos & 0xf);
+    *y = letterY + (sprite->sprite_pos >> 4);
+    *w = sprite->sprite_width;
+    *h = sprite->sprite_height;
+
+    //printf("x: %d, y: %d, w: %d, h: %d\n", *x, *y, *w, *h);
 }
