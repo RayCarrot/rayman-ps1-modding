@@ -1,6 +1,7 @@
 #include <export.h>
 #include "cheats_menu.h"
 #include "powers_menu.h"
+#include "fist_menu.h"
 #include "menu.h"
 #include "globals.h"
 
@@ -8,6 +9,7 @@ MENU(cheats_menu, "cheats",
     MENU_TOGGLE("place ray", place_ray),
     MENU_ACTION("99 lives", max_lives),
     MENU_ACTION("all lvls", all_levels),
+    MENU_SUB_MENU("fist...", &fist_menu),
     MENU_SUB_MENU("powers...", &powers_menu),
 );
 

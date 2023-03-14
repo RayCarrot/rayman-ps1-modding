@@ -12,3 +12,6 @@ extern SaveState save1;
 extern ushort RayEvts;
 extern short reduced_rayman_id;
 extern WorldInfo t_world_info[24];
+extern short PS1_PoingObjIndex;
+extern LevelData level;
+extern Poing poing;

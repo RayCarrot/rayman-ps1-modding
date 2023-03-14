@@ -7,11 +7,6 @@
 // TODO: Polygon count of 200 might get reached in final boss due to text shadows
 // TODO: Disable other inputs when holding down SELECT for shortcuts
 
-// TODO: Menu options:
-//       - Fist power level and gold fist toggle
-//       - Display options which shows useful variable values while playing
-//       ...
-
 // Constants
 #define MENU_STACK_SIZE 3
 #define MENU_MAX_ITEMS_ON_SCREEN 7
