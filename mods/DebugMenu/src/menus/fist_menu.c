@@ -16,13 +16,13 @@ int fist_state(MenuItem *menuItem, int toggle)
 {
     byte initSubEtat;
 
-    initSubEtat = level.objects[PS1_PoingObjIndex].init_sub_etat;
+    initSubEtat = level.objects[poing_obj_id].init_sub_etat;
 
     if (!toggle)
         return initSubEtat == menuItem->param_1;
 
-    level.objects[PS1_PoingObjIndex].init_sub_etat = menuItem->param_1;
-    level.objects[PS1_PoingObjIndex].sub_etat = menuItem->param_1;
+    level.objects[poing_obj_id].init_sub_etat = menuItem->param_1;
+    level.objects[poing_obj_id].sub_etat = menuItem->param_1;
     poing.sub_etat = menuItem->param_1;
 
     return 1;
@@ -34,7 +34,7 @@ int gold_fist(MenuItem *menuItem, int toggle)
     byte initSubEtat;
     bool goldFist;
 
-    initSubEtat = level.objects[PS1_PoingObjIndex].init_sub_etat;
+    initSubEtat = level.objects[poing_obj_id].init_sub_etat;
     goldFist = initSubEtat == 8 || initSubEtat == 10 || initSubEtat == 12;
 
     if (!toggle)
@@ -59,8 +59,8 @@ int gold_fist(MenuItem *menuItem, int toggle)
             initSubEtat = 12;
     }
 
-    level.objects[PS1_PoingObjIndex].init_sub_etat = initSubEtat;
-    level.objects[PS1_PoingObjIndex].sub_etat = initSubEtat;
+    level.objects[poing_obj_id].init_sub_etat = initSubEtat;
+    level.objects[poing_obj_id].sub_etat = initSubEtat;
     poing.sub_etat = initSubEtat;
 
     return !goldFist;

@@ -582,7 +582,7 @@ typedef enum ObjType {
     TYPE_VAGUE_DERRIERE=252,
     TYPE_PLANCHES=253,
     TYPE_SLOPEY_PLAT=254,
-    Invalid=255
+    TYPE_INVALID=255
 } ObjType;
 
 typedef enum ObjActiveFlag {
@@ -854,6 +854,8 @@ struct Credit {
     byte cmd;
     byte color;
 };
+
+typedef struct WorldInfo * WorldInfo_0x8;
 
 typedef struct Poing Poing, *PPoing;
 
@@ -7990,13 +7992,11 @@ struct SaxAttackEntry {
 typedef struct SaxNoteEntry SaxNoteEntry, *PSaxNoteEntry;
 
 struct SaxNoteEntry {
-    byte field0_0x0;
-    undefined field1_0x1;
-    short field2_0x2;
-    short field3_0x4;
-    short field4_0x6;
-    undefined field5_0x8;
-    undefined field6_0x9;
+    byte type;
+    short speed_x;
+    short speed_y;
+    short initial_iframes;
+    short field4_0x8; // unused
 };
 
 typedef struct SaxData SaxData, *PSaxData;
@@ -8008,7 +8008,7 @@ struct SaxData {
     short note_box_coll_y;
     short sprite2_x;
     short sprite2_y;
-    byte field6_0xc;
+    byte coup;
     byte saved_hp;
     byte field8_0xe;
     byte field9_0xf;
@@ -8825,7 +8825,7 @@ int COLL_BOX_ALL_SPRITES(short param_1,short param_2,short param_3,short param_4
 bool COLL_RAY_PIC(void);
 void COLL_RAY_BLK_MORTEL(void);
 void RAY_KO(void);
-void RAY_HIT(char param_1,Obj *obj);
+void RAY_HIT(bool param_1,Obj *obj);
 void standard_frontZone(Obj *obj,short *x,short *w);
 void SET_DETECT_ZONE_FLAG(Obj *obj);
 void goToRay(Obj *obj);
@@ -9010,7 +9010,7 @@ void correct_gendoor_link(void);
 void suppressFromLinkList(Obj *obj);
 void correct_link(void);
 void INIT_RAY_BEGIN(void);
-void INIT_RAY(char newLevel);
+void INIT_RAY(bool newLevel);
 byte is_icy_pente(uint param_1);
 void STOPPE_RAY_EN_XY(void);
 void RAY_RESPOND_TO_ALL_DIRS(void);
@@ -9267,7 +9267,7 @@ void DO_PHOTOGRAPHE_CMD(Obj *obj);
 void DO_REDUCTEUR(Obj *obj);
 void wait_for_dialogue_fee(Obj *obj,short time);
 void DO_FEE_ETAPE(Obj *obj);
-void FUN_801729b4(void);
+void fee_gives_super_evts(void);
 void DO_FEE(Obj *param_1);
 undefined4 IS_STONEWOMAN_WAIT(Obj *obj);
 void DO_STONEWOMAN_COMMAND(Obj *obj);
@@ -9302,9 +9302,9 @@ void DO_EXPLOSE_NOTE1(Obj *obj);
 void BonneNote(Obj *param_1);
 void DO_NOTE_TOUCHEE(Obj *obj);
 void DO_NOTE_REBOND(Obj *param_1);
-void allocateNote(int param_1);
+void allocateNote(Obj *obj);
 byte PrepareAtak(void);
-void SAXO_TIRE(int param_1);
+void SAXO_TIRE(Obj *obj);
 void DO_SAXO_COUP(Obj *obj);
 void DO_SAXO2_COUP(Obj *obj);
 void SetSaxoCollNoteBox(Obj *obj);
@@ -9418,7 +9418,7 @@ void DO_PAR_POING_COLLISION(Obj *obj,short param_2);
 void PAR_REACT_TO_RAY_IN_ZONE(Obj *obj);
 void DO_PAR_BOMB_COMMAND(Obj *obj);
 void allocateRayLandingSmoke(void);
-void recale_ray_on_liane(ushort param_1);
+void recale_ray_on_liane(void);
 void calc_bhand_typ(Obj *param_1);
 void IS_RAY_ON_LIANE(void);
 void rayMayLandOnAnObject(undefined *param_1,short param_2);
@@ -9490,7 +9490,7 @@ void doMereDenisHit(Obj *param_1,short param_2);
 void mereDenisBigLaserCommand(Obj *obj,byte param_2);
 void mereDenisBombCommand(Obj *obj);
 void setBossReachingSpeeds(Obj *obj,uint param_2,uint param_3,uint param_4);
-bool testActionEnd(int param_1);
+bool testActionEnd(Obj *obj);
 void FUN_8018b78c(short *param_1,short *param_2,short *param_3,short *param_4,byte param_5);
 int firstFloorBelow(Obj *obj);
 void allocateBlacktoonEyes(Obj *param_1);
