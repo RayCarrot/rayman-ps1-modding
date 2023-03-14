@@ -9,7 +9,6 @@
 
 // TODO: Menu options:
 //       - Fist power level and gold fist toggle
-//       - Instant death
 //       - Display options which shows useful variable values while playing
 //       ...
 

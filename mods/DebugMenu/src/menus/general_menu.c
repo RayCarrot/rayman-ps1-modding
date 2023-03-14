@@ -5,6 +5,7 @@
 
 MENU(general_menu, "general",
     MENU_ACTION("checkpoint", checkpoint),
+    MENU_ACTION("die", die),
     MENU_TOGGLE("small ray", small_ray),
     MENU_ACTION("vram", show_vram),
 );
@@ -15,6 +16,17 @@ void checkpoint()
     restore_gendoor_link();
     saveGameState(0x0, &save1);
     correct_gendoor_link();
+}
+
+void die()
+{
+    if ((ray.flags & 0xc00) == 0xc00)
+    {
+        ray.hit_points = 0;
+        RAY_HIT(1, (Obj *)0x00);
+        in_pause = 0;
+        PS1_OnPauseOff();
+    }
 }
 
 int small_ray(MenuItem *menuItem, int toggle)
