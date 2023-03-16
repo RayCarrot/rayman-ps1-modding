@@ -11,12 +11,16 @@ void srand(int seed);
 // Variables
 uint frames = 0;
 
+void init()
+{
+    srand(frames);
+}
+
 void update_timer()
 {
     frames++;
 }
 
-// TODO: Shuffle on level start
 void shuffle_objects()
 {
     Obj *src;
@@ -24,9 +28,6 @@ void shuffle_objects()
     byte validObjs[256];
     int validObjsCount = 0;
     byte shuffledObjs[256];
-
-    // TODO: Only initialize random on new game
-    srand(frames);
 
     // Get valid objects
     for (int i = 0; i < level.nb_objects; i++) 
