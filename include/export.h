@@ -257,7 +257,7 @@ typedef struct ObjState ObjState, *PObjState;
 
 typedef struct CmdContext CmdContext, *PCmdContext;
 
-typedef enum BlocType {
+typedef enum BlockType {
     BTYP_NONE=0,
     BTYP_CHDIR=1, // reactionary
     BTYP_SOLID_RIGHT_45=2,
@@ -281,7 +281,7 @@ typedef enum BlocType {
     BTYP_SPIKES=24,
     BTYP_CLIFF=25,
     BTYP_SLIPPERY=30
-} BlocType;
+} BlockType;
 
 typedef enum ObjCommand {
     GO_LEFT=0,
@@ -582,7 +582,7 @@ typedef enum ObjType {
     TYPE_VAGUE_DERRIERE=252,
     TYPE_PLANCHES=253,
     TYPE_SLOPEY_PLAT=254,
-    Invalid=255
+    TYPE_INVALID=255
 } ObjType;
 
 typedef enum ObjActiveFlag {
@@ -634,12 +634,12 @@ struct Obj {
     short field23_0x3c;
     short field24_0x3e;
     short ray_dist;
-    short field26_0x42;
+    short iframes_timer;
     short test_block_index;
     short scale;
     ushort zdc;
     short active_timer;
-    enum BlocType btypes[5];
+    enum BlockType btypes[5];
     undefined field32_0x51;
     byte offset_bx;
     byte offset_by;
@@ -657,7 +657,7 @@ struct Obj {
     byte follow_sprite;
     byte hit_points;
     byte init_hit_points;
-    byte unused_display_prio;
+    byte init_flag;
     enum ObjType type;
     byte hit_sprite;
     enum ObjActiveFlag active_flag;
@@ -740,8 +740,8 @@ typedef enum Input {
     INPUT_R2=12,
     INPUT_L1=13,
     INPUT_L2=14,
-    INPUT_UNUSED_0F=15,
-    INPUT_UNUSED_10=16,
+    INPUT_DISABLE_DEBUG=15, // unused
+    INPUT_ENABLE_DEBUG=16, // unused
     INPUT_START_SELECT=17,
     INPUT_UNUSED_12=18,
     INPUT_13=19,
@@ -821,7 +821,7 @@ struct SaveState {
     byte link_init[256];
     undefined1 save_obj_detect_zone_flag;
     byte field18_0x14b;
-    enum BlocType ray_btypes[5];
+    enum BlockType ray_btypes[5];
     byte ray_anim_index;
     byte ray_anim_frame;
     byte ray_main_etat;
@@ -854,6 +854,8 @@ struct Credit {
     byte cmd;
     byte color;
 };
+
+typedef struct WorldInfo * WorldInfo_0x8;
 
 typedef struct Poing Poing, *PPoing;
 
@@ -908,15 +910,67 @@ struct FileInfo {
     struct CdlFILE file;
 };
 
-typedef struct DRENVAndTile DRENVAndTile, *PDRENVAndTile;
+typedef struct Display Display, *PDisplay;
+
+typedef struct DISPENV DISPENV, *PDISPENV;
+
+typedef struct DRAWENV DRAWENV, *PDRAWENV;
 
 typedef struct DR_ENV DR_ENV, *PDR_ENV;
 
+typedef struct SPRT_8 SPRT_8, *PSPRT_8;
+
+typedef struct TILE_1 TILE_1, *PTILE_1;
+
+typedef struct SPRT SPRT, *PSPRT;
+
+typedef struct POLY_FT4 POLY_FT4, *PPOLY_FT4;
+
 typedef struct TILE TILE, *PTILE;
+
+typedef struct POLY_G4 POLY_G4, *PPOLY_G4;
+
+typedef struct DRENVAndTile DRENVAndTile, *PDRENVAndTile;
+
+typedef struct RECT RECT, *PRECT;
+
+struct RECT {
+    short x;
+    short y;
+    short w;
+    short h;
+};
 
 struct DR_ENV {
     u_long tag;
     u_long _code[15];
+};
+
+struct DRAWENV {
+    struct RECT clip;
+    short ofs[2];
+    struct RECT tw;
+    u_short tpage;
+    u_char dtd;
+    u_char dfe;
+    u_char isbg;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    struct DR_ENV dr_env;
+};
+
+struct SPRT_8 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char _code;
+    short x0;
+    short y0;
+    u_char u0;
+    u_char $2;
+    u_short clut;
 };
 
 struct TILE {
@@ -936,48 +990,6 @@ struct DRENVAndTile {
     struct TILE tile;
 };
 
-typedef struct RenderData RenderData, *PRenderData;
-
-typedef struct DISPENV DISPENV, *PDISPENV;
-
-typedef struct DRAWENV DRAWENV, *PDRAWENV;
-
-typedef struct TILE_1 TILE_1, *PTILE_1;
-
-typedef struct SPRT SPRT, *PSPRT;
-
-typedef struct POLY_FT4 POLY_FT4, *PPOLY_FT4;
-
-typedef struct POLY_G4 POLY_G4, *PPOLY_G4;
-
-typedef struct RECT RECT, *PRECT;
-
-struct RECT {
-    short x;
-    short y;
-    short w;
-    short h;
-};
-
-struct TILE_1 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char _code;
-    short x0;
-    short y0;
-};
-
-struct DISPENV {
-    struct RECT disp;
-    struct RECT screen;
-    u_char isinter;
-    u_char isrgb24;
-    u_char pad0;
-    u_char pad1;
-};
-
 struct SPRT {
     u_long tag;
     u_char r0;
@@ -991,48 +1003,6 @@ struct SPRT {
     u_short clut;
     short w;
     short h;
-};
-
-struct POLY_FT4 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char _code;
-    short x0;
-    short y0;
-    u_char u0;
-    u_char $2;
-    u_short clut;
-    short x1;
-    short y1;
-    u_char u1;
-    u_char $3;
-    u_short tpage;
-    short x2;
-    short y2;
-    u_char u2;
-    u_char v2;
-    u_short pad1;
-    short x3;
-    short y3;
-    u_char u3;
-    u_char v3;
-    u_short pad2;
-};
-
-struct DRAWENV {
-    struct RECT clip;
-    short ofs[2];
-    struct RECT tw;
-    u_short tpage;
-    u_char dtd;
-    u_char dfe;
-    u_char isbg;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    struct DR_ENV dr_env;
 };
 
 struct POLY_G4 {
@@ -1063,7 +1033,54 @@ struct POLY_G4 {
     short y3;
 };
 
-struct RenderData {
+struct DISPENV {
+    struct RECT disp;
+    struct RECT screen;
+    u_char isinter;
+    u_char isrgb24;
+    u_char pad0;
+    u_char pad1;
+};
+
+struct POLY_FT4 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char _code;
+    short x0;
+    short y0;
+    u_char u0;
+    u_char $2;
+    u_short clut;
+    short x1;
+    short y1;
+    u_char u1;
+    u_char $3;
+    u_short tpage;
+    short x2;
+    short y2;
+    u_char u2;
+    u_char v2;
+    u_short pad1;
+    short x3;
+    short y3;
+    u_char u3;
+    u_char v3;
+    u_short pad2;
+};
+
+struct TILE_1 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char _code;
+    short x0;
+    short y0;
+};
+
+struct Display {
     struct DISPENV field0_0x0;
     struct DRAWENV drawing_environment;
     struct DR_ENV map_drawing_environment_primitives[6];
@@ -1392,7 +1409,7 @@ struct RenderData {
     undefined field325_0x7ee;
     undefined field326_0x7ef;
     undefined * field327_0x7f0[11];
-    byte tiles[360][16];
+    struct SPRT_8 tiles[360];
     undefined field329_0x1e9c;
     undefined field330_0x1e9d;
     undefined field331_0x1e9e;
@@ -7975,13 +7992,11 @@ struct SaxAttackEntry {
 typedef struct SaxNoteEntry SaxNoteEntry, *PSaxNoteEntry;
 
 struct SaxNoteEntry {
-    byte field0_0x0;
-    undefined field1_0x1;
-    short field2_0x2;
-    short field3_0x4;
-    short field4_0x6;
-    undefined field5_0x8;
-    undefined field6_0x9;
+    byte type;
+    short speed_x;
+    short speed_y;
+    short initial_iframes;
+    short field4_0x8; // unused
 };
 
 typedef struct SaxData SaxData, *PSaxData;
@@ -7993,7 +8008,7 @@ struct SaxData {
     short note_box_coll_y;
     short sprite2_x;
     short sprite2_y;
-    byte field6_0xc;
+    byte coup;
     byte saved_hp;
     byte field8_0xe;
     byte field9_0xf;
@@ -8013,6 +8028,8 @@ struct BB1Data {
     short sprite6_y;
     byte field8_0xe;
 };
+
+typedef struct Obj * Obj_0x58;
 
 typedef struct RayStack RayStack, *PRayStack;
 
@@ -8036,9 +8053,9 @@ struct RayStack {
 typedef struct CommandTableEntry CommandTableEntry, *PCommandTableEntry;
 
 struct CommandTableEntry {
-    undefined * read_args;
-    undefined * skip_args;
-    undefined * handle_cmd;
+    bool (* read)(struct Obj *);
+    bool (* skip)(struct Obj *);
+    bool (* handle)(struct Obj *);
 };
 
 typedef struct Obj * Obj_0x55;
@@ -8100,7 +8117,7 @@ struct ObjFlag {
 typedef struct ObjHandlers ObjHandlers, *PObjHandlers;
 
 struct ObjHandlers {
-    undefined * do_obj;
+    void (* do_obj)(struct Obj *);
 };
 
 typedef struct ActiveObjects ActiveObjects, *PActiveObjects;
@@ -8348,21 +8365,6 @@ struct LINE_F4 {
     u_long pad;
 };
 
-typedef struct SPRT_8 SPRT_8, *PSPRT_8;
-
-struct SPRT_8 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char _code;
-    short x0;
-    short y0;
-    u_char u0;
-    u_char $2;
-    u_short clut;
-};
-
 typedef struct BLK_FILL BLK_FILL, *PBLK_FILL;
 
 struct BLK_FILL {
@@ -8446,6 +8448,8 @@ struct LINE_G4 {
     short y3;
     u_long pad;
 };
+
+typedef struct SPRT_8 * SPRT_0xD;
 
 typedef struct POLY_GT4 POLY_GT4, *PPOLY_GT4;
 
@@ -8821,7 +8825,7 @@ int COLL_BOX_ALL_SPRITES(short param_1,short param_2,short param_3,short param_4
 bool COLL_RAY_PIC(void);
 void COLL_RAY_BLK_MORTEL(void);
 void RAY_KO(void);
-void RAY_HIT(char param_1,Obj *obj);
+void RAY_HIT(bool param_1,Obj *obj);
 void standard_frontZone(Obj *obj,short *x,short *w);
 void SET_DETECT_ZONE_FLAG(Obj *obj);
 void goToRay(Obj *obj);
@@ -8843,7 +8847,7 @@ void clearbit(int param_1,uint param_2);
 uint getbit(int param_1,uint param_2);
 int cosinus(short param_1);
 int sinus(short param_1);
-int sinYspeed(int param_1,int param_2,short param_3,ushort *param_4);
+int sinYspeed(Obj *obj,int param_2,short param_3,ushort *param_4);
 int ashl16(ushort param_1,uint param_2);
 int ashr16(ushort param_1,uint param_2);
 int ashl32(uint param_1,uint param_2);
@@ -9006,7 +9010,7 @@ void correct_gendoor_link(void);
 void suppressFromLinkList(Obj *obj);
 void correct_link(void);
 void INIT_RAY_BEGIN(void);
-void INIT_RAY(char newLevel);
+void INIT_RAY(bool newLevel);
 byte is_icy_pente(uint param_1);
 void STOPPE_RAY_EN_XY(void);
 void RAY_RESPOND_TO_ALL_DIRS(void);
@@ -9165,9 +9169,9 @@ void FUN_80168f40(void);
 void FUN_80168f48(void);
 void FUN_80169194(void);
 void FUN_8016924c(void);
-void FUN_8016929c(void);
-void FUN_80169350(void);
-void FUN_80169420(RenderData *param_1);
+void PS1_OnPauseOn(void);
+void PS1_OnPauseOff(void);
+void FUN_80169420(Display *param_1);
 void FUN_80169564(uint param_1,short param_2);
 void FUN_801695ec(short param_1);
 void FUN_80169a3c(u_char *param_1,int param_2);
@@ -9257,13 +9261,13 @@ void DO_MST_SCROLL_COMMAND(int param_1,short param_2);
 void DO_MST_CHANGE_COMMAND(int hp);
 void DO_CCL_COMMAND(Obj *obj);
 void DO_WLKNOT_COMMAND(Obj *obj);
-void FUN_80172108(int param_1);
+void ACTIVE_L_EAU(Obj *obj);
 void DO_EAU_QUI_MONTE(Obj *obj);
 void DO_PHOTOGRAPHE_CMD(Obj *obj);
 void DO_REDUCTEUR(Obj *obj);
 void wait_for_dialogue_fee(Obj *obj,short time);
 void DO_FEE_ETAPE(Obj *obj);
-void FUN_801729b4(void);
+void fee_gives_super_evts(void);
 void DO_FEE(Obj *param_1);
 undefined4 IS_STONEWOMAN_WAIT(Obj *obj);
 void DO_STONEWOMAN_COMMAND(Obj *obj);
@@ -9298,9 +9302,9 @@ void DO_EXPLOSE_NOTE1(Obj *obj);
 void BonneNote(Obj *param_1);
 void DO_NOTE_TOUCHEE(Obj *obj);
 void DO_NOTE_REBOND(Obj *param_1);
-void allocateNote(int param_1);
+void allocateNote(Obj *obj);
 byte PrepareAtak(void);
-void SAXO_TIRE(int param_1);
+void SAXO_TIRE(Obj *obj);
 void DO_SAXO_COUP(Obj *obj);
 void DO_SAXO2_COUP(Obj *obj);
 void SetSaxoCollNoteBox(Obj *obj);
@@ -9317,7 +9321,7 @@ void DO_SPIDER_PLAFOND(Obj *obj);
 void DO_SPIDER_PLAFOND_POING_COLLISION(Obj *obj);
 void SPIDER_PLAFOND_REACT(Obj *obj);
 void DO_DARD_PLAFOND_ALWAYS(Obj *obj);
-void FUN_801790cc(RenderData *renderData);
+void FUN_801790cc(Display *display);
 void FUN_80179218(void);
 void FUN_8017a6f8(void);
 void FUN_8017ab8c(void);
@@ -9326,13 +9330,13 @@ void popCmdContext(Obj *obj);
 int char2short(byte param_1);
 undefined FUN_8017b330(undefined param_1);
 undefined4 readNoArg(void);
-undefined4 readOneArg(int param_1);
+int readOneArg(Obj *obj);
 undefined4 readTestArgs(Obj *obj);
 undefined4 readGoXYArgs(Obj *obj);
 undefined4 readSpeedArgs(Obj *obj);
-undefined4 readInvalidArg(Obj *obj);
+int readInvalidArg(Obj *obj);
 undefined4 skipNoArg(void);
-undefined4 skipOneArg(int param_1);
+undefined4 skipOneArg(Obj *obj);
 undefined4 skipTestArgs(Obj *obj);
 undefined4 skipGoXYArgs(Obj *obj);
 undefined4 skipSpeedArgs(Obj *obj);
@@ -9350,7 +9354,7 @@ undefined4 handle_GO_Y(Obj *obj);
 undefined4 handle_GO_GOTO(Obj *param_1);
 undefined4 handle_GO_STATE(Obj *obj);
 undefined4 handle_GO_SUBSTATE(Obj *param_1);
-undefined4 handle_GO_SKIP(Obj *param_1);
+bool handle_GO_SKIP(Obj *obj);
 undefined4 handle_GO_LABEL(void);
 undefined4 handle_GO_PREPARELOOP(Obj *obj);
 undefined4 handle_GO_GOSUB(Obj *obj);
@@ -9363,8 +9367,8 @@ undefined4 handle_GO_SKIPTRUE(Obj *obj);
 undefined4 handle_GO_SKIPFALSE(Obj *obj);
 undefined4 handle_GO_SETTEST(Obj *obj);
 undefined4 handle_GO_TEST(Obj *obj);
-undefined readOneCommand(Obj *param_1);
-undefined skipOneCommand(Obj *obj);
+bool readOneCommand(Obj *obj);
+bool skipOneCommand(Obj *obj);
 void GET_OBJ_CMD(Obj *obj);
 void pushCmdContext(Obj *obj,ushort count);
 void skipToLabel(Obj *obj,byte label,bool param_3);
@@ -9410,11 +9414,11 @@ void DO_ONE_PAR_COMMAND(Obj *obj);
 int hasGuetteurABomb(Obj *obj,int param_2);
 void allocatePirateGuetteurBomb(Obj *param_1,undefined4 param_2,char param_3,byte param_4);
 void DO_PAR_TIR(int param_1);
-void DO_PAR_POING_COLLISION(Obj *param_1,short param_2);
+void DO_PAR_POING_COLLISION(Obj *obj,short param_2);
 void PAR_REACT_TO_RAY_IN_ZONE(Obj *obj);
 void DO_PAR_BOMB_COMMAND(Obj *obj);
 void allocateRayLandingSmoke(void);
-void recale_ray_on_liane(ushort param_1);
+void recale_ray_on_liane(void);
 void calc_bhand_typ(Obj *param_1);
 void IS_RAY_ON_LIANE(void);
 void rayMayLandOnAnObject(undefined *param_1,short param_2);
@@ -9486,7 +9490,7 @@ void doMereDenisHit(Obj *param_1,short param_2);
 void mereDenisBigLaserCommand(Obj *obj,byte param_2);
 void mereDenisBombCommand(Obj *obj);
 void setBossReachingSpeeds(Obj *obj,uint param_2,uint param_3,uint param_4);
-bool testActionEnd(int param_1);
+bool testActionEnd(Obj *obj);
 void FUN_8018b78c(short *param_1,short *param_2,short *param_3,short *param_4,byte param_5);
 int firstFloorBelow(Obj *obj);
 void allocateBlacktoonEyes(Obj *param_1);
@@ -9562,7 +9566,7 @@ int bloc_floor(ushort param_1,short param_2,short param_3);
 undefined4 calc_typ_trav(Obj *obj,byte param_2);
 undefined calc_typ_travd(Obj *obj,bool param_2);
 void TEST_FIN_BLOC(Obj *obj);
-undefined4 TEST_IS_ON_RESSORT_BLOC(int param_1);
+undefined4 TEST_IS_ON_RESSORT_BLOC(Obj *obj);
 int IS_ON_RESSORT_BLOC(Obj *obj);
 void CALC_MOV_ON_BLOC(Obj *obj);
 void recale_position(Obj *param_1);
@@ -9684,7 +9688,7 @@ void DEPART_LEVEL(void);
 void DEPART_DEAD_LOOP(void);
 void FIN_DEAD_LOOP(void);
 void PS1_StopLevelMusic(void);
-void PS1_InitRenderData(RenderData *renderData);
+void PS1_InitDisplay(Display *display);
 void FUN_801a0750(void);
 void atoi(short param_1,char *param_2);
 void FUN_801a07b0(void);
@@ -10420,7 +10424,7 @@ void DrawPrim(u_long *param_1);
 void DrawOTag(u_long *param_1);
 DRAWENV * PutDrawEnv(DRAWENV *param_1);
 u_long * FUN_801bd63c(u_long *param_1);
-RenderData * PutDispEnv(RenderData *param_1);
+DISPENV * PutDispEnv(DISPENV *param_1);
 void GetDispEnv(undefined4 *param_1);
 void SetTexWindow(int param_1,undefined4 param_2);
 void SetDrawArea(int param_1,short *param_2);

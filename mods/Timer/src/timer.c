@@ -6,8 +6,13 @@ enum TIMERMODE { TIMER_OFF, TIMER_GAME, TIMER_WORLD, TIMER_LEVEL, TIMER_DEATH };
 // Constants
 #define NUM_TIMER_MODES 5
 #define DEFAULT_COOLDOWN 15
-#define FRAMERATE 60
 #define SOUND_NAVIGATE 0x44
+
+#if BUILD == 1 // pal-e
+#define FRAMERATE 50
+#else
+#define FRAMERATE 60
+#endif
 
 // External variables
 extern bool dans_la_map_monde;
@@ -26,6 +31,17 @@ void update_timer()
 {
     if (is_running)
         frames++;
+}
+
+void stop_level_music()
+{
+    bool wasRunning = is_running;
+    is_running = 0;
+
+    // We don't want to count the timer during this
+    PS1_StopLevelMusic();
+    
+    is_running = wasRunning;
 }
 
 void display_timer()

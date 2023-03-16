@@ -1,2 +1,2 @@
 .set noreorder
-jal DO_DMENUS
+jal DO_MENEZIS

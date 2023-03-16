@@ -1,6 +1,18 @@
-// C files
-ntsc-u, exe, 0x801bb670, 0x8, src/menu.c // 2643 bytes of unused functions to overwrite
+// ====== C files ======
 
-// Assembly files
+// 2643 bytes of unused functions to overwrite
+common, exe, RotMatrixYXZ, 0x0, src/menu.c src/menus/general_menu.c src/menus/cheats_menu.c src/menus/powers_menu.c
+
+// 1864 bytes of unused functions to overwrite
+common, exe, LoadAverage12, 0x0, src/menus/fist_menu.c
+
+// 300 bytes of unused functions to overwrite
+common, exe, SpuVmSeKeyOn, 0x0, src/menus/level_menu.c src/menus/main_menu.c
+
+
+// ====== Assembly files ======
+
 ntsc-u, exe, 0x8012f860, 0x0, src/hook_pause.s // Overwrite call to pause screen function
+pal-e, exe, 0x801349a8, 0x0, src/hook_pause.s
 ntsc-u, exe, 0x8015a250, 0x0, src/hook_moteur2.s // Extend DO_MOTEUR2
+pal-e, exe, 0x8015f620, 0x0, src/hook_moteur2.s

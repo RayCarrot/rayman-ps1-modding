@@ -1,2 +1,2 @@
 .set noreorder
-j menu_shortcuts
+j DO_DMENUS_SHORTCUTS

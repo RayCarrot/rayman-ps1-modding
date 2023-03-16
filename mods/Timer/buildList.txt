@@ -1,16 +1,30 @@
 // C files
-ntsc-u, exe, SsUtKeyOnV, 0x0, src/timer.c // Overwrite some unused functions
+common, exe, SsUtKeyOnV, 0x0, src/timer.c // Overwrite some unused functions
 
 // Assembly files
 ntsc-u, exe, 0x801b9544, 0x0, src/hook_vsync.s // Extend VSYNC_OBJ_F0 which gets called from vsync
+pal-e, exe, 0x801b7f5c, 0x0, src/hook_vsync.s
 ntsc-u, exe, 0x8014dc80, 0x0, src/hook_display_horloges.s // Extend horloges
+pal-e, exe, 0x80153010, 0x0, src/hook_display_horloges.s
 ntsc-u, exe, 0x8012ed9c, 0x0, src/hook_display_pause.s // Extend pause function
+pal-e, exe, 0x80133ee4, 0x0, src/hook_display_pause.s
 ntsc-u, exe, 0x801a586c, 0x0, src/hook_options.s // Extend options display function
+pal-e, exe, 0x8012d950, 0x0, src/hook_options.s
 ntsc-u, exe, 0x801a4ed0, 0x0, src/hook_start.s // Overwrite call to DO_FADE_OUT
+pal-e, exe, 0x8012cfb0, 0x0, src/hook_start.s
 ntsc-u, exe, 0x801a0170, 0x0, src/hook_world.s // Extend DEPART_WORLD
+pal-e, exe, 0x801a4ee4, 0x0, src/hook_world.s
 ntsc-u, exe, 0x8012e004, 0x0, src/hook_display_worldmap.s // Extend DISPLAY_STAGE_NAMES
+pal-e, exe, 0x80132ed0, 0x0, src/hook_display_worldmap.s
 ntsc-u, exe, 0x801599d4, 0x0, src/hook_initdead.s // Extend INIT_MOTEUR_DEAD
+pal-e, exe, 0x8015eda4, 0x0, src/hook_initdead.s
 ntsc-u, exe, 0x801619e0, 0x0, src/hook_medallion.s // Extend DO_MEDAILLON_TOON_GELE
+pal-e, exe, 0x80166f14, 0x0, src/hook_medallion.s
 ntsc-u, exe, 0x80197230, 0x0, src/hook_change_dark_phase.s // Extend PlaceDarkPhase1et2
+pal-e, exe, 0x8019bc50, 0x0, src/hook_change_dark_phase.s
 ntsc-u, exe, 0x8012ddc4, 0x0, src/hook_exit_level.s // Extend DO_CONTINUE
+pal-e, exe, 0x80132c90, 0x0, src/hook_exit_level.s
 ntsc-u, exe, 0x8019b31c, 0x0, src/nop_dark_text_shadow.s
+pal-e, exe, 0x8019fd7c, 0x0, src/nop_dark_text_shadow.s
+ntsc-u, exe, 0x8012ff18, 0x0, src/hook_stop_level_music.s
+pal-e, exe, 0x8013501c, 0x0, src/hook_stop_level_music.s // Overwrite call to PS1_StopLevelMusic
