@@ -7,3 +7,5 @@ pal-e, exe, 0x801b7f5c, 0x0, src/hook_vsync.s
 common, exe, RAY_HURT, 0xF8, src/hook_hurt.s // Extend RAY_HURT
 common, exe, INIT_MOTEUR_LEVEL, 0x124, src/hook_init_level.s // Extend INIT_MOTEUR_LEVEL
 common, exe, INIT_NEW_GAME, 0x22C, src/hook_init_game.s // Extend INIT_NEW_GAME
+ntsc-u, exe, 0x8019f840, 0x0, src/hook_inputs.s // Extend PS1_CheckPauseAndCheatInputs
+pal-e, exe, 0x801a4458, 0x0, src/hook_inputs.s

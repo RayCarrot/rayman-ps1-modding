@@ -4,6 +4,7 @@
 
 // Extern variables
 extern LevelData level;
+extern bool PS1_Ingame;
 
 // Function prototypes
 void srand(int seed);
@@ -19,6 +20,15 @@ void init()
 void update_timer()
 {
     frames++;
+}
+
+void check_inputs()
+{
+    if (PS1_Ingame && PS1_SpecialTOUCHE(INPUT_TRIANGLE))
+    {
+        RAY_HURT();
+        //RAY_HIT(1, (Obj *)0x00);
+    }
 }
 
 void shuffle_objects()
