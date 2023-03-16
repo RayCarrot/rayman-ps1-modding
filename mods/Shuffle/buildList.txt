@@ -1,0 +1,7 @@
+// C files
+common, exe, SsUtKeyOnV, 0x0, src/timer.c src/srand.s // Overwrite some unused functions
+
+// Assembly files
+ntsc-u, exe, 0x801b9544, 0x0, src/hook_vsync.s // Extend VSYNC_OBJ_F0 which gets called from vsync
+pal-e, exe, 0x801b7f5c, 0x0, src/hook_vsync.s
+common, exe, RAY_HURT, 0xF8, src/hook_hurt.s // Extend RAY_HURT
