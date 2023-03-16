@@ -42,7 +42,7 @@ void shuffle_objects()
     // Get valid objects
     for (int i = 0; i < level.nb_objects; i++) 
     {
-        if (level.objects[i].x_pos > 0 && level.objects[i].y_pos > 0)
+        if (level.objects[i].x_pos > 0 && level.objects[i].y_pos > 0 && level.objects[i].type != TYPE_SIGNPOST && level.objects[i].type != TYPE_PANCARTE)
         {
             validObjs[validObjsCount] = i;
             validObjsCount++;
