@@ -6,6 +6,8 @@
 // TODO: Save assigned shortcuts in memory card
 // TODO: Polygon count of 200 might get reached in final boss due to text shadows
 // TODO: Disable other inputs when holding down SELECT for shortcuts
+// TODO: Setting for if last menu pos should be saved or not
+// TODO: Setting for showing values as hex
 
 // Constants
 #define MENU_STACK_SIZE 3
