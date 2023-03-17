@@ -258,6 +258,10 @@ void DISPLAY_DMENU_DISPLAY(Menu *menu)
 
         if (menuItem->type == MENU_DISPLAY && (menuItem->param_1 & (1 << 8)) != 0)
         {
+            // Display name
+            txtWidth = PS1_CalcTextWidth(menuItem->text, 2);
+            display_text(menuItem->text, 12, displayY, 2, 1);
+
             size = menuItem->param_1 & 0xFF;
 
             if (size == 1)
@@ -267,13 +271,14 @@ void DISPLAY_DMENU_DISPLAY(Menu *menu)
             else if (size == 4)
                 sprintf((char *)&str, "%d", *(int *)menuItem->param_0);
 
-            // Fix for negative numbers
+            // Fix for negative numbers since game's font lacks a minus sign
             if (str[0] == '-')
-                str[0] = 'n';
+            {
+                str[0] = ' ';
+                display_text("m", 12 + txtWidth + 6, displayY, 2, 3);
+                txtWidth += 8;
+            }
             
-            txtWidth = PS1_CalcTextWidth(menuItem->text, 2);
-            display_text(menuItem->text, 12, displayY, 2, 1);
-
             display_text((char *)&str, 12 + txtWidth + 6, displayY, 2, 2);
 
             displayY += 16;
