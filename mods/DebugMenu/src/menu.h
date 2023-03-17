@@ -3,6 +3,14 @@
 
 #include <export.h>
 
+#define DISPLAY_SIZE_MASK 3
+#define DISPLAY_INT8 1
+#define DISPLAY_INT16 2
+#define DISPLAY_INT32 3
+#define DISPLAY_SIGNED 1 << 2
+#define DISPLAY_DYNAMIC 1 << 3
+#define DISPLAY_TOGGLED 1 << 15
+
 // Macros
 #define MENU_SUB_MENU(name, subMenu) { .text=name, .type=MENU_SUB_MENU, .param_0=subMenu}
 #define MENU_ACTION(name, func) { .text=name, .type=MENU_ACTION, .param_0=func}

@@ -160,7 +160,7 @@ void DO_DMENU_ACTION(MenuItem *menuItem)
             break;
 
         case MENU_DISPLAY:
-            menuItem->param_1 ^= 1 << 8;
+            menuItem->param_1 ^= DISPLAY_TOGGLED;
             break;
     }
 }
@@ -203,7 +203,7 @@ void DISPLAY_DMENU(Menu *menu)
             if (menuItem->type == MENU_TOGGLE)
                 toggled = ((int (*)(MenuItem *, int toggle))menuItem->param_0)(menuItem, 0);
             else
-                toggled = (menuItem->param_1 & (1 << 8)) != 0;
+                toggled = (menuItem->param_1 & DISPLAY_TOGGLED) != 0;
 
             if (toggled)
                 display_text("on", 120, yPos, 2, color);
@@ -234,44 +234,46 @@ void DISPLAY_DMENU(Menu *menu)
 
 void DISPLAY_ALL_DMENU_DISPLAY()
 {
-    printf("0\n");
     if (!PS1_Ingame)
         return;
 
-    printf("1\n");
     displayY = 64;
-    printf("2\n");
     DISPLAY_DMENU_DISPLAY(&main_menu);
 }
 
 void DISPLAY_DMENU_DISPLAY(Menu *menu)
 {
     char str[12];
-    byte size;
     int txtWidth;
+    int value;
     MenuItem *menuItem = menu->items;
-
-    printf("3\n");
 
     for (byte i = 0; i < menu->count; i++)
     {
         if (menuItem->type == MENU_SUB_MENU)
             DISPLAY_DMENU_DISPLAY(menuItem->param_0);
 
-        if (menuItem->type == MENU_DISPLAY && (menuItem->param_1 & (1 << 8)) != 0)
+        if (menuItem->type == MENU_DISPLAY && (menuItem->param_1 & DISPLAY_TOGGLED) != 0)
         {
             // Display name
             txtWidth = PS1_CalcTextWidth(menuItem->text, 2);
             display_text(menuItem->text, 12, displayY, 2, 1);
 
-            size = menuItem->param_1 & 0xFF;
-
-            if (size == 1)
-                sprintf((char *)&str, "%u", *(char *)menuItem->param_0);
-            else if (size == 2)
-                sprintf((char *)&str, "%d", *(short *)menuItem->param_0);
-            else if (size == 4)
-                sprintf((char *)&str, "%d", *(int *)menuItem->param_0);
+            if ((menuItem->param_1 & DISPLAY_DYNAMIC) != 0)
+                value = ((int (*)())menuItem->param_0)();
+            else if ((menuItem->param_1 & DISPLAY_SIZE_MASK) == DISPLAY_INT8)
+                value = *(char *)menuItem->param_0;
+            else if ((menuItem->param_1 & DISPLAY_SIZE_MASK) == DISPLAY_INT16)
+                value = *(short *)menuItem->param_0;
+            else if ((menuItem->param_1 & DISPLAY_SIZE_MASK) == DISPLAY_INT32)
+                value = *(int *)menuItem->param_0;
+            else
+                value = 0;
+            
+            if ((menuItem->param_1 & DISPLAY_SIGNED) != 0)
+                sprintf((char *)&str, "%d", value);
+            else
+                sprintf((char *)&str, "%u", value);
 
             // Fix for negative numbers since game's font lacks a minus sign
             if (str[0] == '-')
