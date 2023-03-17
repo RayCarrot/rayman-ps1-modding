@@ -9,6 +9,7 @@
 #define MENU_ACTION_PARAM(name, func, param) { .text=name, .type=MENU_ACTION, .param_0=func, .param_1=param}
 #define MENU_TOGGLE(name, func) { .text=name, .type=MENU_TOGGLE, .param_0=func}
 #define MENU_TOGGLE_PARAM(name, func, param) { .text=name, .type=MENU_TOGGLE, .param_0=func, .param_1=param}
+#define MENU_DISPLAY(name, addr, size) { .text=name, .type=MENU_DISPLAY, .param_0=addr, .param_1=size}
 #define MENU_NONE(name) { .text=name, .type=MENU_NONE}
 #define MENU(varName, name, ...) MenuItem varName##Items[] = {\
         __VA_ARGS__\
@@ -16,7 +17,7 @@
   Menu varName = { .text = name, .count = sizeof(varName##Items)/sizeof(varName##Items[0]), .items = varName##Items };\
 
 // Enums
-enum MENUITEMTYPE { MENU_NONE, MENU_SUB_MENU, MENU_ACTION, MENU_TOGGLE };
+enum MENUITEMTYPE { MENU_NONE, MENU_SUB_MENU, MENU_ACTION, MENU_TOGGLE, MENU_DISPLAY };
 
 // Structs
 typedef struct 
@@ -43,6 +44,8 @@ void CHANGE_DMENU(Menu *menu);
 void DO_DMENU(Menu *menu);
 void DO_DMENU_ACTION(MenuItem *menuItem);
 void DISPLAY_DMENU(Menu *menu);
+void DISPLAY_ALL_DMENU_DISPLAY();
+void DISPLAY_DMENU_DISPLAY(Menu *menu);
 void DO_DMENU_SHORTCUTS(Menu *menu);
 bool check_inputs();
 

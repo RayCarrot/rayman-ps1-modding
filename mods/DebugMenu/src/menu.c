@@ -40,6 +40,7 @@ char input_names[] =  // Single string to save space
     "r2\0"
     "l1\0"
     "l2";
+short displayY;
 
 void DO_DMENUS()
 {
@@ -73,7 +74,7 @@ void DO_DMENU(Menu *menu)
 {
     MenuItem *selectedItem = menu->items + menu->selectedItem;
 
-    if (TOUCHE(INPUT_SELECT) && (selectedItem->type == MENU_ACTION || selectedItem->type == MENU_TOGGLE))
+    if (TOUCHE(INPUT_SELECT) && (selectedItem->type == MENU_ACTION || selectedItem->type == MENU_TOGGLE || selectedItem->type == MENU_DISPLAY))
     {
         is_mapping_shortcuts = 1;
 
@@ -155,6 +156,10 @@ void DO_DMENU_ACTION(MenuItem *menuItem)
         case MENU_TOGGLE:
             ((int (*)(MenuItem *, int toggle))menuItem->param_0)(menuItem, 1);
             break;
+
+        case MENU_DISPLAY:
+            menuItem->param_1 ^= 1 << 8;
+            break;
     }
 }
 
@@ -162,6 +167,7 @@ void DISPLAY_DMENU(Menu *menu)
 {
     short yPos;
     byte color;
+    bool toggled;
 
     display_text(menu->text, 20, 65, 2, 0x02);
 
@@ -190,9 +196,14 @@ void DISPLAY_DMENU(Menu *menu)
         display_text(menuItem->text, 20, yPos, 2, color);
 
         // Show toggled state if a toggle
-        if (menuItem->type == MENU_TOGGLE)
+        if (menuItem->type == MENU_TOGGLE || menuItem->type == MENU_DISPLAY)
         {
-            if (((int (*)(MenuItem *, int toggle))menuItem->param_0)(menuItem, 0))
+            if (menuItem->type == MENU_TOGGLE)
+                toggled = ((int (*)(MenuItem *, int toggle))menuItem->param_0)(menuItem, 0);
+            else
+                toggled = (menuItem->param_1 & (1 << 8)) != 0;
+
+            if (toggled)
                 display_text("on", 120, yPos, 2, color);
             else
                 display_text("off", 120, yPos, 2, color);
@@ -217,6 +228,59 @@ void DISPLAY_DMENU(Menu *menu)
         yPos += MENU_LINE_HEIGHT;
         menuItem++;
     }
+}
+
+void DISPLAY_ALL_DMENU_DISPLAY()
+{
+    printf("0\n");
+    if (!PS1_Ingame)
+        return;
+
+    printf("1\n");
+    displayY = 64;
+    printf("2\n");
+    DISPLAY_DMENU_DISPLAY(&main_menu);
+}
+
+void DISPLAY_DMENU_DISPLAY(Menu *menu)
+{
+    char str[12];
+    byte size;
+    int txtWidth;
+    MenuItem *menuItem = menu->items;
+
+    printf("3\n");
+
+    for (byte i = 0; i < menu->count; i++)
+    {
+        if (menuItem->type == MENU_SUB_MENU)
+            DISPLAY_DMENU_DISPLAY(menuItem->param_0);
+
+        if (menuItem->type == MENU_DISPLAY && (menuItem->param_1 & (1 << 8)) != 0)
+        {
+            size = menuItem->param_1 & 0xFF;
+
+            if (size == 1)
+                sprintf((char *)&str, "%u", *(char *)menuItem->param_0);
+            else if (size == 2)
+                sprintf((char *)&str, "%d", *(short *)menuItem->param_0);
+            else if (size == 4)
+                sprintf((char *)&str, "%d", *(int *)menuItem->param_0);
+
+            // Fix for negative numbers
+            if (str[0] == '-')
+                str[0] = 'n';
+            
+            txtWidth = PS1_CalcTextWidth(menuItem->text, 2);
+            display_text(menuItem->text, 12, displayY, 2, 1);
+
+            display_text((char *)&str, 12 + txtWidth + 6, displayY, 2, 2);
+
+            displayY += 16;
+        }
+
+        menuItem++;
+    } 
 }
 
 void DO_DMENU_SHORTCUTS(Menu *menu)
