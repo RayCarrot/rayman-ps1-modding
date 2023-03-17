@@ -39,6 +39,8 @@ int small_ray(MenuItem *menuItem, int toggle)
 
 void show_vram()
 {
-    // TODO: This doesn't reset all display values correctly thus causing screen shake. We should manually fix that.
     PS1_DisplayVRAM();
+
+    // Fix developer bug... they probably made a typo in the code
+    PS1_Display2.field0_0x0.pad0 = 0;
 }

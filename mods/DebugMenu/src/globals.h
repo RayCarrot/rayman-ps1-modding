@@ -22,3 +22,4 @@ extern short jump_time;
 extern short decalage_en_cours;
 extern short ray_wind_force;
 extern bool PS1_Ingame;
+extern Display PS1_Display2;
