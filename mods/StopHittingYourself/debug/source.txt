@@ -1,0 +1,6 @@
+debug/obj/dummy.o src/dummy.o
+debug/dep/dummy.dep src/dummy.dep
+debug/obj/stophittingyourself.o src/stophittingyourself.o
+debug/dep/stophittingyourself.dep src/stophittingyourself.dep
+debug/obj/hook_dopoing_switchofffist.o src/hook_dopoing_switchofffist.o
+debug/dep/hook_dopoing_switchofffist.dep src/hook_dopoing_switchofffist.dep

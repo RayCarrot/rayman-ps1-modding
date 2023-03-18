@@ -1,0 +1,2 @@
+src/stophittingyourself.o: src/stophittingyourself.c \
+ d:\dev\psx-modding-toolchain-main\games\rayman-ps1-modding-main\include\export.h

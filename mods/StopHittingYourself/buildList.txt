@@ -1,0 +1,6 @@
+// C files
+ntsc-u, exe, FntPrint, 0x0, src/dummy.c // Blank out FntPrint
+ntsc-u, exe, FntPrint, 0x8, src/stophittingyourself.c // Overwrite remaining FntPrint function after the dummy code
+
+// Assembly files
+ntsc-u, exe, 0x8016ca80, 0x0, src/hook_dopoing_switchofffist.s // Extend do_rayman
