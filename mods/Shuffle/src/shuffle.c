@@ -60,17 +60,22 @@ void check_inputs()
 typedef struct Position {
     short x;
     short y;
+    short animX;
+    short animY;
 } Position;
 
 #define FLAG_ISALIVE 0x400
 
-void shuffle_objects_of_types_func(int numObjectTypes, enum ObjType objectTypes[]) {
-        Obj *src;
+void shuffle_objects_of_types_func(int numObjectTypes, enum ObjType objectTypes[]) 
+{
+    Obj *src;
     Obj *dst;
     byte validObjs[256];
     int validObjsCount = 0;
     byte shuffledObjs[256];
     Position preShuffleCoords[256];
+    short animX, animY, animW, animH;
+    Position *srcCoords, *dstCoords;
 
     // Get valid objects
     for (int i = 0; i < level.nb_objects; i++) 
@@ -111,6 +116,10 @@ void shuffle_objects_of_types_func(int numObjectTypes, enum ObjType objectTypes[
         src = &level.objects[validObjs[i]];
         preShuffleCoords[i].x = src->init_x_pos;
         preShuffleCoords[i].y = src->init_y_pos;
+
+        GET_ANIM_POS(src, &animX, &animY, &animW, &animH);
+        preShuffleCoords[i].animX = animX + (animW / 2) - src->init_x_pos;
+        preShuffleCoords[i].animY = animY + (animH / 2) - src->init_y_pos;
     }
 
     // Set positions
@@ -118,9 +127,11 @@ void shuffle_objects_of_types_func(int numObjectTypes, enum ObjType objectTypes[
     {
         src = &level.objects[validObjs[i]];
         dst = &level.objects[validObjs[shuffledObjs[i]]];
+        srcCoords = &preShuffleCoords[i];
+        dstCoords = &preShuffleCoords[shuffledObjs[i]];
 
-        short newX = preShuffleCoords[i].x + src->offset_bx - dst->offset_bx;
-        short newY = preShuffleCoords[i].y + src->offset_by - dst->offset_by;
+        short newX = srcCoords->x + srcCoords->animX - dstCoords->animX;        
+        short newY = srcCoords->y + srcCoords->animY - dstCoords->animY;
 
         if (newX < 0)
             newX = 0;
