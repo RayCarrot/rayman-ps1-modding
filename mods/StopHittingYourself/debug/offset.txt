@@ -1,3 +1,0 @@
-srcdummyc 0x53274
-srcstophittingyourselfc 0x5327c
-srchook_dopoing_switchofffists 0x0
