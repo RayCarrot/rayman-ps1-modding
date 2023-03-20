@@ -11,8 +11,9 @@ extern bool PS1_Ingame;
 extern Obj ray;
 
 #ifdef DEBUG
-    extern short ray_mode;
-    extern ushort RayEvts;
+extern short ray_mode;
+extern ushort RayEvts;
+extern WorldInfo t_world_info[24];
 #endif
 
 // Function prototypes
@@ -49,8 +50,13 @@ void check_inputs()
         RayEvts |= 1 << 2; // helico
         RayEvts |= 1 << 7; // grab
         RayEvts |= 1 << 8; // run
+        
         // Toggle noclip
         ray_mode = -ray_mode;
+        
+        // Unlock all levels
+        for (byte i = 0; i < 24; i++)
+            t_world_info[i].state = 1;
     }
     #endif
 }
