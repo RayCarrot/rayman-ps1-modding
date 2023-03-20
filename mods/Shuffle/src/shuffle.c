@@ -3,9 +3,17 @@
 #define RAND_MAX 0x7FFF
 #define NUM_ELEMENTS(x)  (sizeof(x) / sizeof((x)[0]))
 
+#define DEBUG // Debug features, remove this for builds
+
 // Extern variables
 extern LevelData level;
 extern bool PS1_Ingame;
+extern Obj ray;
+
+#ifdef DEBUG
+    extern short ray_mode;
+    extern ushort RayEvts;
+#endif
 
 // Function prototypes
 void srand(int seed);
@@ -29,7 +37,22 @@ void check_inputs()
     {
         //RAY_HURT();
         RAY_HIT(1, (Obj *)0x00);
+        //shuffle_objects();
     }
+
+    #ifdef DEBUG
+    if (PS1_Ingame && PS1_SpecialTOUCHE(INPUT_SELECT))
+    {
+        // Unlock powers
+        RayEvts |= 1 << 0; // fist
+        RayEvts |= 1 << 1; // hang
+        RayEvts |= 1 << 2; // helico
+        RayEvts |= 1 << 7; // grab
+        RayEvts |= 1 << 8; // run
+        // Toggle noclip
+        ray_mode = -ray_mode;
+    }
+    #endif
 }
 
 #define shuffle_objects_of_types(a) shuffle_objects_of_types_func(NUM_ELEMENTS(a), a)
@@ -38,6 +61,8 @@ typedef struct Position {
     short x;
     short y;
 } Position;
+
+#define FLAG_ISALIVE 0x400
 
 void shuffle_objects_of_types_func(int numObjectTypes, enum ObjType objectTypes[]) {
         Obj *src;
@@ -50,7 +75,7 @@ void shuffle_objects_of_types_func(int numObjectTypes, enum ObjType objectTypes[
     // Get valid objects
     for (int i = 0; i < level.nb_objects; i++) 
     {
-        if (level.objects[i].active_flag==ACTIVE_ALIVE && level.objects[i].x_pos > 0 && level.objects[i].y_pos > 0 && level.objects[i].type != TYPE_SIGNPOST && level.objects[i].type != TYPE_PANCARTE)
+        if (/*(level.objects[i].flags & FLAG_ISALIVE!=0) && */level.objects[i].x_pos > 0 && level.objects[i].y_pos > 0)
         {
             // Check if the object type list contains this object's type
             for(int j=0;j<numObjectTypes;j++) {
@@ -81,15 +106,15 @@ void shuffle_objects_of_types_func(int numObjectTypes, enum ObjType objectTypes[
     }
     
     // Store pre-shuffle coordinates
-    for (int i = 0; i < validObjsCount - 1; i++) 
+    for (int i = 0; i < validObjsCount; i++) 
     {
         src = &level.objects[validObjs[i]];
-        preShuffleCoords[i].x = src->x_pos;
-        preShuffleCoords[i].y = src->y_pos;
+        preShuffleCoords[i].x = src->init_x_pos;
+        preShuffleCoords[i].y = src->init_y_pos;
     }
 
     // Set positions
-    for (int i = 0; i < validObjsCount - 1; i++) 
+    for (int i = 0; i < validObjsCount; i++) 
     {
         src = &level.objects[validObjs[i]];
         dst = &level.objects[validObjs[shuffledObjs[i]]];
@@ -105,6 +130,13 @@ void shuffle_objects_of_types_func(int numObjectTypes, enum ObjType objectTypes[
 
         dst->init_x_pos = dst->x_pos = newX;
         dst->init_y_pos = dst->y_pos = newY;
+
+        // Calculate the screen position
+        calc_obj_pos(dst);
+        // Check if object on screen
+        //if (in_action_zone(dst->screen_x_pos,dst->screen_y_pos,dst, (dst->flags >> 0xb & 1))) {
+            make_active(dst, 1);
+        //}
     }
 }
 
@@ -215,14 +247,14 @@ void shuffle_objects()
         TYPE_MITE2,
         TYPE_MORNINGSTAR,
         TYPE_MORNINGSTAR_MOUNTAI,
-        TYPE_MOSKITO,
-        TYPE_MOSKITO2,
+        //TYPE_MOSKITO,
+        //TYPE_MOSKITO2,
         TYPE_MOVE_AUTOJUMP_PLAT,
         TYPE_MOVE_OUYE,
         TYPE_MST_COPAIN,
         TYPE_MST_FRUIT1,
         TYPE_MST_FRUIT2,
-        TYPE_MST_SCROLL,
+        //TYPE_MST_SCROLL,
         TYPE_MST_SHAKY_FRUIT,
         TYPE_MUS_WAIT,
         TYPE_NEIGE,
@@ -283,8 +315,8 @@ void shuffle_objects()
         TYPE_SAXO2,
         TYPE_SAXO3,
         TYPE_SCORPION,
-        TYPE_SCROLL,
-        TYPE_SCROLL_SAX,
+        //TYPE_SCROLL,
+        //TYPE_SCROLL_SAX,
         //TYPE_SIGNPOST,
         TYPE_SKO_PINCE,
         TYPE_SMA_BOMB,
@@ -329,9 +361,7 @@ void shuffle_objects()
         TYPE_WIZ,
         TYPE_WIZARD1
     };
-    ObjType objectTypesRings[] = {
-        TYPE_PT_GRAPPIN
-    };
+    
     ObjType objectTypesPlatforms[] = {
         TYPE_AUTOJUMP_PLAT,
         TYPE_BB1_PLAT,
@@ -350,6 +380,7 @@ void shuffle_objects()
         TYPE_MOVE_START_PLAT,
         TYPE_ONOFF_PLAT,
         TYPE_PLATFORM,
+        TYPE_PT_GRAPPIN, // rings
         TYPE_PUNAISE1,
         TYPE_SLOPEY_PLAT,
         TYPE_SWING_PLAT,
@@ -358,6 +389,5 @@ void shuffle_objects()
     };
     
     shuffle_objects_of_types(objectTypesDefault);
-    shuffle_objects_of_types(objectTypesRings);
     shuffle_objects_of_types(objectTypesPlatforms);
 }
