@@ -62,7 +62,7 @@ void setTingStateAndIncreaseCounter(Obj *obj, int substate)
 void DISPLAY_FIXE_Extended(Obj* divObj, uint sprite, short x, short y, byte p5)
 {
     // Perform the original call first:
-    display_sprite_NoClip(divObj, sprite, x, y, p5);
+    display_sprite(divObj, sprite, x, y, p5);
 
     // Ting count
 
@@ -93,11 +93,11 @@ void DISPLAY_FIXE_Extended(Obj* divObj, uint sprite, short x, short y, byte p5)
     short xPos = tingX+0x23 - i*0xF;
     for (j = i - 1; j > -1; j--) 
     {
-        display_sprite_NoClip(divObj, digits[j] + 0x1c, xPos, tingY, 0);
+        display_sprite(divObj, digits[j] + 0x1c, xPos, tingY, 0);
         xPos += 0xF;
     }
 
     // Ting counter sprite in the bottom-right
-    display_sprite_NoClip(divObj, 0x38, tingX - i*0xF, tingY, 0);
+    display_sprite(divObj, 0x38, tingX - i*0xF, tingY, 0);
 
 }

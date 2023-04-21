@@ -12,7 +12,7 @@ MENU(general_menu, "general",
 
 void checkpoint()
 {
-    ray.flags |= 0x800;
+    ray.flags |= OBJ_ACTIVE;
     restore_gendoor_link();
     saveGameState(0x0, &save1);
     correct_gendoor_link();
@@ -20,7 +20,7 @@ void checkpoint()
 
 void die()
 {
-    if ((ray.flags & 0xc00) == 0xc00)
+    if ((ray.flags & (OBJ_ALIVE | OBJ_ACTIVE)) == (OBJ_ALIVE | OBJ_ACTIVE))
     {
         ray.hit_points = 0;
         RAY_HIT(1, (Obj *)0x00);

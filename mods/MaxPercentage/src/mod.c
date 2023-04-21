@@ -29,9 +29,9 @@ void on_load_level()
         coll->remainingInLevel = 0;
 
         // Add the bonus flag to mark it as being a collectible bonus object
-        flags[coll->type1].FlagByte_1 |= 2;
+        flags[coll->type1].flags1 |= OBJ1_BONUS;
         if (coll->type2 != TYPE_INVALID)
-            flags[coll->type2].FlagByte_1 |= 2; // Add the bonus flag to mark it as being a collectible bonus object
+            flags[coll->type2].flags1 |= OBJ1_BONUS; // Add the bonus flag to mark it as being a collectible bonus object
     }
     
     // Get remaining collectibles in the level
@@ -57,7 +57,7 @@ void on_load_level()
                 collect_obj(obj);
 
                 // Since this happens after initializing the objects we have to kill the object outself here
-                obj->flags &= ~(0x400 | 0x800);
+                obj->flags &= ~(OBJ_ALIVE | OBJ_ACTIVE);
             }
         }
         

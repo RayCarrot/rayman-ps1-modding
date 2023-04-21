@@ -50,11 +50,11 @@ void snifRayIsDead_Extended()
 void DISPLAY_FIXE_Extended(Obj *divObj)
 {
     // Rayman
-    //display_sprite_NoClip(obj, 0x1b, 8, 10, 0); // Original sprite
+    //display_sprite(obj, 0x1b, 8, 10, 0); // Original sprite
     PS1_DrawSprite(raytmp.sprites + 124, 8, 10, 1); // x: 8, y: 10, flag: flipX
 
     // Tings
-    display_sprite_NoClip(divObj, 0x38, 0xfc, 10, 0);
+    display_sprite(divObj, 0x38, 0xfc, 10, 0);
 
     // Death count
 
@@ -64,7 +64,7 @@ void DISPLAY_FIXE_Extended(Obj *divObj)
 
     if (num == 0)
     {
-        display_sprite_NoClip(divObj, 0 + 0x1c, 0x2f, 10, 0);
+        display_sprite(divObj, 0 + 0x1c, 0x2f, 10, 0);
         return;
     }
 
@@ -82,7 +82,7 @@ void DISPLAY_FIXE_Extended(Obj *divObj)
     short xPos = 0x2f;
     for (j = i - 1; j > -1; j--) 
     {
-        display_sprite_NoClip(divObj, digits[j] + 0x1c, xPos, 10, 0);
+        display_sprite(divObj, digits[j] + 0x1c, xPos, 10, 0);
         xPos += 0xF;
     }
 }
