@@ -1098,6 +1098,7 @@ PS1_DefaultRayEvts = 0x801cee98;
 PS1_ButtonStates = 0x801ceefc;
 PS1_PrevButtonStates = 0x801cef00;
 PS1_PolygonIndexTableCount = 0x801cef74;
+PS1_DrawSpriteSemiTrans = 0x801cef76;
 pma_couteaux = 0x801cefa8;
 pma_sequence = 0x801cefb0;
 place_sequence = 0x801cefb8;
