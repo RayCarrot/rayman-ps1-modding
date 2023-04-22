@@ -89,12 +89,12 @@ void draw_displaced_sprite(Sprite *sprite, short x, short y,
     PS1_PrevPrim = p;
 }
 
-void draw_forward_slash(short x, short y)
+void draw_forward_slash(short x, short y, uint color)
 {
     Sprite *sprite;
 
     sprite = &alpha.sprites[46];
-    sprite->clut = GetClut(0x300, 0x1ec);
+    sprite->clut = GetClut(0x300 + color * 0x10, 0x1ec);
 
     draw_displaced_sprite(sprite, x, y - sprite->height, 
         8, 0,

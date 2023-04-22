@@ -9,6 +9,6 @@ void draw_displaced_sprite(Sprite *sprite, short x, short y,
     short x1, short y1, 
     short x2, short y2, 
     short x3, short y3);
-void draw_forward_slash(short x, short y);
+void draw_forward_slash(short x, short y, uint color);
     
 #endif

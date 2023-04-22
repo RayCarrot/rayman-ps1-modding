@@ -102,7 +102,7 @@ void display_hud_level()
 
         atoi(coll->remainingInLevel, numStr);
 
-        display_text((char *)&numStr, xPos + TXT_X_OFF, yPos + TXT_Y_OFF + (coll->height >> 1) - (TXT_Y_OFF / 2), 2, 0);
+        display_text((char *)&numStr, xPos + TXT_X_OFF, yPos + TXT_Y_OFF + (coll->height >> 1) - (TXT_Y_OFF / 2), 2, TXT_COLOR_NORMAL);
 
         yPos += coll->height + 6;
     }
@@ -116,6 +116,7 @@ void display_hud_total()
     short collXPos;
     short collYPos;
     char numStr[5];
+    uint color;
 
     xPos = 6;
 
@@ -133,20 +134,22 @@ void display_hud_total()
     {
         coll = &collectibles[i];
 
+        color = coll->totalCollectedCount == coll->totalCount ? TXT_COLOR_COMPLETE : TXT_COLOR_NORMAL;
+
         draw_scaled_sprite(&mapobj->sprites[coll->sprite], xPos, yPos, coll->width, coll->height);
 
         collXPos = xPos + TXT_X_OFF;
         collYPos = yPos + TXT_Y_OFF + (coll->height >> 1) - (TXT_Y_OFF / 2);
 
         atoi(coll->totalCollectedCount, numStr);
-        display_text((char *)&numStr, collXPos, collYPos, 2, 0);
+        display_text((char *)&numStr, collXPos, collYPos, 2, color);
         collXPos += PS1_CalcTextWidth((char *)&numStr, 2);
 
-        draw_forward_slash(collXPos, collYPos);
+        draw_forward_slash(collXPos, collYPos, color);
         collXPos += 10;
 
         atoi(coll->totalCount, numStr);
-        display_text((char *)&numStr, collXPos, collYPos, 2, 0);
+        display_text((char *)&numStr, collXPos, collYPos, 2, color);
 
         yPos += coll->height + 6;
     }
