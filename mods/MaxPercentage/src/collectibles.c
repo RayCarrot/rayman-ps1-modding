@@ -10,6 +10,7 @@ Collectible collectibles[] =
     { .type1 = TYPE_ONEUP,         .type2 = TYPE_INVALID, .sprite = 15, .width = 16, .height = 28, .totalCount = 65, },   // Life
     { .type1 = TYPE_JAUGEUP,       .type2 = TYPE_POWERUP, .sprite = 26, .width = 16, .height = 13, .totalCount = 112, },  // Power
     { .type1 = TYPE_POING_POWERUP, .type2 = TYPE_INVALID, .sprite = 2,  .width = 16, .height = 13, .totalCount = 82, },   // Speed/gold fist
+    { .type1 = TYPE_SUPERHELICO,   .type2 = TYPE_INVALID, .sprite = 47, .width = 16, .height = 17, .totalCount = 4, },    // Helicopter potion
 };
 
 Collectible *findCollectible(Obj * obj)
