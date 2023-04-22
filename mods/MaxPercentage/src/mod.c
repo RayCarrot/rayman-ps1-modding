@@ -17,6 +17,13 @@ void finish_bonus_level(int world, int level)
     finishedBonus = TRUE;
 }
 
+void on_new_game()
+{
+    // Reset total values
+    for (int i = 0; i < COLLECTIBLES_COUNT; i++)
+        collectibles[i].totalCollectedCount = 0;
+}
+
 void on_load_level()
 {
     Obj *obj;
