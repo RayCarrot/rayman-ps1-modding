@@ -7,6 +7,7 @@ ntsc-u, exe, 0x8013f458, 0x0, src/asm/hook_level_loop.s // Extend display_time
 ntsc-u, exe, 0x8015a8b0, 0x0, src/asm/hook_perfect_bonus.s // Replace call to set_bonus_map_complete
 ntsc-u, exe, 0x8012e544, 0x0, src/asm/hook_credits.s // Extend DISPLAY_TXT_CREDITS
 ntsc-u, exe, 0x8013eb30, 0x0, src/asm/hook_world_choice.s // Extend DisplayJumellesNormal
+ntsc-u, exe, 0x8013c6e8, 0x0, src/asm/hook_display_obj.s // Replace call to display2
 
 ntsc-u, exe, 0x80142b80, 0x0, src/asm/hook_collect_cage.s // Replace call to take_bonus
 ntsc-u, exe, 0x8014527c, 0x0, src/asm/hook_collect_wiz.s // Replace call to PlaySnd

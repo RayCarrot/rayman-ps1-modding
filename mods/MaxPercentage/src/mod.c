@@ -22,24 +22,14 @@ void on_load_level()
     Obj *obj;
     Collectible *coll;
 
-    // Reset level values and update obj flags
+    // Reset level values
     for (int i = 0; i < COLLECTIBLES_COUNT; i++)
-    {
-        coll = &collectibles[i];
-        coll->remainingInLevel = 0;
-
-        // Add the bonus flag to mark it as being a collectible bonus object
-        flags[coll->type1].flags1 |= OBJ1_BONUS;
-        if (coll->type2 != TYPE_INVALID)
-            flags[coll->type2].flags1 |= OBJ1_BONUS; // Add the bonus flag to mark it as being a collectible bonus object
-    }
+        collectibles[i].remainingInLevel = 0;
     
     // Get remaining collectibles in the level
     for (int i = 0; i < level.nb_objects; i++)
     {
-        obj = &level.objects[i];
-
-        coll = findCollectible(obj);
+        coll = findCollectible(&level.objects[i]);
 
         if (coll != NULL && !bonus_taken(i))
             coll->remainingInLevel++;
@@ -53,12 +43,7 @@ void on_load_level()
             obj = &level.objects[i];
 
             if (obj->type == TYPE_WIZARD1)
-            {
                 collect_obj(obj);
-
-                // Since this happens after initializing the objects we have to kill the object outself here
-                obj->flags &= ~(OBJ_ALIVE | OBJ_ACTIVE);
-            }
         }
         
         finishedBonus = FALSE;
@@ -165,4 +150,13 @@ void display_hud_total()
 
         yPos += coll->height + 6;
     }
+}
+
+void display_obj(Obj *obj)
+{
+    // Draw transparent if collected
+    if (bonus_taken(obj->id))
+        PS1_DrawSpriteSemiTrans = 1;
+
+    display2(obj);
 }

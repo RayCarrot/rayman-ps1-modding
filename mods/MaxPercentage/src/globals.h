@@ -12,12 +12,12 @@ extern short PS1_PolygonsCount;
 extern Display *PS1_CurrentDisplay;
 extern Display PS1_Display1;
 extern void *PS1_PrevPrim;
-extern ObjTypeFlags flags[256];
 extern bool in_pause;
 extern Font alpha;
 extern short xmap;
 extern short ymap;
 extern short bonus_map;
 extern Obj *mapobj;
+extern byte PS1_DrawSpriteSemiTrans;
 
 #endif
