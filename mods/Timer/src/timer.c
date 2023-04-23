@@ -15,7 +15,6 @@ enum TIMERMODE { TIMER_OFF, TIMER_GAME, TIMER_WORLD, TIMER_LEVEL, TIMER_DEATH };
 #endif
 
 // External variables
-extern bool dans_la_map_monde;
 extern byte dark_phase;
 extern byte world_index;
 extern short new_world;
@@ -64,13 +63,28 @@ void display_timer()
     display_text(str, 230, 230, 2, 0);
 }
 
-void display_timer_level()
+bool display_timer_bonus(int world, int level)
 {
-    // Do not display timer if we're on the worldmap. The reason for 
-    // this is because drawing text on the worldmap too early on causes 
-    // the sprite clipping for the medallions not to work. Not sure why.
-    if (!dans_la_map_monde)
-        display_timer();
+    display_timer();
+
+    // Call and return function we overwrote
+    return get_bonus_map_complete(world, level);
+}
+
+void display_timer_level(short leftTime)
+{
+    display_timer();
+
+    // Call function we overwrote
+    display_time(leftTime);
+}
+
+void display_timer_credits()
+{
+    display_timer();
+
+    // Call function we overwrote
+    DISPLAY_TXT_CREDITS();
 }
 
 void set_timer_mode()
