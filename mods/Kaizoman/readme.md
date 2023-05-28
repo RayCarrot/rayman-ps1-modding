@@ -12,6 +12,7 @@ Changes:
 - Added credits lines to the start
 - Disable run and remove checkpoints in Mr Dark fight
 - Instant death by pressing triangle while paused
+- Speed storage display when pressing select
 
 Additionally the following mods get built with this one:
 - DeathCounter
