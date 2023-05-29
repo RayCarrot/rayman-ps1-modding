@@ -32,7 +32,6 @@ void display_speed()
 
     if (is_speed_display_visible)
     {
-        display_speed_value("air", ray.eta[2][0].speed_x_left, ray.eta[2][0].speed_x_right, 85, 28);
-        display_speed_value("roll", ray.eta[2][0x11].speed_x_left, ray.eta[2][0x11].speed_x_right, 165, 28);
+        display_speed_value("speed", ray.eta[2][0x11].speed_x_left, ray.eta[2][0x11].speed_x_right, 125, 28);
     }
 }
