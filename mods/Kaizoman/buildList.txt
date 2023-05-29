@@ -31,6 +31,7 @@ ntsc-u, exe, dyingSequence,         0x0, src/moskito/dyingSequence.c
 pal-e, exe, dyingSequence,         0x0, src/moskito/dyingSequence.c
 ntsc-u, exe, 0x80194920,            0x0, src/moskito/increase_bzzit_health.s
 pal-e, exe, 0x80199334,            0x0, src/moskito/increase_bzzit_health.s
+ntsc-u, exe, 0x801593c0,            0x0, src/moskito/hook_init_moteur.s // TODO: Add for pal
 
 ntsc-u, exe, credits,               0x0, src/credits/credits.c src/credits/credits_strings.c
 //pal-e, exe, credits,               0x0, src/credits/credits.c src/credits/credits_strings.c // conflicts in pal version
@@ -54,8 +55,8 @@ pal-e, exe, 0x8018c804,            0x0, src/dark_no_checkpoint/hook_dead.s
 ntsc-u, exe, 0x8019f840,            0x0, src/inputs/hook_inputs.s
 pal-e, exe, 0x801a4458,            0x0, src/inputs/hook_inputs.s
 
-ntsc-u, exe, LoadAverage12,         0x0, src/speed_display/speed_display.c // 1864 unused bytes
-pal-e, exe, LoadAverage12,          0x0, src/speed_display/speed_display.c // 1864 unused bytes
+ntsc-u, exe, LoadAverage12,         0x0, src/speed_display/speed_display.c src/moskito/reset_bossSafeTimer.c // 1864 unused bytes
+pal-e, exe, LoadAverage12,          0x0, src/speed_display/speed_display.c src/moskito/reset_bossSafeTimer.c // 1864 unused bytes
 ntsc-u, exe, 0x8013f458,            0x0, src/speed_display/speed_display_hook.s // TODO: Add for pal
 
 add, Timer
