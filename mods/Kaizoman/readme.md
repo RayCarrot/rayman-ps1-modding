@@ -6,7 +6,6 @@ Changes:
 - Always require beating Skops to unlock Mr Dark's Dare
 - Custom level and world names
 - Add support for the Dark Rayman mod (also requires game data patches)
-- Infinite lives
 - Have bonus levels always give a new life
 - Fix Bzzit soft-lock and increase hp to 8
 - Added credits lines to the start
@@ -15,5 +14,5 @@ Changes:
 - Speed storage display when pressing select
 
 Additionally the following mods get built with this one:
-- DeathCounter
+- DeathCounter (includes infinite lives)
 - Timer

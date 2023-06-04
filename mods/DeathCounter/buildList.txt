@@ -15,3 +15,5 @@ ntsc-u, exe, 0x8018779c, 0x0, src/hook_dead.s // Extend snifRayIsDead
 pal-e, exe, 0x8018c8c0, 0x0, src/hook_dead.s // Extend snifRayIsDead
 ntsc-u, exe, 0x8013ab70, 0x0, src/hook_hud.s // Overwrite some of the hud code
 pal-e, exe, 0x8013fdc4, 0x0, src/hook_hud.s // Overwrite some of the hud code
+ntsc-u, exe, 0x8018771c, 0x0, src/nop_lose_life.s
+pal-e, exe, 0x8018c840, 0x0, src/nop_lose_life.s

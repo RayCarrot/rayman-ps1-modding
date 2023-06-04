@@ -21,9 +21,6 @@ pal-e, exe, 0x8019cd0c,            0x0, src/dark_rayman/modify_anim_frame_check.
 ntsc-u, exe, 0x801985f0,            0x0, src/dark_rayman/nop_start_pos.s
 pal-e, exe, 0x8019d010,            0x0, src/dark_rayman/nop_start_pos.s
 
-ntsc-u, exe, 0x8018771c,            0x0, src/infinite_lives/nop_lose_life.s
-pal-e, exe, 0x8018c840,            0x0, src/infinite_lives/nop_lose_life.s
-
 ntsc-u, exe, 0x80158d0c,            0x0, src/infinite_bonus_lives/force_earn_life_branch.s
 pal-e, exe, 0x8015e0cc,            0x0, src/infinite_bonus_lives/force_earn_life_branch.s
 
