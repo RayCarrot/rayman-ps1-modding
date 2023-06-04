@@ -22,7 +22,7 @@ int get_level_offset(short world, short level)
         off += nb_levels_in_world[i];
     }
 
-    return off;
+    return off + level;
 }
 
 void setup_mod()
