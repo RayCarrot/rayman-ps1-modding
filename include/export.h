@@ -861,6 +861,30 @@ typedef enum Video {
     VIDEO_WIN=5
 } Video;
 
+typedef enum RayEvts_0 {
+    RAYEVTS0_NONE=0,
+    RAYEVTS0_POING=1,
+    RAYEVTS0_HANG=2,
+    RAYEVTS0_HELICO=4,
+    RAYEVTS0_SUPER_HELICO=8,
+    RAYEVTS0_HANDSTAND_DASH=16,
+    RAYEVTS0_HANDSTAND=32,
+    RAYEVTS0_GRAIN=64,
+    RAYEVTS0_GRAP=128
+} RayEvts_0;
+
+typedef enum RayEvts_1 {
+    RAYEVTS1_NONE=0,
+    RAYEVTS1_RUN=1,
+    RAYEVTS1_DEMI=2,
+    RAYEVTS1_LUCIOLE=4,
+    RAYEVTS1_FORCE_RUN_TOGGLE=8,
+    RAYEVTS1_FORCE_RUN=16,
+    RAYEVTS1_REVERSE=32,
+    RAYEVTS1_FLAG6=64,
+    RAYEVTS1_UNUSED_DEATH=128
+} RayEvts_1;
+
 typedef struct Credit Credit, *PCredit;
 
 struct Credit {
@@ -871,6 +895,21 @@ struct Credit {
     byte cmd;
     byte color;
 };
+
+typedef struct RaymanEvents RaymanEvents, *PRaymanEvents;
+
+struct RaymanEvents {
+    enum RayEvts_0 flags0;
+    enum RayEvts_1 flags1;
+};
+
+typedef enum RayMode {
+    MODE_NONE=0,
+    MODE_RAYMAN=1,
+    MODE_RAY_ON_MS=2,
+    MODE_MORT_DE_RAYMAN=3,
+    MODE_MORT_DE_RAYMAN_ON_MS=4
+} RayMode;
 
 typedef struct WorldInfo * WorldInfo_0x8;
 
@@ -888,9 +927,27 @@ struct Poing {
     byte damage;
     bool is_charging;
     bool is_boum;
-    undefined field11_0x12;
-    undefined field12_0x13;
 };
+
+typedef enum PsxPadButtonStates {
+    PAD_NONE=0,
+    PAD_L2=1,
+    PAD_R2=2,
+    PAD_L1=4,
+    PAD_R1=8,
+    PAD_TRIANGLE=16,
+    PAD_CIRCLE=32,
+    PAD_CROSS=64,
+    PAD_SQUARE=128,
+    PAD_SELECT=256,
+    PAD_L3=512,
+    PAD_R3=1024,
+    PAD_START=2048,
+    PAD_UP=4096,
+    PAD_RIGHT=8192,
+    PAD_DOWN=16384,
+    PAD_LEFT=32768
+} PsxPadButtonStates;
 
 typedef struct Sprite * Sprite_0xE;
 
@@ -8142,7 +8199,7 @@ typedef enum ObjTypeFlags_0 {
     OBJ0_NONE=0,
     OBJ0_ALWAYS=1,
     OBJ0_BALLE=2,
-    OBJ0_FLAG2=4,
+    OBJ0_NO_COLLISION=4,
     OBJ0_HIT_RAY=8,
     OBJ0_KEEP_ACTIVE=16,
     OBJ0_DETECT_ZONE=32,
@@ -8523,6 +8580,8 @@ struct LINE_G4 {
 
 typedef struct SPRT_8 * SPRT_0xD;
 
+typedef struct POLY_FT4 * POLY_FT4_0x22;
+
 typedef struct POLY_GT4 POLY_GT4, *PPOLY_GT4;
 
 struct POLY_GT4 {
@@ -8625,7 +8684,7 @@ void DISPLAY_TXT_VIGNET(void);
 bool display_vignet_prg(void);
 void DISPLAY_GAME_VIGNET(void);
 void DISPLAY_TXT_CREDITS(void);
-undefined4 display_credits_prg(void);
+bool display_credits_prg(void);
 void DISPLAY_CREDITS(void);
 void DISPLAY_PROTOON_BACK(void);
 void DO_VICTOIRE(void);
@@ -8638,7 +8697,7 @@ void FUN_8012ecf0(void);
 void DO_AFFICHE_PAUSE(void);
 int FUN_8012eda4(int param_1,short param_2);
 int PS1_LoadToVRAM(short width,short height,short x,short y,u_long *data);
-void PS1_LoadVRAMBlock(uint param_1,uint param_2,int param_3,int param_4,undefined4 param_5,int param_6);
+void PS1_LoadVRAMBlock(uint param_1,uint param_2,int param_3,int param_4,int baseX,int baseY);
 void FUN_8012f2cc(void);
 void PouvoirsParMap(void);
 void PS1_ResetSaveZone(void);
@@ -8789,8 +8848,8 @@ void FUN_80136340(int param_1,uint param_2);
 void FUN_801366ac(void);
 void PS1_DisplayFondSprites(void);
 uint FUN_80137998(byte param_1,uint param_2,uint param_3);
-uint FUN_801379f8(byte param_1,uint param_2,uint param_3);
-int FUN_80137a4c(uint param_1);
+uint PS1_GetTileV(byte param_1,uint param_2,uint tile);
+int PS1_GetTileU(uint param_1);
 void DRAW_MAP(void);
 void FUN_80137cc8(int param_1,int param_2);
 void allume_vitraux(byte (*param_1) [5]);
@@ -8808,7 +8867,7 @@ void FUN_8013948c(int param_1);
 void FUN_80139514(int param_1);
 void FUN_801395a8(int param_1);
 void FUN_80139624(int param_1);
-void FUN_80139688(int param_1);
+void FUN_80139688(int tileSetSize);
 void FUN_801397f4(Sprite *sprite,short x,short y,undefined displayMode);
 void PS1_DrawSprite(Sprite *sprite,short x,short y,undefined1 param_4);
 void PS1_DrawScaledSprite(Sprite *sprite,short x,short y,bool isFlipped,ushort param_5);
@@ -8866,7 +8925,7 @@ void display_time(short param_1);
 void FUN_8013f460(void);
 void DISPLAY_CONTINUE_SPR(void);
 void FUN_8013f8f8(void);
-void FUN_8013f950(void);
+void DISPLAY_OPTIONS_POING(void);
 void PS1_SetZDC(short param_1,short param_2,byte param_3,byte param_4,byte param_5,char param_6);
 void PS1_SetTypeZDC(uint objType,ushort param_2,int param_3);
 ushort get_nb_zdc(Obj *param_1);
@@ -8914,9 +8973,9 @@ void restore_objects_flags(void);
 void snapToSprite(Obj *obj1,Obj *obj2,uint param_3,int param_4,ushort param_5);
 Obj * findfirstObject(ObjType objType);
 Obj * findfirstInactiveObject(ObjType param_1);
-void setbit(int param_1,uint param_2);
+void setbit(byte *buffer,uint bitIndex);
 void clearbit(int param_1,uint param_2);
-uint getbit(int param_1,uint param_2);
+uint getbit(byte *buffer,uint bitIndex);
 int cosinus(short param_1);
 int sinus(short param_1);
 int sinYspeed(Obj *obj,int param_2,short param_3,ushort *param_4);
@@ -8932,7 +8991,7 @@ int get_proj_y(short param_1,short param_2);
 void set_zoom_mode(undefined zoomMode);
 int inverse_proj_x(short param_1,short param_2);
 int inverse_proj_y(short param_1,short param_2);
-int vblToEOA(int param_1,uint param_2);
+int vblToEOA(Obj *param_1,uint factor);
 void GET_ANIM_POS(Obj *param_1,short *x,short *y,ushort *w,ushort *h);
 undefined4 FUN_801473d4(Obj *param_1);
 undefined4 FUN_801473dc(void);
@@ -9082,7 +9141,7 @@ void correct_gendoor_link(void);
 void suppressFromLinkList(Obj *obj);
 void correct_link(void);
 void INIT_RAY_BEGIN(void);
-void INIT_RAY(bool newLevel);
+void INIT_RAY(byte newLevel);
 byte is_icy_pente(uint param_1);
 void STOPPE_RAY_EN_XY(void);
 void RAY_RESPOND_TO_ALL_DIRS(void);
@@ -9106,7 +9165,7 @@ void RAY_REVERSE_COMMANDS(void);
 void RAY_DEMIRAY(void);
 void DO_MOTEUR_GELE(void);
 void FUN_8015a764(void);
-undefined get_bonus_map_complete(int param_1,int param_2);
+bool get_bonus_map_complete(int world,int level);
 void set_bonus_map_complete(int wld,int lvl);
 void DO_PERFECT_BONUS_MAP(void);
 void DO_WIZ_AFTER_BONUS_MAP(void);
@@ -9192,7 +9251,7 @@ void test_fin_cling(void);
 void initGameSave(void);
 void doneGameSave(void);
 void saveGameState(Obj *obj,SaveState *state);
-void restoreGameState(SaveState *state);
+void restoreGameState(SaveState *save);
 void PS1_PhotographerCollision(void);
 int get_offset_in_save_zone(short eventIndex);
 void reset_save_zone_level(void);
@@ -9249,10 +9308,10 @@ void FUN_801695ec(short param_1);
 void FUN_80169a3c(u_char *param_1,int param_2);
 void INIT_FADE_OUT(void);
 void INIT_FADE_IN(void);
-void FUN_80169be4(void);
-bool FUN_80169dd0(void);
+void DO_FADE(void);
+bool PS1_DO_FADE_OUT_PRG(void);
 void DO_FADE_OUT(void);
-void FUN_80169e50(void);
+void PS1_DO_PICTURE_IN_PICTURE(void);
 bool PS1_InitPAD(void);
 undefined4 FUN_8016a304(void);
 void FUN_8016a384(void);
@@ -9286,7 +9345,7 @@ void RAY_PREPARE_FIST(void);
 void RAY_GROW_FIST(void);
 void fin_poing_follow(Obj *obj,bool param_2);
 void POING_FOLLOW(Obj *obj);
-void alter_fist_speed(int param_1);
+void alter_fist_speed(Obj *obj);
 void switch_off_fist(Obj *poingObj);
 void DO_POING(Obj *obj);
 void allocatePoingBoum(void);
@@ -9396,7 +9455,7 @@ void DO_DARD_PLAFOND_ALWAYS(Obj *obj);
 void FUN_801790cc(Display *display);
 void FUN_80179218(void);
 void FUN_8017a6f8(void);
-void FUN_8017ab8c(void);
+void DISPLAY_FOND_MENU(void);
 void FUN_8017b260(uint param_1);
 void popCmdContext(Obj *obj);
 int char2short(byte param_1);
@@ -9498,7 +9557,7 @@ void set_air_speed(byte mainEtat,byte subEtat,short param_3,byte param_4);
 void Reset_air_speed(bool isRollingSpeed);
 void determineRayAirInertia(void);
 void ray_jump(void);
-void ray_inertia_speed(uint param_1,short param_2,short param_3,short param_4);
+void ray_inertia_speed(uint param_1,short param_2,short prevSpeedX,short param_4);
 void RAY_SWIP(void);
 void RAY_STOP(void);
 void RAY_HELICO(void);
@@ -9558,7 +9617,7 @@ void allocateSpaceMamaLaser(Obj *param_1,ObjType param_2);
 void doMereDenisCommand(Obj *obj);
 void changeMereDenisPhase(void);
 void fitSaveCurrentAction(void);
-void doMereDenisHit(Obj *param_1,short param_2);
+void doMereDenisHit(Obj *obj,short sprite);
 void mereDenisBigLaserCommand(Obj *obj,byte param_2);
 void mereDenisBombCommand(Obj *obj);
 void setBossReachingSpeeds(Obj *obj,uint param_2,uint param_3,uint param_4);
@@ -9647,12 +9706,12 @@ bool closeEnoughToSting(int param_1,uint param_2,uint param_3);
 void PS1_setBossScrollLimits_moskito(Obj *param_1);
 bool moskitoCanAttak(Obj *obj);
 int setMoskitoAtScrollBorder(int param_1,char param_2);
-void prepareNewMoskitoAttack(Obj *param_1);
+void prepareNewMoskitoAttack(Obj *obj);
 Obj * allocateMoskitoFruit(Obj *param_1,uint param_2,undefined4 param_3,ObjType param_4);
 void moskitoDropFruitOnRay(Obj *param_1,uint param_2);
 void doMoskitoCommand(Obj *obj);
 byte tellNextMoskitoAction(void);
-void changeMoskitoPhase(int param_1);
+void changeMoskitoPhase(Obj *obj);
 void doMoskitoHit(Obj *obj);
 void DO_BAT_FLASH(int x,int y);
 void DO_BAT_LEFT_FLASH(Obj *param_1);
@@ -9746,7 +9805,7 @@ void PS1_CheckPauseAndCheatInputs(void);
 bool FUN_8019f848(void);
 bool FUN_8019f88c(void);
 void FUN_8019f8d0(void);
-bool FUN_8019fa44(void);
+bool PS1_OldLoadingScreen(void);
 void FUN_8019fa94(char param_1);
 void FUN_8019fb84(void);
 void FUN_8019fd40(void);
@@ -9776,6 +9835,7 @@ void FUN_801a0cd8(void);
 void FUN_801a0e08(void);
 void FUN_801a0ef0(void);
 void FUN_801a10a4(void);
+bool FUN_801a10ac(void);
 void FUN_801a1110(void);
 void PS1_PromptMemoryCard(void);
 void FUN_801a1324(void);
@@ -9803,8 +9863,6 @@ void FUN_801a3550(void);
 void PS1_GenerateAndDisplayPassword(void);
 void DEPART_INIT_LOOP(void);
 void DO_MENU(void);
-void FUN_801a391c(void);
-void FUN_801a39ec(void);
 void PS1_ShowDemoText(void);
 bool PS1_DemoLoop(void);
 void PS1_PlayDemo(void);
@@ -9819,7 +9877,7 @@ void DO_SAVE_CHOICE(void);
 void AFFICHE_ECRAN_SAVE(void);
 undefined4 FUN_801a4d38(void);
 void FUN_801a4e90(void);
-void FUN_801a4ee8(void);
+void AFFICHE_PAD_SCREEN(void);
 void INIT_SAVE_CHOICE(void);
 void INIT_SAVE_CONTINUE(void);
 void DO_COMMANDE_SAVE(void);
@@ -9830,7 +9888,7 @@ void REALISATION_ACTION(void);
 void FUN_801a6808(void);
 void FUN_801a6984(void);
 void FUN_801a6a04(char param_1);
-void FUN_801a6a68(void);
+void DO_COMMANDE_PAD(void);
 void FUN_801a76e4(void);
 undefined4 PS1_PadInit(int param_1);
 undefined4 FUN_801a798c(int param_1);
