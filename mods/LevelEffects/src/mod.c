@@ -11,7 +11,7 @@ uint enabled_effects = 0x3FFF; // 14 bits set
 int effects_per_level = 2;
 int rand_seed = 0;
 
-uint get_effects_in_level(short world, short level)
+int get_level_offset(short world, short level)
 {
     int off;
 
@@ -21,76 +21,76 @@ uint get_effects_in_level(short world, short level)
     {
         off += nb_levels_in_world[i];
     }
-    
-    return level_effects[off + level - 1];
+
+    return off;
 }
 
 void setup_mod()
 {
-    short world;
-    short level;
-    uint checked_effects;
-
-    printf("enabled_effects: %d\n", enabled_effects);
-    printf("effects_per_level: %d\n", effects_per_level);
-    printf("rand_seed: %d\n", rand_seed);
+    //printf("enabled_effects: %d\n", enabled_effects);
+    //printf("effects_per_level: %d\n", effects_per_level);
+    //printf("rand_seed: %d\n", rand_seed);
 
     // Initialize random
     srand(rand_seed);
     
     // Set effects for each level
-    world = 1;
-    level = 1;
-    for (int i = 0; i < NUM_LEVELS; i++)
+    for (int wld = 1; wld < 6 + 1; wld++)
     {
-        level_effects[i] = 0;
-
-        for (int j = 0; j < effects_per_level; j++)
+        for (int lvl = 1; lvl < nb_levels_in_world[wld] + 1; lvl++)
         {
-            checked_effects = 0;
-
-            while (TRUE && enabled_effects != 0)
-            {
-                int effect = rand() % NUM_EFFECTS;
-
-                // Make sure the effect is enabled
-                if ((enabled_effects & (1 << effect)) == 0)
-                {
-                    continue;
-                }
-
-                checked_effects |= (1 << effect);
-
-                // Try again if already set
-                if ((level_effects[i] & (1 << effect)) != 0)
-                {
-                    // Avoid repeating forever if we've checked all enabled effects
-                    if (checked_effects == enabled_effects)
-                        break;
-
-                    continue;
-                }
-
-                // Try again if not available
-                if (!is_effect_available(effect, world, level, level_effects[i]))
-                {
-                    // Avoid repeating forever if we've checked all enabled effects
-                    if (checked_effects == enabled_effects)
-                        break;
-
-                    continue;
-                }
-            
-                level_effects[i] |= 1 << effect;
-                break;
-            }
+            setup_level(wld, lvl);
         }
-        
-        level++;
-        if (level == nb_levels_in_world[world])
+    }
+}
+
+void setup_level(short world, short level)
+{
+    int off;
+    uint checked_effects;
+
+    off = get_level_offset(world, level);
+
+    level_effects[off] = 0;
+
+    for (int j = 0; j < effects_per_level; j++)
+    {
+        checked_effects = 0;
+
+        while (TRUE && enabled_effects != 0)
         {
-            level = 1;
-            world++;
+            int effect = rand() % NUM_EFFECTS;
+
+            // Make sure the effect is enabled
+            if ((enabled_effects & (1 << effect)) == 0)
+            {
+                continue;
+            }
+
+            checked_effects |= (1 << effect);
+
+            // Try again if already set
+            if ((level_effects[off] & (1 << effect)) != 0)
+            {
+                // Avoid repeating forever if we've checked all enabled effects
+                if (checked_effects == enabled_effects)
+                    break;
+
+                continue;
+            }
+
+            // Try again if not available
+            if (!is_effect_available(effect, world, level, level_effects[off]))
+            {
+                // Avoid repeating forever if we've checked all enabled effects
+                if (checked_effects == enabled_effects)
+                    break;
+
+                continue;
+            }
+        
+            level_effects[off] |= 1 << effect;
+            break;
         }
     }
 }
@@ -102,7 +102,7 @@ void show_active_effects()
 
     display_text("/active effects/", SCREEN_WIDTH / 2, 60, 1, 0xb);
 
-    effects = get_effects_in_level(num_world, num_level);
+    effects = level_effects[get_level_offset(num_world, num_level)];
     num_active_effects = 0;
     
     for (int i = 0; i < NUM_EFFECTS; i++)
@@ -116,14 +116,27 @@ void show_active_effects()
             num_active_effects++;
         }
     }
+
+    display_text("% to reload", 120, 220, 2, 0x3);
+
+    // Re-randomize level
+    if (TOUCHE(INPUT_TRIANGLE))
+    {
+        // Reload level
+        new_level = TRUE;
+        PS1_HasLoadedFont = TRUE; // Forces full level reload from disc
+
+        // Setup level again
+        setup_level(num_world, num_level);
+    }
 }
 
 void on_enter_level()
 {
     uint effects;
 
-    effects = get_effects_in_level(num_world, num_level);
-    printf("effects: %d\n", effects);
+    effects = level_effects[get_level_offset(num_world, num_level)];
+    //printf("effects: %d\n", effects);
 
     for (int i = 0; i < NUM_EFFECTS; i++)
     {
@@ -134,14 +147,9 @@ void on_enter_level()
 
 void on_exit_level()
 {
-    uint effects;
-
-    effects = get_effects_in_level(num_world, num_level);
-
     for (int i = 0; i < NUM_EFFECTS; i++)
     {
-        if ((effects & (1 << i)) != 0)
-            toggle_effect(i, FALSE);
+        toggle_effect(i, FALSE);
     }
 }
 
@@ -149,10 +157,11 @@ void on_loop_level()
 {
     uint effects;
 
-    effects = get_effects_in_level(num_world, num_level);
+    effects = level_effects[get_level_offset(num_world, num_level)];
 
     for (int i = 0; i < NUM_EFFECTS; i++)
     {
-        run_effect(i, (effects & (1 << i)) != 0);
+        if ((effects & (1 << i)) != 0)
+            run_effect(i);
     }
 }

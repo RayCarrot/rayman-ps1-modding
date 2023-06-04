@@ -7,7 +7,6 @@
 
 int is_effect_available(int effect, short world, short level, uint currentEffects);
 void toggle_effect(int effect, int enable);
-void run_effect(int effect, int isEnabled);
-void run_dark_ray(int isEnabled);
+void run_effect(int effect);
 
 #endif

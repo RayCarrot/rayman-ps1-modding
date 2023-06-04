@@ -30,6 +30,8 @@ extern LevelData level;
 extern Poing poing;
 extern ObjTypeFlags flags[256];
 extern MapData mp;
+extern short new_level;
+extern byte PS1_HasLoadedFont;
 
 void srand(int seed);
 
