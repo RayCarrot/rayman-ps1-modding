@@ -100,7 +100,7 @@ void show_active_effects()
     uint effects;
     int num_active_effects;
 
-    display_text("/active effects/", SCREEN_WIDTH / 2, 60, 1, 0xb);
+    display_text("/active effects/", SCREEN_WIDTH / 2, 60, 2, 0xc);
 
     effects = level_effects[get_level_offset(num_world, num_level)];
     num_active_effects = 0;
