@@ -25,16 +25,27 @@ int is_effect_available(int effect, short world, short level, uint currentEffect
 
         return (currentEffects & (1 << 3)) == 0;
     }
-    // Tings hurt can't be used in certain levels as they're not possible
+    // No i-frames can't be used with tings hurt
+    else if (effect == 8)
+    {
+        return (currentEffects & (1 << 11)) == 0;
+    }
+    // Tings hurt can't be used with no i-frames and in certain levels as they're not possible
     else if (effect == 11)
     {
-        // Allegro Presto part 1 and 2
+        // Check if no i-frames is used
+        if (currentEffects & (1 << 8))
+        {
+            return FALSE;
+        }
+
+        // Allegro Presto part 1 or 2
         if (num_world == 2 && (num_level == 7 || num_level == 8))
         {
             return FALSE;
         }
-        // Crystal Palace part 1
-        else if (num_world == 5 && (num_level == 1))
+        // Crystal Palace part 1 or 2
+        else if (num_world == 5 && (num_level == 1 || num_level == 2))
         {
             return FALSE;
         }
