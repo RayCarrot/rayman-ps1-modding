@@ -1,40 +1,41 @@
 #include <export.h>
 #include "effects.h"
+#include "effect_names.h"
 #include "mod.h"
 #include "global.h"
 
 int is_effect_available(int effect, short world, short level, uint currentEffects)
 {
     // Wind right can't be used with wind left or in Allegro Presto part 2
-    if (effect == 3)
+    if (effect == EFFECT_WIND_LEFT)
     {
         if (num_world == 2 && num_level == 8)
         {
             return FALSE;
         }
 
-        return (currentEffects & (1 << 4)) == 0;
+        return (currentEffects & (1 << EFFECT_WIND_RIGHT)) == 0;
     }
     // Wind left can't be used with wind right or in Allegro Presto part 2
-    else if (effect == 4)
+    else if (effect == EFFECT_WIND_RIGHT)
     {
         if (num_world == 2 && num_level == 8)
         {
             return FALSE;
         }
 
-        return (currentEffects & (1 << 3)) == 0;
+        return (currentEffects & (1 << EFFECT_WIND_LEFT)) == 0;
     }
     // No i-frames can't be used with tings hurt
-    else if (effect == 8)
+    else if (effect == EFFECT_NO_IFRAMES)
     {
-        return (currentEffects & (1 << 11)) == 0;
+        return (currentEffects & (1 << EFFECT_TINGS_HURT)) == 0;
     }
     // Tings hurt can't be used with no i-frames and in certain levels as they're not possible
-    else if (effect == 11)
+    else if (effect == EFFECT_TINGS_HURT)
     {
         // Check if no i-frames is used
-        if (currentEffects & (1 << 8))
+        if (currentEffects & (1 << EFFECT_NO_IFRAMES))
         {
             return FALSE;
         }
@@ -62,17 +63,17 @@ void toggle_effect(int effect, int enable)
     switch (effect)
     {
         // Hide Rayman
-        case 0:
+        case EFFECT_HIDE_RAY:
             *(uint *)(0x8013c788) = enable ? NULL : 0xC04E927; // display2(&ray);
             break;
 
         // Hide level
-        case 1:
+        case EFFECT_HIDE_LVL:
             *(uint *)(0x8012f9f0) = enable ? NULL : 0xC04DE96; // DRAW_MAP();
             break;
 
         // Hide objects
-        case 2:
+        case EFFECT_HIDE_OBJ:
             uint value = enable ? NULL : 0xC04E927;
             *(uint *)(0x8013c89c) = value; // display2(obj);
             *(uint *)(0x8013c6d0) = value; // display2(obj);
@@ -81,13 +82,13 @@ void toggle_effect(int effect, int enable)
             break;
         
         // Wind left/right
-        case 3:
-        case 4:
+        case EFFECT_WIND_LEFT:
+        case EFFECT_WIND_RIGHT:
             *(uint *)(0x80159C3C) = enable ? NULL : 0xC0566C5; // PS1_SetWindForce();
             break;
 
         // Double speed
-        case 5:
+        case EFFECT_DOUBLE_SPEED:
             // Walk
             ray.eta[1][0].speed_x_right = enable ? 64 : 32;
             ray.eta[1][0].speed_x_left = enable ? -64 : -32;
@@ -98,18 +99,18 @@ void toggle_effect(int effect, int enable)
             break;
 
         // Super jumps
-        case 6:
+        case EFFECT_SUPER_JUMPS:
             *(byte *)(0x80186ED0) = enable ? 0x1A : 0x0D; // Jump height
             break;
 
         // Super helico
-        case 7:
+        case EFFECT_SUPER_HELICO:
             if (!enable)
                 RayEvts.flags0 &= ~RAYEVTS0_SUPER_HELICO;
             break;
 
         // Invert controls
-        case 9:
+        case EFFECT_INV_CONTROLS:
             *(ushort *)(0x80134E70) = enable ? PAD_RIGHT : PAD_LEFT;
             *(ushort *)(0x80134e80) = enable ? PAD_LEFT : PAD_RIGHT;
 
@@ -130,7 +131,7 @@ void toggle_effect(int effect, int enable)
             break;
 
         // Slippery
-        case 10:
+        case EFFECT_SLIPPERY:
             if (enable)
             {
                 for (int i = 0; i < mp.length; i++)
@@ -148,7 +149,7 @@ void toggle_effect(int effect, int enable)
             break;
 
         // Tings hurt
-        case 11:
+        case EFFECT_TINGS_HURT:
             if (enable)
             {
                 flags[TYPE_WIZ].flags0 |= OBJ0_HIT_RAY;
@@ -162,7 +163,7 @@ void toggle_effect(int effect, int enable)
             break;
 
         // Darkness
-        case 13:
+        case EFFECT_DARKNESS:
             if (enable)
             {
                 // Since we're not changing the condition for when this gets called we need to make sure to do so here
@@ -186,27 +187,27 @@ void run_effect(int effect)
     switch (effect)
     {
         // Wind left
-        case 3:
+        case EFFECT_WIND_LEFT:
             ray_wind_force = -1;
             break;
         
         // Wind right
-        case 4:
+        case EFFECT_WIND_RIGHT:
             ray_wind_force = 1;
             break;
 
         // Super helico
-        case 7:
+        case EFFECT_SUPER_HELICO:
             RayEvts.flags0 |= RAYEVTS0_SUPER_HELICO;
             break;
 
         // Remove i-frames
-        case 8:
+        case EFFECT_NO_IFRAMES:
             ray.iframes_timer = -1;
             break;
     
         // Dark rayman
-        case 12:
+        case EFFECT_DARK_RAY:
             // Create Dark Rayman if it doesn't exist
             if (black_ray_obj_id == -1)
             {
