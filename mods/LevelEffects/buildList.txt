@@ -5,7 +5,7 @@ common, exe, LoadAverage12, 0x0, src/effects.c // 1864 bytes of unused functions
 
 // Assembly files
 ntsc-u, exe, 0x801a4ee0, 0x0, src/asm/settings_hook.s // Extend options function
-ntsc-u, exe, 0x801a02b4, 0x0, src/asm/load_level_hook.s // Extend DEPART_DEAD_LOOP
+ntsc-u, exe, 0x80159b0c, 0x0, src/asm/load_level_hook.s // Extend INIT_RAY_ON_MS
 ntsc-u, exe, 0x801a03bc, 0x0, src/asm/exit_level_hook.s // Extend level music end function
 ntsc-u, exe, 0x8015a250, 0x0, src/asm/loop_level_hook.s // Extend DO_MOTEUR2
 ntsc-u, exe, 0x8012f860, 0x0, src/asm/pause_hook.s // Overwrite call to pause screen function

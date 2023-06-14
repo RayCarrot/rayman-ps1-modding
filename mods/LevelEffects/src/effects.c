@@ -152,6 +152,12 @@ void toggle_effect(int effect, int enable)
 
         // Darkness
         case 13:
+            if (enable)
+            {
+                // Since we're not changing the condition for when this gets called we need to make sure to do so here
+                INIT_LUCIOLE();
+            }
+
             *(uint *)(0x8012f89c) = enable ? NULL : 0x14620008; // if (num_world == 5 && ...
             *(uint *)(0x8012f8b0) = enable ? NULL : 0x14620003; // ... num_level == 4)
             *(uint *)(0x80159c2c) = enable ? NULL : 0x10400003; // if ((RayEvts.flags1 & RAYEVTS1_LUCIOLE) != RAYEVTS1_NONE)
