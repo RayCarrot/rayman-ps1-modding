@@ -4,6 +4,7 @@
 #include <export.h>
 
 extern Input input_reload;
+extern Input input_die;
 
 void do_pause_screen();
 

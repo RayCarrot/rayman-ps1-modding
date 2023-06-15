@@ -131,7 +131,8 @@ void toggle_effect(int effect, int enable)
             *(ushort *)(0x80134f44) = enable ? PAD_L2 : PAD_R2;
             *(ushort *)(0x80134f64) = enable ? PAD_R2 : PAD_L2;
 
-            input_reload = enable ? INPUT_CROSS : INPUT_TRIANGLE;
+            input_reload = enable ? INPUT_SQUARE : INPUT_CIRCLE;
+            input_die = enable ? INPUT_CROSS : INPUT_TRIANGLE;
             break;
 
         // Slippery

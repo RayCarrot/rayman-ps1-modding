@@ -33,6 +33,7 @@ extern MapData mp;
 extern short new_level;
 extern byte PS1_HasLoadedFont;
 extern byte MENU_RETURN;
+extern byte in_pause;
 
 void srand(int seed);
 
