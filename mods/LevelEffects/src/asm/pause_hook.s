@@ -1,2 +1,2 @@
 .set noreorder
-jal show_active_effects
+jal do_pause_screen

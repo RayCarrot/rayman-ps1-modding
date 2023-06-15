@@ -2,7 +2,7 @@
 common, exe, RotMatrixYXZ, 0x0, src/mod_menu.c src/effect_names.c // 2643 bytes of unused functions to overwrite
 common, exe, INIT_WORLD_STAGE_NAME, 0x0, src/INIT_WORLD_STAGE_NAME.c src/mod.c src/asm/srand.s // 1704 bytes to overwrite due to smaller re-implemented function (2236 total bytes)
 common, exe, LoadAverage12, 0x0, src/effects.c // 1864 bytes of unused functions to overwrite
-ntsc-u, exe, 0x8012f2cc, 0x0, src/map_mods.c // 708 bytes of unused functions to overwrite
+ntsc-u, exe, 0x8012f2cc, 0x0, src/map_mods.c src/pause_screen.c // 708 bytes of unused functions to overwrite
 
 // Assembly files
 ntsc-u, exe, 0x801a4ee0, 0x0, src/asm/settings_hook.s // Extend options function

@@ -116,19 +116,6 @@ void show_active_effects()
             num_active_effects++;
         }
     }
-
-    display_text("% to reload", 120, 220, 2, 0x3);
-
-    // Re-randomize level
-    if (TOUCHE(INPUT_TRIANGLE))
-    {
-        // Reload level
-        new_level = TRUE;
-        PS1_HasLoadedFont = TRUE; // Forces full level reload from disc
-
-        // Setup level again
-        setup_level(num_world, num_level);
-    }
 }
 
 void on_enter_level()
