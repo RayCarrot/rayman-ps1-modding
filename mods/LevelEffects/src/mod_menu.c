@@ -10,6 +10,11 @@ int is_selecting_effects;
 
 void do_mod_settings_screen()
 {
+    if (MENU_RETURN)
+    {
+        return;
+    }
+
     INIT_FADE_IN();
     load_mod_settings();
     SYNCHRO_LOOP(do_mod_settings_loop);

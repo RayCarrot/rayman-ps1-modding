@@ -32,6 +32,7 @@ extern ObjTypeFlags flags[256];
 extern MapData mp;
 extern short new_level;
 extern byte PS1_HasLoadedFont;
+extern byte MENU_RETURN;
 
 void srand(int seed);
 
