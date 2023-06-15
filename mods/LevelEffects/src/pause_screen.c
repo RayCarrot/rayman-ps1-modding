@@ -9,6 +9,12 @@ void do_pause_screen()
 {
     show_active_effects();
 
+    // Don't allow custom inputs while on no hp since then you reload with -1 hp
+    if (ray.hit_points == 0xFF)
+    {
+        return;
+    }
+
     display_text("% to reload", 120, 220, 2, 0x3);
 
     // Re-randomize level
