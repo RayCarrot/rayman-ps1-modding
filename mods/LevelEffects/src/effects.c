@@ -1,6 +1,7 @@
 #include <export.h>
 #include "effects.h"
 #include "effect_names.h"
+#include "map_mods.h"
 #include "mod.h"
 #include "global.h"
 
@@ -134,17 +135,7 @@ void toggle_effect(int effect, int enable)
         case EFFECT_SLIPPERY:
             if (enable)
             {
-                for (int i = 0; i < mp.length; i++)
-                {
-                    btyp = mp.map[i] >> 10;
-
-                    if (btyp >= BTYP_SOLID_RIGHT_45 && btyp <= BTYP_SOLID_LEFT2_30)
-                        btyp += 16;
-                    else if (btyp == BTYP_SOLID_PASSTHROUGH || btyp == BTYP_SOLID)
-                        btyp = BTYP_SLIPPERY;
-                    
-                    mp.map[i] = (mp.map[i] & 0x3FF) | (btyp << 10);
-                }
+                make_map_slippery();
             }
             break;
 
