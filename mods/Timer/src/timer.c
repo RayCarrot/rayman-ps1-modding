@@ -147,12 +147,12 @@ void set_timer_mode()
 
 void start_game()
 {
+    // Call function we overwrote
+    PS1_DoGameOptions();
+
     frames = 0;
     entered_level = 0;
     is_running = timer_mode == TIMER_GAME;
-
-    // Call function we overwrote
-    DO_FADE_OUT();
 }
 
 void enter_level()

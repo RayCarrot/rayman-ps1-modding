@@ -9876,7 +9876,7 @@ undefined4 selection_save_option_prg(void);
 void DO_SAVE_CHOICE(void);
 void AFFICHE_ECRAN_SAVE(void);
 undefined4 FUN_801a4d38(void);
-void FUN_801a4e90(void);
+void PS1_DoGameOptions(void);
 void AFFICHE_PAD_SCREEN(void);
 void INIT_SAVE_CHOICE(void);
 void INIT_SAVE_CONTINUE(void);

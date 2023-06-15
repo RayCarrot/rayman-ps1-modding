@@ -6,8 +6,8 @@ ntsc-u, exe, 0x801b9544, 0x0, src/hook_vsync.s // Extend VSYNC_OBJ_F0 which gets
 pal-e, exe, 0x801b7f5c, 0x0, src/hook_vsync.s
 ntsc-u, exe, 0x801a586c, 0x0, src/hook_options.s // Extend options display function
 pal-e, exe, 0x8012d950, 0x0, src/hook_options.s
-ntsc-u, exe, 0x801a4ed0, 0x0, src/hook_start.s // Overwrite call to DO_FADE_OUT
-pal-e, exe, 0x8012cfb0, 0x0, src/hook_start.s
+ntsc-u, exe, 0x801a39ec, 0x0, src/hook_start.s // Overwrite call to PS1_DoGameOptions
+pal-e, exe, 0x8012bb60, 0x0, src/hook_start.s
 ntsc-u, exe, 0x801a0170, 0x0, src/hook_world.s // Extend DEPART_WORLD
 pal-e, exe, 0x801a4ee4, 0x0, src/hook_world.s
 ntsc-u, exe, 0x80158d00, 0x0, src/hook_display_bonus.s // Overwrite call to get_bonus_map_complete
