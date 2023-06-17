@@ -123,20 +123,6 @@ void display_hud_level()
 
         yPos += coll->height + 6;
     }
-
-    for (int i = 0; i < level.nb_objects; i++) //TODO: expensive?
-    {
-        Obj *obj = &level.objects[i];
-
-        if (obj->type == TYPE_SIGNPOST)
-        {
-            short x_comp = (obj->x_pos - ray.x_pos);
-            short y_comp = (obj->y_pos - ray.y_pos);
-            bool in_distance = (x_comp * x_comp + y_comp * y_comp) < 40000;
-            if(in_distance && !level_finished()) //TODO: use t_worlds_finished instead?
-                display_text("not finished", 115, 150, 2, TXT_COLOR_NORMAL);
-        }
-    }
 }
 
 void display_hud_total()
@@ -193,7 +179,7 @@ void display_hud_total()
     {
         sprintf(finishedStr, "%i", i + 1);
         bool levelFinished = levelsfinished >> i & 1;
-        display_text(finishedStr, 115 + 10 * i, 235, 2, levelFinished ? TXT_COLOR_COMPLETE : TXT_COLOR_NORMAL);
+        display_text(finishedStr, 115 + 10 * i, 235, 2, levelFinished ? TXT_COLOR_COMPLETE : TXT_COLOR_NORMAL); //TODO: center somehow
     }
 }
 
@@ -204,4 +190,22 @@ void display_obj(Obj *obj)
         PS1_DrawSpriteSemiTrans = 1;
 
     display2(obj);
+}
+
+void check_signpost(Obj *obj)
+{
+    // Call overwritten function
+    special_pour_liv(obj);
+
+    if (obj->type == TYPE_SIGNPOST) // Close enough to be active
+    {
+        WorldsFinished *world_finished = &t_worlds_finished[old_num_world];
+        byte norm_num_level = num_level - t_world_info[old_num_world].level;
+        if(norm_num_level < world_finished->totalLevels)
+        {
+            bool levelFinished = world_finished->levelsFinished >> norm_num_level & 1;
+            if(!levelFinished)
+                display_text("/not finished/", 160, 120, 2, TXT_COLOR_NORMAL);
+        }
+    }
 }
