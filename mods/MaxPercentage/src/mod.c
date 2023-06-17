@@ -19,6 +19,14 @@ void finish_bonus_level(int world, int level)
 
 void on_new_game()
 {
+    #ifdef DEBUG
+    for (byte i = 0; i < 24; i++)
+        t_world_info[i].state = 1;
+
+    extern ushort RayEvts;
+    RayEvts=0x0187;
+    #endif
+
     // Reset total values
     for (int i = 0; i < COLLECTIBLES_COUNT; i++)
         collectibles[i].totalCollectedCount = 0;
@@ -159,6 +167,15 @@ void display_hud_total()
         display_text((char *)&numStr, collXPos, collYPos, 2, color);
 
         yPos += coll->height + 6;
+    }
+
+    byte levelsfinished=t_worlds_finished[old_num_world].levelsFinished;
+    char finishedStr[4];
+    for(int i = 0; i < 8; i++)
+    {
+        sprintf(finishedStr, "%i", i + 1);
+        byte levelFinished = (levelsfinished >> i) & 1;
+        display_text(finishedStr, 115 + 10 * i, 235, 2, levelFinished ? TXT_COLOR_COMPLETE : TXT_COLOR_NORMAL);
     }
 }
 
