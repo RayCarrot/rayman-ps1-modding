@@ -63,6 +63,8 @@ void on_load_level()
         
         finishedBonus = FALSE;
     }
+
+    check_level_finished();
 }
 
 void on_level_loop()
@@ -121,6 +123,20 @@ void display_hud_level()
 
         yPos += coll->height + 6;
     }
+
+    for (int i = 0; i < level.nb_objects; i++) //TODO: expensive?
+    {
+        Obj *obj = &level.objects[i];
+
+        if (obj->type == TYPE_SIGNPOST)
+        {
+            short x_comp = (obj->x_pos - ray.x_pos);
+            short y_comp = (obj->y_pos - ray.y_pos);
+            bool in_distance = (x_comp * x_comp + y_comp * y_comp) < 40000;
+            if(in_distance && !level_finished()) //TODO: use t_worlds_finished instead?
+                display_text("not finished", 115, 150, 2, TXT_COLOR_NORMAL);
+        }
+    }
 }
 
 void display_hud_total()
@@ -169,12 +185,14 @@ void display_hud_total()
         yPos += coll->height + 6;
     }
 
-    byte levelsfinished=t_worlds_finished[old_num_world].levelsFinished;
+    //TODO: what if on save icon on map? (seemingly no effect, should check anyways to be sure)
+    WorldsFinished *world_finished = &t_worlds_finished[old_num_world];
+    byte levelsfinished = world_finished->levelsFinished;
     char finishedStr[4];
-    for(int i = 0; i < 8; i++)
+    for(int i = 0; i < world_finished->totalLevels; i++)
     {
         sprintf(finishedStr, "%i", i + 1);
-        byte levelFinished = (levelsfinished >> i) & 1;
+        bool levelFinished = levelsfinished >> i & 1;
         display_text(finishedStr, 115 + 10 * i, 235, 2, levelFinished ? TXT_COLOR_COMPLETE : TXT_COLOR_NORMAL);
     }
 }

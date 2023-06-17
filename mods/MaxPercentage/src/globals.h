@@ -24,5 +24,6 @@ extern byte PS1_DrawSpriteSemiTrans;
 extern WorldInfo t_world_info[24];
 extern byte old_num_world;
 extern short num_level;
+extern Obj ray;
 
 #endif

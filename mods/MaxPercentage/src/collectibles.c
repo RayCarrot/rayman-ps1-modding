@@ -17,7 +17,22 @@ WorldsFinished t_worlds_finished[]=
 {
     {.levelsFinished = 0, .totalLevels = 4},
     {.levelsFinished = 0, .totalLevels = 4},
-    {.levelsFinished = 0, .totalLevels = 3}
+    {.levelsFinished = 0, .totalLevels = 3},
+    {.levelsFinished = 0, .totalLevels = 6},
+    {.levelsFinished = 0, .totalLevels = 6},
+    {.levelsFinished = 0, .totalLevels = 5},
+    {.levelsFinished = 0, .totalLevels = 2},
+    {.levelsFinished = 0, .totalLevels = 3},
+    {.levelsFinished = 0, .totalLevels = 2},
+    {.levelsFinished = 0, .totalLevels = 3},
+    {.levelsFinished = 0, .totalLevels = 6},
+    {.levelsFinished = 0, .totalLevels = 4},
+    {.levelsFinished = 0, .totalLevels = 3},
+    {.levelsFinished = 0, .totalLevels = 4},
+    {.levelsFinished = 0, .totalLevels = 2},
+    {.levelsFinished = 0, .totalLevels = 6},
+    {.levelsFinished = 0, .totalLevels = 3},
+    {.levelsFinished = 0, .totalLevels = 4},
 };
 
 Collectible *findCollectible(Obj * obj)
@@ -47,14 +62,18 @@ void collect_obj(Obj *obj)
         coll->totalCollectedCount++;
         take_bonus(obj->id);
 
-        if (level_finished())
-        {
-            byte norm_num_level = num_level - t_world_info[old_num_world].level;
-            if(norm_num_level >= 8)
-                printf("norm_num_level too large %i\n", norm_num_level);
-            else
-                t_worlds_finished[old_num_world].levelsFinished |= 1 << norm_num_level;
-        }
+        check_level_finished();
+    }
+}
+
+void check_level_finished()
+{
+    if (level_finished())
+    {
+        WorldsFinished *world_finished = &t_worlds_finished[old_num_world];
+        byte norm_num_level = num_level - t_world_info[old_num_world].level;
+        if(norm_num_level < world_finished->totalLevels)
+            world_finished->levelsFinished |= 1 << norm_num_level;
     }
 }
 

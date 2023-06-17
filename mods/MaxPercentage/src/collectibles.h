@@ -36,6 +36,7 @@ extern WorldsFinished t_worlds_finished[];
 
 Collectible *findCollectible(Obj * obj);
 void collect_obj(Obj *obj);
+void check_level_finished();
 bool level_finished();
 
 #endif
