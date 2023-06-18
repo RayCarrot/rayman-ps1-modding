@@ -171,15 +171,18 @@ void display_hud_total()
         yPos += coll->height + 6;
     }
 
-    //TODO: what if on save icon on map? (seemingly no effect, should check anyways to be sure)
-    WorldsFinished *world_finished = &t_worlds_finished[old_num_world];
-    byte levelsfinished = world_finished->levelsFinished;
-    char finishedStr[4];
-    for(int i = 0; i < world_finished->totalLevels; i++)
+    if(old_num_world < WORLDS_COUNT) // Prevent drawing on save icon
     {
-        sprintf(finishedStr, "%i", i + 1);
-        bool levelFinished = levelsfinished >> i & 1;
-        display_text(finishedStr, 115 + 10 * i, 235, 2, levelFinished ? TXT_COLOR_COMPLETE : TXT_COLOR_NORMAL); //TODO: center somehow
+        WorldsFinished *world_finished = &t_worlds_finished[old_num_world];
+        byte levelsfinished = world_finished->levelsFinished;
+        char finishedStr[4];
+        short x_centered = (SCREEN_WIDTH / 2) - (world_finished->totalLevels * TXT_FIN_X_OFF / 2);
+        for(int i = 0; i < world_finished->totalLevels; i++)
+        {
+            sprintf(finishedStr, "%i", i + 1);
+            bool levelFinished = levelsfinished >> i & 1;
+            display_text(finishedStr, x_centered + TXT_FIN_X_OFF * i, 235, 2, levelFinished ? TXT_COLOR_COMPLETE : TXT_COLOR_NORMAL); //TODO: center somehow
+        }
     }
 }
 

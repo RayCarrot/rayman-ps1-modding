@@ -6,6 +6,7 @@
 // Better way to do this?
 //#define COLLECTIBLES_COUNT (int)(sizeof(collectibles) / sizeof(collectibles[0]))
 #define COLLECTIBLES_COUNT 7
+#define WORLDS_COUNT 18
 
 typedef struct 
 {

@@ -7,6 +7,7 @@
 #define TXT_Y_OFF (16 - 3) // 16 for its height and 3 for empty space on top
 #define TXT_COLOR_NORMAL 0
 #define TXT_COLOR_COMPLETE 7
+#define TXT_FIN_X_OFF 10
 
 void finish_bonus_level(int world, int level);
 void on_new_game();
