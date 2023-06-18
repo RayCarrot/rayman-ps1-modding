@@ -1,2 +1,31 @@
-build
+# Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE files
+.vs
+.vscode
+
+# C files
+*.o
+*.dep
+*.bin
+*.gch
+
+# ISO files
+*.cue
+*.iso
+
+# Build artifacts
+build/
+debug/
 *.log
+offset.txt
+comport.txt
+gcc_out.txt
+overlay.ld
+Makefile
+
+# Executables
+*.exe
