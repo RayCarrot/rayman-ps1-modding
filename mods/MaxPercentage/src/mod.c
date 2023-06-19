@@ -30,6 +30,9 @@ void on_new_game()
     // Reset total values
     for (int i = 0; i < COLLECTIBLES_COUNT; i++)
         collectibles[i].totalCollectedCount = 0;
+
+    for (int i = 0; i < WORLDS_COUNT; i++)
+        t_worlds_finished[i].levelsFinished = 0;
 }
 
 void on_load_level()
@@ -171,7 +174,7 @@ void display_hud_total()
         yPos += coll->height + 6;
     }
 
-    if(old_num_world < WORLDS_COUNT) // Prevent drawing on save icon
+    if(old_num_world < WORLDS_COUNT && !You_Win) // Prevent drawing on save icon or credits
     {
         WorldsFinished *world_finished = &t_worlds_finished[old_num_world];
         byte levelsfinished = world_finished->levelsFinished;
@@ -181,7 +184,7 @@ void display_hud_total()
         {
             sprintf(finishedStr, "%i", i + 1);
             bool levelFinished = levelsfinished >> i & 1;
-            display_text(finishedStr, x_centered + TXT_FIN_X_OFF * i, 235, 2, levelFinished ? TXT_COLOR_COMPLETE : TXT_COLOR_NORMAL); //TODO: center somehow
+            display_text(finishedStr, x_centered + TXT_FIN_X_OFF * i, 235, 2, levelFinished ? TXT_COLOR_COMPLETE : TXT_COLOR_NORMAL);
         }
     }
 }
