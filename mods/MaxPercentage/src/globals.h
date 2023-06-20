@@ -7,7 +7,7 @@
 #define TRUE 1
 #define FALSE 0
 
-#define DEBUG
+//#define DEBUG
 
 extern LevelData level;
 extern short PS1_PolygonsCount;
