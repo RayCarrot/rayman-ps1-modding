@@ -191,27 +191,41 @@ void display_hud_total()
 
 void display_obj(Obj *obj)
 {
+    Animation *anim;
+    AnimationLayer *layer;
+    Sprite *sprite;
+    bool objFlipX;
+    short x;
+
     // Draw transparent if collected
     if (bonus_taken(obj->id))
         PS1_DrawSpriteSemiTrans = 1;
 
-    display2(obj);
-}
-
-void check_signpost(Obj *obj)
-{
-    // Call overwritten function
-    special_pour_liv(obj);
-
-    if (obj->type == TYPE_SIGNPOST) // Close enough to be active
+    if (obj->type == TYPE_SIGNPOST)
     {
+        // We know that an endsign always uses a single layer, so no need to enumerate the layers
+        anim = &obj->animations[obj->anim_index];
+        layer = &anim->layers[obj->anim_frame * anim->layers_count];
+        sprite = &obj->sprites[layer->sprite];
+        objFlipX = obj->flags & OBJ_FLIP_X;
+
+        // I don't think endsigns can ever be flipped, so we might be able to remove this logic...
+        if (objFlipX)
+            x = (obj->screen_x_pos + obj->offset_bx * 2) - layer->x_pos - sprite->width;
+        else
+            x = obj->screen_x_pos + layer->x_pos;
+
         WorldsFinished *world_finished = &t_worlds_finished[old_num_world];
         byte norm_num_level = num_level - t_world_info[old_num_world].level;
         if(norm_num_level < world_finished->totalLevels)
         {
             bool levelFinished = world_finished->levelsFinished >> norm_num_level & 1;
-            if(!levelFinished)
-                display_text("/not finished/", 160, 120, 2, TXT_COLOR_NORMAL);
+            if(levelFinished)
+                draw_colored_sprite(sprite, x, obj->screen_y_pos + layer->y_pos, objFlipX ^ layer->flip_x, 100, 255, 100);
+            else
+                draw_colored_sprite(sprite, x, obj->screen_y_pos + layer->y_pos, objFlipX ^ layer->flip_x, 255, 100, 255);
         }
     }
+    else
+        display2(obj); // Display like normal if not an endsign
 }

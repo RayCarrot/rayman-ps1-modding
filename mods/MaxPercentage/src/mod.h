@@ -16,6 +16,5 @@ void on_level_loop();
 void display_hud_level();
 void display_hud_total();
 void display_obj(Obj *obj);
-void check_signpost(Obj *obj);
 
 #endif

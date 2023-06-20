@@ -1,12 +1,11 @@
 // C files
-common, exe, RotMatrixYXZ, 0x0, src/mod.c src/display.c src/collect_hooks.c // Overwrite some unused functions
-common, exe, CompMatrix, 0x0, src/collectibles.c
+common, exe, RotMatrixYXZ, 0x0, src/mod.c src/collect_hooks.c // Overwrite some unused functions
+common, exe, CompMatrix, 0x0, src/collectibles.c src/display.c 
 
 // Assembly files
 ntsc-u, exe, 0x8018ede8, 0x0, src/asm/hook_newgame.s // Extend INIT_NEW_GAME
 ntsc-u, exe, 0x80159628, 0x0, src/asm/hook_load_level.s // Extend INIT_MOTEUR_LEVEL
 ntsc-u, exe, 0x8013f458, 0x0, src/asm/hook_level_loop.s // Extend display_time
-ntsc-u, exe, 0x8016e05c, 0x0, src/asm/hook_cmd.s // Replace call to DO_ONE_CMD
 ntsc-u, exe, 0x8015a8b0, 0x0, src/asm/hook_perfect_bonus.s // Replace call to set_bonus_map_complete
 ntsc-u, exe, 0x8012e544, 0x0, src/asm/hook_credits.s // Extend DISPLAY_TXT_CREDITS
 ntsc-u, exe, 0x8013eb30, 0x0, src/asm/hook_world_choice.s // Extend DisplayJumellesNormal
