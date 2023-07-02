@@ -1,5 +1,6 @@
 // C files
-common, exe, RotMatrixYXZ, 0x0, src/mod.c src/display.c src/collect_hooks.c src/collectibles.c // Overwrite some unused functions
+common, exe, RotMatrixYXZ, 0x0, src/mod.c src/collect_hooks.c // Overwrite some unused functions
+common, exe, CompMatrix, 0x0, src/collectibles.c src/display.c 
 
 // Assembly files
 ntsc-u, exe, 0x8018ede8, 0x0, src/asm/hook_newgame.s // Extend INIT_NEW_GAME

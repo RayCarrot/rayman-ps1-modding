@@ -6,6 +6,7 @@
 // Better way to do this?
 //#define COLLECTIBLES_COUNT (int)(sizeof(collectibles) / sizeof(collectibles[0]))
 #define COLLECTIBLES_COUNT 7
+#define WORLDS_COUNT 18
 
 typedef struct 
 {
@@ -26,7 +27,17 @@ typedef struct
 
 extern Collectible collectibles[];
 
+typedef struct
+{
+    byte levelsFinished;
+    byte totalLevels; // Only needed to limit text we draw?
+} WorldsFinished;
+
+extern WorldsFinished t_worlds_finished[];
+
 Collectible *findCollectible(Obj * obj);
 void collect_obj(Obj *obj);
+void check_level_finished();
+bool level_finished();
 
 #endif
