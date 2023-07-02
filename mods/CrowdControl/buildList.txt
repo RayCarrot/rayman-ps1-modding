@@ -4,3 +4,4 @@ common, exe, RotMatrixYXZ, 0x0, src/mod.c // 2643 bytes of unused functions to o
 // Assembly files
 ntsc-u, exe, 0x8015a250, 0x0, src/hook_level.s // Extend DO_MOTEUR2
 ntsc-u, exe, 0x80193ea8, 0x0, src/hook_bouncy.s // Replace call to IS_ON_RESSORT_BLOC
+ntsc-u, exe, 0x8014527c, 0x0, src/hook_collect_ting.s // Replace call to PlaySnd

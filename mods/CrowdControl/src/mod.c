@@ -150,3 +150,16 @@ int CC_IS_ON_RESSORT_BLOC(Obj *obj)
 
     return 0;
 }
+
+void CC_Tings_Heal(short snd, short objId)
+{
+    // Call function we overwrote
+    PlaySnd(snd, objId);
+
+    ray.hit_points++;
+    
+    if (status_bar.max_hp < ray.hit_points) 
+    {
+        ray.hit_points = status_bar.max_hp;
+    }
+}
