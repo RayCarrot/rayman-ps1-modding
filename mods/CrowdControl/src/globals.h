@@ -29,3 +29,6 @@ extern byte ray_pos_in_stack;
 extern byte black_pos_in_stack;
 extern short black_ray_obj_id;
 extern short black_fist_obj_id;
+extern byte button_released;
+extern ObjTypeFlags flags[256];
+extern BlockFlags block_flags[32];
