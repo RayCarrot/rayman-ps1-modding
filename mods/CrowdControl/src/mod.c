@@ -3,10 +3,12 @@
 #include "globals.h"
 
 #define DARK_RAY_ADDR 0x801e553c
+#define DARKNESS_ADDR 0x801e5534
 
 void CC_LEVEL()
 {
     CC_Dark_RAY();
+    CC_Darkness();
 }
 
 void CC_Dark_RAY()
@@ -84,6 +86,43 @@ void CC_Dark_RAY()
         blackRay->speed_y = 0;
         DO_NOVA(blackRay);
         level.objects[black_fist_obj_id].flags &= ~(OBJ_ALIVE|OBJ_ACTIVE);
+    }
+}
+
+void CC_Darkness()
+{
+    int isEnabled;
+    int wasEnabled;
+
+    // Don't run in the level where it normally appears
+    if (num_world == 5 && num_level == 4)
+    {
+        return;
+    }
+
+    isEnabled = *(int *)DARKNESS_ADDR;
+    wasEnabled = RayEvts.flags1 & RAYEVTS1_LUCIOLE;
+
+    // Enable
+    if (isEnabled && !wasEnabled)
+    {
+        INIT_LUCIOLE();
+        RayEvts.flags1 |= RAYEVTS1_LUCIOLE;
+        *(uint *)(0x8012f89c) = NULL; // if (num_world == 5 && ...
+        *(uint *)(0x8012f8b0) = NULL; // ... num_level == 4)
+        *(uint *)(0x80159c2c) = NULL; // if ((RayEvts.flags1 & RAYEVTS1_LUCIOLE) != RAYEVTS1_NONE)
+        *(uint *)(0x8013c3a4) = NULL; // if (num_world == 5 && ...
+        *(uint *)(0x8013c3b8) = NULL; // ... num_level == 4)
+    }
+    // Disable
+    else if (!isEnabled && wasEnabled)
+    {
+        RayEvts.flags1 &= ~RAYEVTS1_LUCIOLE;
+        *(uint *)(0x8012f89c) = 0x14620008; // if (num_world == 5 && ...
+        *(uint *)(0x8012f8b0) = 0x14620003; // ... num_level == 4)
+        *(uint *)(0x80159c2c) = 0x10400003; // if ((RayEvts.flags1 & RAYEVTS1_LUCIOLE) != RAYEVTS1_NONE)
+        *(uint *)(0x8013c3a4) = 0x1462001A; // if (num_world == 5 && ...
+        *(uint *)(0x8013c3b8) = 0x14620015; // ... num_level == 4)
     }
 }
 
