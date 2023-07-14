@@ -4,6 +4,8 @@
 
 #define DARK_RAY_ADDR 0x801e553c
 #define DARKNESS_ADDR 0x801e5534
+#define SPRITE_SHADE_ADDR 0x801e554c
+#define SPRITE_SHADE_COLOR_ADDR 0x801e5554
 
 void CC_LEVEL()
 {
@@ -161,5 +163,28 @@ void CC_Tings_Heal(short snd, short objId)
     if (status_bar.max_hp < ray.hit_points) 
     {
         ray.hit_points = status_bar.max_hp;
+    }
+}
+
+void CC_SetSpriteShade(POLY_FT4 *polygon)
+{
+    int isEnabled;
+
+    isEnabled = *(int *)SPRITE_SHADE_ADDR;
+
+    if (isEnabled)
+    {
+        // Set color
+        polygon->r0 = *(byte *)(SPRITE_SHADE_COLOR_ADDR + 0);
+        polygon->g0 = *(byte *)(SPRITE_SHADE_COLOR_ADDR + 1);
+        polygon->b0 = *(byte *)(SPRITE_SHADE_COLOR_ADDR + 2);
+
+        // Enable shade
+        SetShadeTex(polygon, 0);
+    }
+    else
+    {
+        // Disable shade
+        SetShadeTex(polygon, 1);
     }
 }
