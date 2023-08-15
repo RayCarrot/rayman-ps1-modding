@@ -1,0 +1,11 @@
+//let_shadow
+ntsc-u, exe, 0x801a4798, 0x0, asm/DO_SAVE_CHOICE.s
+ntsc-u, exe, 0x801a4bf0, 0x0, asm/AFFICHE_ECRAN_SAVE1.s
+
+ntsc-u, exe, 0x801a4d30, 0x0, asm/AFFICHE_ECRAN_SAVE2.s //vis_affiche_ecran_save
+ntsc-u, exe, 0x8016b91c, 0x0, asm/LoadGameOnDisk.s //PS1_LoadSave_dec
+ntsc-u, exe, 0x8016b47c, 0x0, asm/SaveGameOnDisk.s //PS1_WriteSave_dec
+
+ntsc-u, exe, 0x801bb670, 0x0, src/PS1_LoadSave_dec.c
+ntsc-u, exe, 0x801b95d4, 0x0, src/PS1_WriteSave_dec.c
+ntsc-u, exe, 0x801aebb4, 0x0, src/vis.c
