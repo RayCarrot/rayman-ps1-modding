@@ -1,0 +1,51 @@
+ntsc-u, exe, 0x801a3820, 0x0, asm/FUN_801a391c.s //Skip right to options from title screen
+
+ntsc-u, exe, 0x8018ede8, 0x0, asm/INIT_NEW_GAME.s //new_game()
+ntsc-u, exe, 0x801a4ed0, 0x0, asm/FUN_801a4e90.s //new_game_start()
+
+ntsc-u, exe, 0x8018e62c, 0x0, asm/FUN_8018e1fc.s //Map movement speed
+
+ntsc-u, exe, 0x80161a2c, 0x0, asm/ALLOCATE_MEDAILLON_TOON_1.s //disable cage medaillon freezing
+ntsc-u, exe, 0x80161a5c, 0x0, asm/ALLOCATE_MEDAILLON_TOON_2.s
+ntsc-u, exe, 0x80161b30, 0x0, asm/ALLOCATE_MEDAILLON_TOON_3.s
+
+ntsc-u, exe, 0x801453ec, 0x0, asm/PS1_ObjectCollisions_1.s //disable oneup or magician effects
+ntsc-u, exe, 0x80145430, 0x0, asm/PS1_ObjectCollisions_2.s
+ntsc-u, exe, 0x80145444, 0x0, asm/PS1_ObjectCollisions_3.s
+ntsc-u, exe, 0x80158e64, 0x0, asm/do_perfect_bonus.s
+
+ntsc-u, exe, 0x8014258c, 0x0, asm/DO_POING_COLLISION.s //full_fist_enforce()
+ntsc-u, exe, 0x8012e004, 0x0, asm/FUN_8012df9c.s //ui_update() (pause, then choose power to buy, select to go back to map)
+ntsc-u, exe, 0x8012f620, 0x0, asm/DO_GROS_MOTEUR_NORMAL.s //ui_update()
+ntsc-u, exe, 0x80169418, 0x0, asm/PS1_OnPauseOff.s //ui_off()
+ntsc-u, exe, 0x8012f860, 0x0, asm/DO_MAIN_LOOP.s //ui_no_pause_text()
+//ntsc-u, exe, 0x8012fbf0, 0x0, asm/DO_MAIN_LOOP_DEBUG.s
+
+ntsc-u, exe, 0x801b9544, 0x0, asm/VSYNC_OBJ_F0.s //vsync_update()
+
+ntsc-u, exe, 0x801a586c, 0x0, asm/FUN_801a4ee8.s //rs_options()
+ntsc-u, exe, 0x8018ebb4, 0x0, asm/DETER_WORLD_AND_LEVEL.s //starting_level()
+ntsc-u, exe, 0x8015aab4, 0x0, asm/fix_numlevel.s //rs_fix_numlevel()
+
+//MDD abilities, also see ui_update()
+ntsc-u, exe, 0x801823d4, 0x0, asm/rayMayLandOnAnObject.s //starting screen 1, only fist
+ntsc-u, exe, 0x8014a43c, 0x0, asm/PS1_RestoreSauveRayEvts.s //finishing screen 1, loading from save
+ntsc-u, exe, 0x8012fe0c, 0x0, asm/main.s //screen 2, all abilities
+ntsc-u, exe, 0x80157f28, 0x0, asm/DO_RAYMAN_1.s //screen 3, run
+ntsc-u, exe, 0x80157f80, 0x0, asm/DO_RAYMAN_2.s
+ntsc-u, exe, 0x801989e4, 0x0, asm/DO_DARK_SORT_COLLISION.s //screen 3, fist
+ntsc-u, exe, 0x80199b54, 0x0, asm/allocateMOSKITOSAXO.s //final fight jumping moskitosaxo, run?
+
+ntsc-u, exe, 0x801a3c80, 0x0, asm/PS1_PlayDemo.s //let_shadow 0, otherwise graphical issues
+ntsc-u, exe, 0x8019b31c, 0x0, asm/DO_DARK2_AFFICHE_TEXT.s
+
+ntsc-u, exe, 0x8018772c, 0x0, asm/snifRayIsDead.s //keep super heli on death
+ntsc-u, exe, 0x80163db8, 0x0, asm/restoreGameState.s
+ntsc-u, exe, 0x80157090, 0x0, asm/INIT_RAY.s //rs_magician_su_heli()
+
+//ntsc-u, exe, 0x80200000, 0x0, asm/srand.s src/bit_ops.c src/collection.c src/distance_counter.c src/fist_info.c src/new_game.c src/random_screen.c src/shuffle.c src/timer.c src/ui.c src/vsync.c
+
+ntsc-u, exe, 0x801aebb4, 0x0, src/random_screen.c
+ntsc-u, exe, 0x801b95d4, 0x0, src/ui.c
+ntsc-u, exe, 0x801bc2a0, 0x0, src/collection.c src/distance_counter.c src/vsync.c src/bit_ops.c
+ntsc-u, exe, 0x801bf6ec, 0x0, src/timer.c src/fist_info.c src/new_game.c src/shuffle.c asm/srand.s
