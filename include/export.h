@@ -12,7 +12,9 @@ typedef unsigned int    uint;
 typedef unsigned long    ulong;
 typedef unsigned char    undefined1;
 typedef unsigned short    undefined2;
+typedef unsigned int    undefined3;
 typedef unsigned int    undefined4;
+typedef unsigned long long    undefined8;
 typedef unsigned short    ushort;
 typedef unsigned short    word;
 #define unkbyte9   unsigned long long
@@ -201,7 +203,10 @@ struct OptionsJeu {
     ushort Music;
     ushort Soundfx;
     ushort StereoEnabled;
-    ushort field11_0x1e;
+    short field11_0x1e;
+    short field12_0x20;
+    short field13_0x22;
+    short field14_0x24;
 };
 
 typedef struct TextToDisplay TextToDisplay, *PTextToDisplay;
@@ -259,7 +264,7 @@ typedef struct CmdContext CmdContext, *PCmdContext;
 
 typedef enum BlockType {
     BTYP_NONE=0,
-    BTYP_CHDIR=1, // reactionary
+    BTYP_CHDIR=1, // reactionary,
     BTYP_SOLID_RIGHT_45=2,
     BTYP_SOLID_LEFT_45=3,
     BTYP_SOLID_RIGHT1_30=4,
@@ -267,9 +272,9 @@ typedef enum BlockType {
     BTYP_SOLID_LEFT1_30=6,
     BTYP_SOLID_LEFT2_30=7,
     BTYP_HURT=8,
-    BTYP_RESSORT=9, // bounce
+    BTYP_RESSORT=9, // bounce,
     BTYP_WATER=10,
-    BTYP_LIANE=12, // climb
+    BTYP_LIANE=12, // climb,
     BTYP_SOLID_PASSTHROUGH=14,
     BTYP_SOLID=15,
     BTYP_SLIPPERY_RIGHT_45=18,
@@ -757,8 +762,8 @@ typedef enum Input {
     INPUT_R2=12,
     INPUT_L1=13,
     INPUT_L2=14,
-    INPUT_DISABLE_DEBUG=15, // unused
-    INPUT_ENABLE_DEBUG=16, // unused
+    INPUT_DISABLE_DEBUG=15, // unused,
+    INPUT_ENABLE_DEBUG=16, // unused,
     INPUT_START_SELECT=17,
     INPUT_UNUSED_12=18,
     INPUT_13=19,
@@ -785,7 +790,7 @@ struct WorldInfo {
     byte nb_cages;
     byte world;
     byte level;
-    int color;
+    byte color;
     char * level_name;
 };
 
@@ -857,7 +862,7 @@ typedef enum Video {
     VIDEO_PRES=1,
     VIDEO_INTRO=2,
     VIDEO_DEMO=3,
-    VIDEO_MAP_INTRO=4, // Same as the normal intro, but only plays the end
+    VIDEO_MAP_INTRO=4, // Same as the normal intro, but only plays the end,
     VIDEO_WIN=5
 } Video;
 
@@ -8027,6 +8032,52 @@ struct Display {
     undefined field6869_0x6cbb;
 };
 
+typedef enum EvSpec {
+    EvSpINT=2,
+    EvSpIOE=4,
+    EvSpCOMP=32,
+    EvSpTIMOUT=256,
+    EvSpNEW=8192,
+    EvSpERROR=32768
+} EvSpec;
+
+typedef struct DIRENTRY DIRENTRY, *PDIRENTRY;
+
+
+// WARNING! conflicting data type names: /LIBAPI.H/DIRENTRY - /Rayman/psyq/DIRENTRY
+
+struct DIRENTRY {
+    char name[20];
+    long attr;
+    long size;
+    struct DIRENTRY * next;
+    long head;
+    char system[4];
+};
+
+typedef struct CardFrame0 CardFrame0, *PCardFrame0;
+
+struct CardFrame0 {
+    char sc_magic[2];
+    byte icon_display_flag;
+    byte block_num;
+    char save_title[64];
+    char unused[28];
+    byte icon_palette[32];
+};
+
+typedef enum EvMode {
+    EvMdINTR=4096,
+    EvMdNOINTR=8192
+} EvMode;
+
+typedef enum EvDesc {
+    HwSPU=4026531849,
+    HwCARD=4026531857,
+    RCntCNT3=4060086275,
+    SwCARD=4093640705
+} EvDesc;
+
 typedef struct BBAttackEntry BBAttackEntry, *PBBAttackEntry;
 
 struct BBAttackEntry {
@@ -8234,7 +8285,7 @@ typedef enum ObjTypeFlags_2 {
 typedef enum ObjTypeFlags_3 {
     OBJ3_NONE=0,
     OBJ3_POING_COLLISION_SND=1,
-    OBJ3_FLAG1=2,
+    OBJ3_DIE_IN_WATER=2,
     OBJ3_STOP_MOVING_UP_WHEN_HIT_BLOCK=4,
     OBJ3_SWITCH_OFF=8,
     OBJ3_FLAG4=16,
@@ -8719,7 +8770,7 @@ void PS1_InitMusic(void);
 void FUN_8013066c(void);
 void FUN_80130684(void);
 void FUN_801309b0(void);
-undefined4 FUN_801309b8(uint param_1,uint param_2,byte *param_3,uint param_4);
+bool FUN_801309b8(uint param_1,uint param_2,byte *param_3,uint param_4);
 void FUN_80130a98(undefined *param_1,undefined *param_2,undefined *param_3);
 void FUN_80130b18(uint param_1,CdlLOC *param_2);
 int FUN_80130bc4(CdlLOC param_1);
@@ -8776,7 +8827,7 @@ void FUN_80133048(undefined4 param_1,int param_2,byte param_3);
 undefined4 PS1_InitFiles(FileInfo *files,int count,char *name);
 int FUN_801331a4(FileInfo *param_1,int param_2,undefined4 param_3);
 int PS1_LoadFiles(FileInfo *files,int fileIndex,int count);
-int FUN_80133498(undefined *param_1,uchar *param_2,undefined *param_3,undefined4 param_4);
+int FUN_80133498(undefined *param_1,uchar *param_2,undefined *param_3,CdlLOC param_4);
 int readinput(void);
 int upjoy(void);
 int leftjoy(void);
@@ -8860,7 +8911,7 @@ void FUN_80139014(ushort param_1,ushort param_2,short param_3,short param_4,shor
 void FUN_801392c8(void);
 void FUN_801392d0(void);
 void FUN_801392d8(int param_1,short *param_2,ushort *param_3);
-void FUN_80139330(uint param_1,short *param_2,undefined2 *param_3);
+void FUN_80139330(uint param_1,short *param_2,ushort *param_3);
 void FUN_801393c8(int param_1);
 void PS1_LoadAllFixTextures(int length);
 void FUN_8013948c(int param_1);
@@ -8924,7 +8975,7 @@ void DISPLAY_SAVE_POING(void);
 void display_time(short param_1);
 void FUN_8013f460(void);
 void DISPLAY_CONTINUE_SPR(void);
-void FUN_8013f8f8(void);
+void PS1_PromptCardDisplayPoing(void);
 void DISPLAY_OPTIONS_POING(void);
 void PS1_SetZDC(short param_1,short param_2,byte param_3,byte param_4,byte param_5,char param_6);
 void PS1_SetTypeZDC(uint objType,ushort param_2,int param_3);
@@ -9066,7 +9117,7 @@ void DO_PMA_POING_COLLISION(Obj *obj);
 undefined4 pma_get_eject_sens(void);
 void DO_COU_ATTER(Obj *param_1);
 void DO_PMA_ATTER(Obj *param_1);
-void _card_clear(long param_1);
+void _card_clear(long chan);
 void INIT_HORLOGES(void);
 void horloges(void);
 void PS1_InitAllowedTime(void);
@@ -9246,7 +9297,7 @@ void DO_CORDE_CASSE(Obj *obj);
 void DO_FUMEE_CORDE(short x,short y);
 int GetY(int param_1);
 void allocateSupHelico(Obj *musObj);
-void allocatePaillette(int param_1);
+void allocatePaillette(Obj *obj);
 void test_fin_cling(void);
 void initGameSave(void);
 void doneGameSave(void);
@@ -9257,8 +9308,8 @@ int get_offset_in_save_zone(short eventIndex);
 void reset_save_zone_level(void);
 void take_bonus(ushort eventIndex);
 byte bonus_taken(ushort param_1);
-void FUN_801645fc(void);
-void FUN_801646d4(void);
+void PS1_WriteWiSaveZone(void);
+void PS1_LoadWiSaveZone(void);
 void DO_SPECIAL_PLATFORM(Obj *obj);
 void FUN_80165884(void);
 void FUN_801658e0(void);
@@ -9313,29 +9364,29 @@ bool PS1_DO_FADE_OUT_PRG(void);
 void DO_FADE_OUT(void);
 void PS1_DO_PICTURE_IN_PICTURE(void);
 bool PS1_InitPAD(void);
-undefined4 FUN_8016a304(void);
-void FUN_8016a384(void);
-undefined4 FUN_8016a3dc(void);
-void FUN_8016a45c(void);
-undefined4 FUN_8016a4b4(uint param_1);
-int FUN_8016a634(char *param_1,undefined4 *param_2);
-int FUN_8016a790(uint param_1);
-void FUN_8016a87c(undefined param_1);
-undefined4 FUN_8016aa70(uint param_1);
-void FUN_8016aaf4(uint param_1);
-undefined4 PS1_WriteSave(byte param_1,uint param_2);
+undefined4 PS1_TestSwCARD(void);
+void PS1_TestSwCARDOnce(void);
+undefined4 PS1_TestHwCARD(void);
+void PS1_TestHwCARDOnce(void);
+undefined4 PS1_TestCard(uint par_chan);
+int PS1_GetNbreFiles(char *name_start,DIRENTRY *dir);
+int PS1_CardFilenameChecksum(uint chan);
+void PS1_InitializeCard(undefined chan);
+undefined4 PS1_FormatFs(uint param_1);
+void PS1_InitSaveRayAndFilenames(uint param_1);
+undefined4 PS1_WriteSave(byte chan_par,uint slot_par);
 char * FUN_8016b2e8(uint param_1,char param_2,char *param_3);
 byte SaveGameOnDisk(uint param_1);
-int SaveFileRead(long param_1,void *param_2,short param_3);
+int SaveFileRead(long fd,void *buf,short n);
 void PS1_LoadSave(undefined4 param_1,char *param_2);
 void LoadGameOnDisk(uint param_1);
 undefined4 LoadInfoGame(uint save);
 void FUN_8016bbe4(void);
-byte FUN_8016bc88(uint param_1);
-bool FUN_8016bdc4(void);
-bool FUN_8016bdf4(void);
-bool FUN_8016be18(void);
-undefined FUN_8016be7c(void);
+byte PS1_GetNbreSave3(uint param_1);
+bool PS1_CardFilenameChecksumChanged(void);
+bool PS1_TestCardZero(void);
+bool PS1_CardUnformatted(void);
+byte PS1_GetNbreSave2(void);
 int FUN_8016be9c(void);
 void FUN_8016bec0(void);
 void fist_U_turn(Obj *poingObj,bool param_2);
@@ -9559,6 +9610,7 @@ void determineRayAirInertia(void);
 void ray_jump(void);
 void ray_inertia_speed(uint param_1,short param_2,short prevSpeedX,short param_4);
 void RAY_SWIP(void);
+void FUN_801835c0(undefined4 param_1,uint param_2,short param_3);
 void RAY_STOP(void);
 void RAY_HELICO(void);
 void Make_Ray_Hang(short param_1,short param_2);
@@ -9639,7 +9691,7 @@ void INIT_LEVEL_STAGE_NAME(void);
 void INIT_WORLD_STAGE_NAME(void);
 void INIT_STAGE_NAME(void);
 void CHANGE_STAGE_NAMES(void);
-void FUN_8018d6f4(void);
+void PS1_CardDisplayPassword(void);
 void FUN_8018d9e0(void);
 void INIT_WORLD_INFO(void);
 void INIT_LITTLE_RAY(void);
@@ -9824,22 +9876,22 @@ void FUN_801a0750(void);
 void atoi(short param_1,char *param_2);
 void FUN_801a07b0(void);
 void PS1_PlayMapIntro(void);
-void FUN_801a0828(void);
-bool FUN_801a0964(void);
-bool FUN_801a0a64(void);
-bool FUN_801a0b38(void);
-void FUN_801a0be0(void);
+void PS1_PromptCardInput(void);
+bool PS1_PromptCardYesNo(void);
+bool PS1_PromptCardContinue(void);
+bool PS1_PleaseInsertPad(void);
+void PS1_CheckCardChanged(void);
 void FUN_801a0c68(void);
-void FUN_801a0c98(void);
-void FUN_801a0cd8(void);
-void FUN_801a0e08(void);
-void FUN_801a0ef0(void);
+void PS1_SetNoCard(void);
+void PS1_DoYouHaveCard(void);
+void PS1_PromptFormatCard(void);
+void PS1_GetNbreSave1(void);
 void FUN_801a10a4(void);
-bool FUN_801a10ac(void);
+bool PS1_ReadingMemoryCard(void);
 void FUN_801a1110(void);
-void PS1_PromptMemoryCard(void);
+void PS1_PromptPad(void);
 void FUN_801a1324(void);
-bool FUN_801a1398(void);
+bool PS1_SaveWldMap(void);
 bool FUN_801a141c(void);
 void PS1_EncryptPassword(void);
 bool PS1_VerifyDecryptPassword(void);
@@ -10098,7 +10150,7 @@ void _wait(void);
 void _SsStart(int param_1);
 void SSINIT_OBJ_550(void);
 void SSINIT_OBJ_5F0(void);
-void SSINIT_OBJ_62C(ulong param_1);
+void SSINIT_OBJ_62C(EvDesc param_1);
 void SSINIT_OBJ_658(void);
 void SsStart(void);
 void SsStart2(void);
@@ -10161,7 +10213,7 @@ void _SsContNrpn2(short param_1,short param_2,char param_3);
 void _SsContRpn1(short param_1,short param_2,undefined param_3);
 void _SsContRpn2(short param_1,short param_2,undefined param_3);
 void _SsContDataEntry(short param_1,short param_2,undefined param_3);
-void _SsSndSetVabAttr(short param_1,short param_2,short param_3,uint param_4);
+void _SsSndSetVabAttr(short param_1,short param_2,short param_3,undefined4 param_4);
 void _SsSetPitchBend(short param_1,short param_2);
 void _SsGetMetaEvent(short param_1,short param_2,char param_3);
 int _SsReadDeltaValue(int param_1,short param_2);
@@ -10296,14 +10348,14 @@ long InitPAD(char *bufA,long lenA,char *bufB,long lenB);
 long delete(char *name);
 void StopPAD(void);
 long format(char *fs);
-undefined4 SetRCnt(uint param_1,undefined2 param_2,uint param_3);
+long SetRCnt(ulong spec,ushort target,long mode);
 undefined4 COUNTER_OBJ_74(void);
 void COUNTER_OBJ_94(void);
-undefined4 GetRCnt(ushort param_1);
+long GetRCnt(ulong spec);
 void COUNTER_OBJ_CC(void);
-bool StartRCnt(uint param_1);
-undefined4 StopRCnt(uint param_1);
-undefined4 ResetRCnt(uint param_1);
+long StartRCnt(ulong spec);
+long StopRCnt(ulong spec);
+long ResetRCnt(ulong spec);
 void COUNTER_OBJ_168(void);
 long DisableEvent(long event);
 void DeliverEvent(ulong ev1,ulong ev2);
@@ -10311,14 +10363,14 @@ long StartPAD(void);
 void ChangeClearPAD(long val);
 void InitHeap(ulong *head,ulong size);
 void _bu_init(void);
-void nextfile(void);
-long OpenEvent(ulong desc,long spec,long mode,long *func);
+DIRENTRY * nextfile(DIRENTRY *dir);
+long OpenEvent(EvDesc desc,EvSpec spec,EvMode mode,long *func);
 long read(long fd,void *buf,long n);
 long TestEvent(long event);
 void ExitCriticalSection(void);
 long open(char *devname,ulong flag);
 void _96_remove(void);
-void firstfile(void);
+DIRENTRY * firstfile(char *name,DIRENTRY *dir);
 void DecDCTinCallback(undefined4 param_1);
 void DecDCToutCallback(undefined4 param_1);
 void CdDataCallback(undefined4 param_1);
@@ -10641,7 +10693,7 @@ void LIBPRESS_OBJ_4BC(void);
 undefined4 MDEC_status(void);
 undefined4 MDEC_report(void);
 undefined4 timeout(undefined4 param_1);
-int MDEC_vlc(ushort *param_1,ushort *param_2);
+undefined4 MDEC_vlc(undefined2 *param_1,undefined2 *param_2);
 int VLC_OBJ_84(uint param_1,ushort *param_2,uint param_3,ushort param_4);
 int VLC_OBJ_88(uint param_1,ushort *param_2,uint param_3);
 int VLC_OBJ_8C(uint param_1,ushort *param_2,uint param_3);
