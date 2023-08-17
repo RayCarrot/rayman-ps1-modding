@@ -11,3 +11,6 @@ This is a re-implementation of the `t_world_info` table in the game. It stores d
 
 ### credits.c
 This is a re-implementation of the `credits` table in the game.
+
+### IS_ON_RESSORT_BLOC.c
+This is a re-implementation of the `IS_ON_RESSORT_BLOC` function in the game.
