@@ -8,6 +8,7 @@ extern Menu general_menu;
 void checkpoint();
 void die();
 int small_ray(MenuItem *menuItem, int toggle);
+int dark_ray(MenuItem *menuItem, int toggle);
 void show_vram();
 
 #endif
