@@ -1,7 +1,8 @@
 // ====== C files ======
 
 // 2643 bytes of unused functions to overwrite
-common, exe, RotMatrixYXZ, 0x0, src/menu.c src/menus/general_menu.c
+common, exe, RotMatrixYXZ, 0x0, src/menu.c
+common, exe, CompMatrix, 0x0, src/menus/general_menu.c
 
 // 1864 bytes of unused functions to overwrite
 common, exe, LoadAverage12, 0x0, src/menus/fist_menu.c src/menus/display_menu.c src/menus/powers_menu.c src/menus/cheats_menu.c
