@@ -128,31 +128,6 @@ void CC_Darkness()
     }
 }
 
-int CC_IS_ON_RESSORT_BLOC(Obj *obj)
-{
-    if ((block_flags[obj->btypes[0]] & BLOCK_SOLID) && (-1 < obj->speed_y)) 
-    {
-        if (obj->type == TYPE_RAYMAN) 
-        {
-            button_released = 1;
-            set_main_and_sub_etat(&ray, 0, 0);
-            ray_jump();
-            //PlaySnd(0xf9, -1); - the bounce sound doesn't exist in most worlds
-            jump_time = 12;
-            ray.speed_y -= 3;
-            //allocatePaillette(&ray); - the RAYON sparkles object only exists in Image levels
-            return 1;
-        }
-        else if (flags[obj->type].flags2 & OBJ2_JUMP_ON_RESSORT_BLOCK) 
-        {
-            obj_jump(obj);
-            return 1;
-        }
-    }
-
-    return 0;
-}
-
 void CC_Tings_Heal(short snd, short objId)
 {
     // Call function we overwrote
