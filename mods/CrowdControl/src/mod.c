@@ -2,10 +2,15 @@
 #include "mod.h"
 #include "globals.h"
 
+// Custom addresses that we set from the crowd control
 #define DARK_RAY_ADDR 0x801e553c
 #define DARKNESS_ADDR 0x801e5534
 #define SPRITE_SHADE_ADDR 0x801e554c
 #define SPRITE_SHADE_COLOR_ADDR 0x801e5554
+
+int last_checked_dark_world = 0;
+int last_checked_dark_level = 0;
+bool has_dark_ray_spawner = 0;
 
 void CC_LEVEL()
 {
@@ -18,6 +23,27 @@ void CC_Dark_RAY()
     Obj* blackRay;
     Obj* blackFist;
     int isEnabled;
+
+    if (num_world != last_checked_dark_world || num_level != last_checked_dark_level)
+    {
+        last_checked_dark_world = num_world;
+        last_checked_dark_level = num_level;
+        
+        has_dark_ray_spawner = 0;
+    
+        for (int i = 0; i < level.nb_objects; i++)
+        {
+            if (level.objects[i].type == TYPE_DARK && level.objects[i].init_main_etat == 0 && level.objects[i].init_sub_etat == 15)
+            {
+                has_dark_ray_spawner = 1;
+                break;
+            }
+        }
+    }
+
+    // Don't run custom code if this level has a Dark Rayman spawner
+    if (has_dark_ray_spawner)
+        return;
 
     isEnabled = *(int *)DARK_RAY_ADDR;
     
@@ -96,8 +122,8 @@ void CC_Darkness()
     int isEnabled;
     int wasEnabled;
 
-    // Don't run in the level where it normally appears
-    if (num_world == 5 && num_level == 4)
+    // Don't run in the level where it normally appears, or the one before since that's where the flag is set
+    if (num_world == 5 && (num_level == 3 || num_level == 4))
     {
         return;
     }
