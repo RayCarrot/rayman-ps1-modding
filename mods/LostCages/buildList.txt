@@ -1,0 +1,8 @@
+ntsc-u, exe, fix_numlevel,          0x0, src/fix_numlevel.c src/inputs.c
+pal-e, exe, fix_numlevel,          0x0, src/fix_numlevel.c src/inputs.c
+
+ntsc-u, exe, INIT_RAY_BEGIN,          0x0, src/INIT_RAY_BEGIN.c
+pal-e, exe, INIT_RAY_BEGIN,          0x0, src/INIT_RAY_BEGIN.c
+
+ntsc-u, exe, 0x8019f840,            0x0, src/hook_inputs.s
+pal-e, exe, 0x801a4458,            0x0, src/hook_inputs.s
