@@ -18,3 +18,6 @@ ntsc-u, exe, 0x80161b2c,                   0x0, src/RecollectCages/RecollectCage
 
 ntsc-u, exe, 0x80145458,                   0x0, src/RecollectLives/RecollectLivesPatch1.s
 ntsc-u, exe, 0x80145f04,                   0x0, src/RecollectLives/RecollectLivesPatch2.s
+
+ntsc-u, exe, 0x8014ec54,                   0x0, src/ActivatedUFOPlug/ActivatedUFOPlugPatch1.s
+ntsc-u, exe, 0x8018234c,                   0x0, src/ActivatedUFOPlug/ActivatedUFOPlugPatch2.s

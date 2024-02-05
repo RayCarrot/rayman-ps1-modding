@@ -6,6 +6,7 @@
 - The first map of Eat at Joe's is skipped
 - Boss and Betilla maps are no longer skipped upon replaying
 - Lives and cages can be re-collected
+- The plug for the UFOs is activated by default
 
 ### Cheats 
 The following cheats are input while paused:
