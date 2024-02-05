@@ -5,6 +5,10 @@
 - Lives are not lost when dying
 - The first map of Eat at Joe's is skipped
 - Boss and Betilla maps are no longer skipped upon replaying
+- Lives and cages can be re-collected
+- The plug for the UFOs is activated by default
+- Mr Dark's Dare can be replayed
+- Loading screens are removed, making load times slightly faster
 
 ### Cheats 
 The following cheats are input while paused:

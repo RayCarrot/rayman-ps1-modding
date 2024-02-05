@@ -29,7 +29,7 @@ void CheatsDisplay()
     display_text(fistText, 305, 230, 2, 0); // Fist speed
 
     // Fist charge
-    if (poing.is_charging)
+    if (poing.is_charging && poing.charge > 5)
     {
         PS1_itoa(poing.charge, fistText, 0);
         display_text(fistText, 255, 230, 2, 0);
