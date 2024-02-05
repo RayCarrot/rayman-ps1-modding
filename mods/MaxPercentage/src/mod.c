@@ -120,7 +120,7 @@ void display_hud_level()
 
         draw_scaled_sprite(&mapobj->sprites[coll->sprite], xPos, yPos, coll->width, coll->height);
 
-        atoi(coll->remainingInLevel, numStr);
+        PS1_itoa(coll->remainingInLevel, numStr, 0);
 
         display_text((char *)&numStr, xPos + TXT_X_OFF, yPos + TXT_Y_OFF + (coll->height >> 1) - (TXT_Y_OFF / 2), 2, TXT_COLOR_NORMAL);
 
@@ -161,14 +161,14 @@ void display_hud_total()
         collXPos = xPos + TXT_X_OFF;
         collYPos = yPos + TXT_Y_OFF + (coll->height >> 1) - (TXT_Y_OFF / 2);
 
-        atoi(coll->totalCollectedCount, numStr);
+        PS1_itoa(coll->totalCollectedCount, numStr, 0);
         display_text((char *)&numStr, collXPos, collYPos, 2, color);
         collXPos += PS1_CalcTextWidth((char *)&numStr, 2);
 
         draw_forward_slash(collXPos, collYPos, color);
         collXPos += 10;
 
-        atoi(coll->totalCount, numStr);
+        PS1_itoa(coll->totalCount, numStr, 0);
         display_text((char *)&numStr, collXPos, collYPos, 2, color);
 
         yPos += coll->height + 6;

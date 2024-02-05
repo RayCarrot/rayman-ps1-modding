@@ -58,11 +58,11 @@ undefined4 PS1_WriteSave_dec(byte chan_par,uint slot_par)
             card_frame0.sc_magic[1] = 'C';
             card_frame0.icon_display_flag = 0x13;
             card_frame0.block_num = 1;
-            sprintf(card_frame0.save_title,"Rayman %s %03d%%",save_ray[slot_local],
+            sprintf(card_frame0.Rayman_save_ray_pct,"Rayman %s %03d%%",save_ray[slot_local],
                     (int)(short)(((uint)loadInfoRay[(slot_local) - 1].num_cages * 100) / 102));
             char *s_Maga = (char *)0x801cf050;
-            strncpy(card_frame0.unused,s_Maga,0x1c);
-            memcpy(card_frame0.icon_palette, PS1_SaveIconPalette, 0x20);
+            strncpy(card_frame0.Maga,s_Maga,0x1c);
+            //memcpy(card_frame0.icon_palette, PS1_SaveIconPalette, 0x20); //removed this struct member for some reason?
 
             vis_fd = fd;
             vis_n = 0x80;

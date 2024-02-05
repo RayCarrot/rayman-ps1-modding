@@ -8,7 +8,7 @@ void DO_PLAYER()
 
     display_text("/select sound to play/", 0xA0, 0x50, 1, 1);
  
-    atoi(sound, sndStr);
+    PS1_itoa(sound, sndStr, 0);
     display_text(sndStr, 0xA0, 0x78, 1, 1);
     
     if (PS1_SpecialTOUCHE(INPUT_RIGHT))

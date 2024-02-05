@@ -31,7 +31,7 @@ void CheatsDisplay()
     // Fist charge
     if (poing.is_charging)
     {
-        atoi(poing.charge, fistText);
+        PS1_itoa(poing.charge, fistText, 0);
         display_text(fistText, 255, 230, 2, 0);
     }
 }

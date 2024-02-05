@@ -11,6 +11,6 @@ void display_cages()
     display_sprite(mapobj, 90, 135, 182, 0);
 
     // Display cage count
-    atoi(Nb_total_cages, numStr);
+    PS1_itoa(Nb_total_cages, numStr, 0);
     display_text((char *)&numStr, 160, 200, 2, 0);
 }

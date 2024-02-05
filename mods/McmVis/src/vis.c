@@ -39,7 +39,7 @@ bool vis()
     readinput();
     //tried alternatives: InitCARD() StopCARD2()
     //should not be able to stop PS1_LoadSave before name and pct
-    if(vis_counter>1 && TOUCHE(INPUT_CROSS)){ printf("%i\n", vis_counter); vis_interr=TRUE; }
+    if(vis_counter>1 && TOUCHE(INPUT_CROSS)){ vis_interr=TRUE; }
     if(vis_counter>0 && !vis_interr)
     {
         switch(vis_type)
