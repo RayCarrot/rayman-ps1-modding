@@ -15,3 +15,6 @@ ntsc-u, exe, 0x80142b3c,                   0x0, src/RecollectCages/RecollectCage
 ntsc-u, exe, 0x80142b44,                   0x0, src/RecollectCages/RecollectCagesPatch3.s
 ntsc-u, exe, 0x80142b7c,                   0x0, src/RecollectCages/RecollectCagesPatch4.s
 ntsc-u, exe, 0x80161b2c,                   0x0, src/RecollectCages/RecollectCagesPatch5.s
+
+ntsc-u, exe, 0x80145458,                   0x0, src/RecollectLives/RecollectLives1.s
+ntsc-u, exe, 0x80145f04,                   0x0, src/RecollectLives/RecollectLives2.s
