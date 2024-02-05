@@ -5,6 +5,7 @@
 - Lives are not lost when dying
 - The first map of Eat at Joe's is skipped
 - Boss and Betilla maps are no longer skipped upon replaying
+- Cages can be re-collected
 
 ### Cheats 
 The following cheats are input while paused:

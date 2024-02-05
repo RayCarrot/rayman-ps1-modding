@@ -8,4 +8,10 @@ ntsc-u, exe, 0x8018eacc,                   0x0, src/SkipJoe/SkipJoePatch.s
 ntsc-u, exe, fix_numlevel,                 0x0, src/DontSkipLevels/fix_numlevel.c src/Cheats/CheatsDisplay.c // 2720 bytes
 
 ntsc-u, exe, PS1_CheckPauseAndCheatInputs, 0x0, src/Cheats/Cheats.c // 1192 bytes
-ntsc-u, exe, 0x8012f860,                   0x0, src/Cheats/CheatsDisplayHook.s // Extend display_time
+ntsc-u, exe, 0x8013f458,                   0x0, src/Cheats/CheatsDisplayHook.s // Extend display_time
+
+ntsc-u, exe, 0x80142b24,                   0x0, src/RecollectCages/RecollectCagesPatch1.s
+ntsc-u, exe, 0x80142b3c,                   0x0, src/RecollectCages/RecollectCagesPatch2.s
+ntsc-u, exe, 0x80142b44,                   0x0, src/RecollectCages/RecollectCagesPatch3.s
+ntsc-u, exe, 0x80142b7c,                   0x0, src/RecollectCages/RecollectCagesPatch4.s
+ntsc-u, exe, 0x80161b2c,                   0x0, src/RecollectCages/RecollectCagesPatch5.s
