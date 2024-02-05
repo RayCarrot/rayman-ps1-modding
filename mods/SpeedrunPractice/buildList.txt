@@ -21,3 +21,5 @@ ntsc-u, exe, 0x80145f04,                   0x0, src/RecollectLives/RecollectLive
 
 ntsc-u, exe, 0x8014ec54,                   0x0, src/ActivatedUFOPlug/ActivatedUFOPlugPatch1.s
 ntsc-u, exe, 0x8018234c,                   0x0, src/ActivatedUFOPlug/ActivatedUFOPlugPatch2.s
+
+ntsc-u, exe, 0x8018eb70,                   0x0, src/ReplayMDD/ReplayMDDPatch.s

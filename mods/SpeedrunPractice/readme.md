@@ -7,6 +7,7 @@
 - Boss and Betilla maps are no longer skipped upon replaying
 - Lives and cages can be re-collected
 - The plug for the UFOs is activated by default
+- Mr Dark's Dare can be replayed
 
 ### Cheats 
 The following cheats are input while paused:
