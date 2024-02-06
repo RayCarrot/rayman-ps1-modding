@@ -13,13 +13,14 @@
 ### Cheats 
 The following cheats are input while paused:
 
-| **Button** | **Action**        |
-|------------|-------------------|
-| Select     | Create checkpoint |
-| R1         | Next map          |
-| L1         | Exit to worldmap  |
-| Triangle   | Die               |
-| Circle     | Full health       |
+| **Button** | **Action**            |
+|------------|-----------------------|
+| Select     | Create checkpoint     |
+| R1         | Next map              |
+| L1         | Exit to worldmap      |
+| Triangle   | Die                   |
+| Circle     | Full health           |
+| Square     | Restore speed storage |
 
 The following cheats are input while in a level:
 
