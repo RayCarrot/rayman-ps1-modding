@@ -1,7 +1,7 @@
 #include <export.h>
 
 // Constants
-#define MENU_COUNT 10
+#define MENU_COUNT 11
 #define SOUND_NAVIGATE 0x44
 #define SOUND_SELECT 0x45
 #define SPEED_STORAGE_MIN 0
@@ -18,6 +18,7 @@ extern short ray_mode;
 extern SaveState save1;
 extern Obj ray;
 extern Obj *mapobj;
+extern Obj *PS1_BossObj;
 extern LevelData level;
 extern short poing_obj_id;
 extern Poing poing;
@@ -31,6 +32,7 @@ bool showFist;
 bool showSpeedStorage;
 byte selectedSpeedStorageValue;
 bool pieCageSetup;
+bool infiniteBossHealth;
 
 sbyte savedSpeedStorageValue1;
 sbyte savedSpeedStorageValue2;
@@ -41,6 +43,7 @@ char menu_names[] =  // Single string to save space
     "show speed storage\0"
     "show gendoors\0"
     "pie cage setup\0"
+    "infinite boss health\0"
     "fist | hang | grab\0"
     "helico\0"
     "run\0"
@@ -145,8 +148,15 @@ void CheatsDisplay()
                     onOff = pieCageSetup;
                     break;
 
-                // Fist, hang, grab
+                // Infinite boss health
                 case 5:
+                    if (click)
+                        infiniteBossHealth = !infiniteBossHealth;
+                    onOff = infiniteBossHealth;
+                    break;
+
+                // Fist, hang, grab
+                case 6:
                     onOff = (RayEvts.flags0 & (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP)) == (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP);
                     if (click)
                     {
@@ -159,7 +169,7 @@ void CheatsDisplay()
                     break;
 
                 // Helico
-                case 6:
+                case 7:
                     onOff = (RayEvts.flags0 & RAYEVTS0_HELICO) != 0;
                     if (click)
                     {
@@ -172,7 +182,7 @@ void CheatsDisplay()
                     break;
 
                 // Run
-                case 7:
+                case 8:
                     onOff = (RayEvts.flags1 & RAYEVTS1_RUN) != 0;
                     if (click)
                     {
@@ -185,7 +195,7 @@ void CheatsDisplay()
                     break;
 
                 // Speed storage
-                case 8:
+                case 9:
                     if (click)
                         selectedSpeedStorageValue = !selectedSpeedStorageValue;
 
@@ -250,7 +260,7 @@ void CheatsDisplay()
                     break;
 
                 // Save speed storage
-                case 9:
+                case 10:
                     if (click)
                     {
                         savedSpeedStorageValue1 = SPEED_STORAGE_LEFT;
@@ -280,7 +290,7 @@ void CheatsDisplay()
             yPos += 16;
 
             // Add a gap
-            if (i == 7)
+            if (i == 8)
                 yPos += 8;
         }
     }
@@ -310,6 +320,13 @@ void CheatsDisplay()
         // printf("%d\n", ufo->sub_etat);
     }
 
+    // Infinite boss health
+    if (infiniteBossHealth && PS1_BossObj != (Obj *)0x00)
+    {
+        PS1_BossObj->hit_points = PS1_BossObj->init_hit_points;
+    }
+
+    // TODO: Does this overlap with timer?
     // Display fist state
     if (showFist)
     {
