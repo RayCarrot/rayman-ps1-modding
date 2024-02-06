@@ -2,7 +2,15 @@
 
 // Constants
 #define MENU_COUNT 8
+#define SOUND_NAVIGATE 0x44
+#define SOUND_SELECT 0x45
+#define SPEED_STORAGE_MIN 0
+#define SPEED_STORAGE_MAX 112
+#define SPEED_STORAGE_STEP 16
+#define SPEED_STORAGE_LEFT ray.eta[2][0x11].speed_x_left
+#define SPEED_STORAGE_RIGHT ray.eta[2][0x11].speed_x_right
 
+// External variables
 extern bool in_pause;
 extern bool PS1_Ingame;
 extern byte dead_time;
@@ -15,6 +23,7 @@ extern short poing_obj_id;
 extern Poing poing;
 extern RaymanEvents RayEvts;
 
+// Variables
 byte selectedMenuIndex;
 bool showFist;
 bool showSpeedStorage;
@@ -43,7 +52,7 @@ void CheatsDisplay()
             if (selectedMenuIndex < MENU_COUNT - 1)
             {
                 selectedMenuIndex++;
-                PlaySnd_old(0x44);
+                PlaySnd_old(SOUND_NAVIGATE);
             }
         }
         else if (PS1_SpecialTOUCHE(INPUT_UP))
@@ -51,7 +60,7 @@ void CheatsDisplay()
             if (selectedMenuIndex > 0)
             {
                 selectedMenuIndex--;
-                PlaySnd_old(0x44);
+                PlaySnd_old(SOUND_NAVIGATE);
             }
         }
 
@@ -155,50 +164,50 @@ void CheatsDisplay()
                     if (click)
                         selectedSpeedStorageValue = !selectedSpeedStorageValue;
 
-                    int value1 = ray.eta[2][0x11].speed_x_left;
-                    int value2 = ray.eta[2][0x11].speed_x_right;
+                    int value1 = SPEED_STORAGE_LEFT;
+                    int value2 = SPEED_STORAGE_RIGHT;
                     int selectedValue = selectedSpeedStorageValue == 0 ? value1 : value2;
 
                     if (PS1_SpecialTOUCHE(INPUT_LEFT))
                     {
                         if (selectedValue >= 0)
                         {
-                            selectedValue -= 16;
-                            if (selectedValue < 0)
-                                selectedValue = 0;
+                            selectedValue -= SPEED_STORAGE_STEP;
+                            if (selectedValue < SPEED_STORAGE_MIN)
+                                selectedValue = SPEED_STORAGE_MIN;
                         }
                         else
                         {
-                            selectedValue += 16;
-                            if (selectedValue > 0)
-                                selectedValue = 0;
+                            selectedValue += SPEED_STORAGE_STEP;
+                            if (selectedValue > -SPEED_STORAGE_MIN)
+                                selectedValue = -SPEED_STORAGE_MIN;
                         }
                     }
                     else if (PS1_SpecialTOUCHE(INPUT_RIGHT))
                     {
                         if (selectedValue >= 0)
                         {
-                            selectedValue += 16;
-                            if (selectedValue > 112)
-                                selectedValue = 112;
+                            selectedValue += SPEED_STORAGE_STEP;
+                            if (selectedValue > SPEED_STORAGE_MAX)
+                                selectedValue = SPEED_STORAGE_MAX;
                         }
                         else
                         {
-                            selectedValue -= 16;
-                            if (selectedValue < -112)
-                                selectedValue = -112;
+                            selectedValue -= SPEED_STORAGE_STEP;
+                            if (selectedValue < -SPEED_STORAGE_MAX)
+                                selectedValue = -SPEED_STORAGE_MAX;
                         }
                     }
 
                     if (selectedSpeedStorageValue == 0)
                     {
                         value1 = selectedValue;
-                        ray.eta[2][0x11].speed_x_left = selectedValue;
+                        SPEED_STORAGE_LEFT = selectedValue;
                     }
                     else
                     {
                         value2 = selectedValue;
-                        ray.eta[2][0x11].speed_x_right = selectedValue;
+                        SPEED_STORAGE_RIGHT = selectedValue;
                     }
 
                     char str[4];
@@ -219,21 +228,21 @@ void CheatsDisplay()
                 case 7:
                     if (click)
                     {
-                        savedSpeedStorageValue1 = ray.eta[2][0x11].speed_x_left;
-                        savedSpeedStorageValue2 = ray.eta[2][0x11].speed_x_right;
+                        savedSpeedStorageValue1 = SPEED_STORAGE_LEFT;
+                        savedSpeedStorageValue2 = SPEED_STORAGE_RIGHT;
                     }
 
                     if (PS1_SpecialTOUCHE(INPUT_SQUARE))
                     {
-                        ray.eta[2][0x11].speed_x_left = savedSpeedStorageValue1;
-                        ray.eta[2][0x11].speed_x_right = savedSpeedStorageValue2;
-                        PlaySnd_old(0x45);
+                        SPEED_STORAGE_LEFT = savedSpeedStorageValue1;
+                        SPEED_STORAGE_RIGHT = savedSpeedStorageValue2;
+                        PlaySnd_old(SOUND_SELECT);
                     }
                     break;
             }
 
             if (click)
-                PlaySnd_old(0x45);
+                PlaySnd_old(SOUND_SELECT);
 
             if (onOff != -1)
             {
@@ -280,8 +289,8 @@ void CheatsDisplay()
     if (showSpeedStorage)
     {
         char *text = "speed";
-        int value1 = ray.eta[2][0x11].speed_x_left;
-        int value2 = ray.eta[2][0x11].speed_x_right;
+        int value1 = SPEED_STORAGE_LEFT;
+        int value2 = SPEED_STORAGE_RIGHT;
 
         char str[16];
         int txtWidth;
