@@ -16,6 +16,7 @@ When paused, the following options are available:
 - Toggle normal/gold fist
 - Toggle showing speed storage
 - Toggle showing gendoors
+- Toggle pie cage setup for EAJ 5
 - Toggle powers
 - Manually set speed storage
 - Save speed storage - restore with square when paused

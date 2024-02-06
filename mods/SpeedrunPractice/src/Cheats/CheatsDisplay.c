@@ -1,7 +1,7 @@
 #include <export.h>
 
 // Constants
-#define MENU_COUNT 9
+#define MENU_COUNT 10
 #define SOUND_NAVIGATE 0x44
 #define SOUND_SELECT 0x45
 #define SPEED_STORAGE_MIN 0
@@ -22,12 +22,15 @@ extern LevelData level;
 extern short poing_obj_id;
 extern Poing poing;
 extern RaymanEvents RayEvts;
+extern short num_world;
+extern short num_level;
 
 // Variables
 byte selectedMenuIndex;
 bool showFist;
 bool showSpeedStorage;
 byte selectedSpeedStorageValue;
+bool pieCageSetup;
 
 sbyte savedSpeedStorageValue1;
 sbyte savedSpeedStorageValue2;
@@ -37,6 +40,7 @@ char menu_names[] =  // Single string to save space
     "gold fist\0"
     "show speed storage\0"
     "show gendoors\0"
+    "pie cage setup\0"
     "fist | hang | grab\0"
     "helico\0"
     "run\0"
@@ -134,8 +138,15 @@ void CheatsDisplay()
                     }
                     break;
 
-                // Fist, hang, grab
+                // Pie cage setup
                 case 4:
+                    if (click)
+                        pieCageSetup = !pieCageSetup;
+                    onOff = pieCageSetup;
+                    break;
+
+                // Fist, hang, grab
+                case 5:
                     onOff = (RayEvts.flags0 & (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP)) == (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP);
                     if (click)
                     {
@@ -148,7 +159,7 @@ void CheatsDisplay()
                     break;
 
                 // Helico
-                case 5:
+                case 6:
                     onOff = (RayEvts.flags0 & RAYEVTS0_HELICO) != 0;
                     if (click)
                     {
@@ -161,7 +172,7 @@ void CheatsDisplay()
                     break;
 
                 // Run
-                case 6:
+                case 7:
                     onOff = (RayEvts.flags1 & RAYEVTS1_RUN) != 0;
                     if (click)
                     {
@@ -174,7 +185,7 @@ void CheatsDisplay()
                     break;
 
                 // Speed storage
-                case 7:
+                case 8:
                     if (click)
                         selectedSpeedStorageValue = !selectedSpeedStorageValue;
 
@@ -239,7 +250,7 @@ void CheatsDisplay()
                     break;
 
                 // Save speed storage
-                case 8:
+                case 9:
                     if (click)
                     {
                         savedSpeedStorageValue1 = SPEED_STORAGE_LEFT;
@@ -269,9 +280,34 @@ void CheatsDisplay()
             yPos += 16;
 
             // Add a gap
-            if (i == 6)
+            if (i == 7)
                 yPos += 8;
         }
+    }
+
+    // Setup pie cage
+    if (pieCageSetup && num_world == 5 && num_level == 7)
+    {
+        Obj *ufo = &level.objects[62];
+
+        if (ufo->x_pos == ufo->init_x_pos && 
+            ufo->y_pos == ufo->init_y_pos)
+        {
+            ufo->x_pos = 2690;
+            ufo->y_pos = 1778;
+            ufo->speed_x = 0;
+            ufo->speed_y = 3;
+            ufo->main_etat = 0;
+            ufo->sub_etat = 14;
+        }
+        
+        // printf("\n");
+        // printf("%d\n", ufo->x_pos);
+        // printf("%d\n", ufo->y_pos);
+        // printf("%d\n", ufo->speed_x);
+        // printf("%d\n", ufo->speed_y);
+        // printf("%d\n", ufo->main_etat);
+        // printf("%d\n", ufo->sub_etat);
     }
 
     // Display fist state
