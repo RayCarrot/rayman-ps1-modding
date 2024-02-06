@@ -36,6 +36,7 @@ char menu_names[] =  // Single string to save space
     "show fist state\0"
     "gold fist\0"
     "show speed storage\0"
+    "show gendoors\0"
     "fist | hang | grab\0"
     "helico\0"
     "run\0"
@@ -120,8 +121,21 @@ void CheatsDisplay()
                     onOff = showSpeedStorage;
                     break;
 
-                // Fist, hang, grab
+                // Show gendoors
                 case 3:
+                    onOff = *(uint *)0x8013c49c == 0;
+                    if (click)
+                    {
+                        onOff = !onOff;
+                        if (onOff)
+                            *(uint *)0x8013c49c = 0;
+                        else
+                            *(uint *)0x8013c49c = 0x10620096;
+                    }
+                    break;
+
+                // Fist, hang, grab
+                case 4:
                     onOff = (RayEvts.flags0 & (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP)) == (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP);
                     if (click)
                     {
@@ -134,7 +148,7 @@ void CheatsDisplay()
                     break;
 
                 // Helico
-                case 4:
+                case 5:
                     onOff = (RayEvts.flags0 & RAYEVTS0_HELICO) != 0;
                     if (click)
                     {
@@ -147,7 +161,7 @@ void CheatsDisplay()
                     break;
 
                 // Run
-                case 5:
+                case 6:
                     onOff = (RayEvts.flags1 & RAYEVTS1_RUN) != 0;
                     if (click)
                     {
@@ -160,7 +174,7 @@ void CheatsDisplay()
                     break;
 
                 // Speed storage
-                case 6:
+                case 7:
                     if (click)
                         selectedSpeedStorageValue = !selectedSpeedStorageValue;
 
@@ -225,7 +239,7 @@ void CheatsDisplay()
                     break;
 
                 // Save speed storage
-                case 7:
+                case 8:
                     if (click)
                     {
                         savedSpeedStorageValue1 = SPEED_STORAGE_LEFT;

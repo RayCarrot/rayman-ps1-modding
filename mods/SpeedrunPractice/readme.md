@@ -10,7 +10,16 @@
 - Mr Dark's Dare can be replayed
 - Loading screens are removed, making load times slightly faster
 
-### Cheats 
+### Cheats
+When paused, the following options are available:
+- Toggle showing fist state (normal/gold, speed and charge)
+- Toggle normal/gold fist
+- Toggle showing speed storage
+- Toggle showing gendoors
+- Toggle powers
+- Manually set speed storage
+- Save speed storage - restore with square when paused
+
 The following cheats are input while paused:
 
 | **Button** | **Action**            |
