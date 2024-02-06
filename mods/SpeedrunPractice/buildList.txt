@@ -11,6 +11,7 @@ ntsc-u, exe, PS1_CheckPauseAndCheatInputs, 0x0, src/Cheats/Cheats.c // 1192 byte
 ntsc-u, exe, RotMatrixYXZ,                 0x0, src/Cheats/CheatsDisplay.c // 2643 bytes
 ntsc-u, exe, 0x8013f458,                   0x0, src/Cheats/CheatsDisplayHook.s // Extend display_time
 ntsc-u, exe, 0x8012f860,                   0x0, src/Cheats/DisablePauseText.s
+ntsc-u, exe, 0x8019b31c,                   0x0, src/Cheats/nop_dark_text_shadow.s
 
 ntsc-u, exe, 0x80142b24,                   0x0, src/RecollectCages/RecollectCagesPatch1.s
 ntsc-u, exe, 0x80142b3c,                   0x0, src/RecollectCages/RecollectCagesPatch2.s
