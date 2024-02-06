@@ -1,7 +1,7 @@
 #include <export.h>
 
 // Constants
-#define MENU_COUNT 8
+#define MENU_COUNT 9
 #define SOUND_NAVIGATE 0x44
 #define SOUND_SELECT 0x45
 #define SPEED_STORAGE_MIN 0
@@ -66,7 +66,7 @@ void CheatsDisplay()
         }
 
         // Display menu
-        int yPos = 80;
+        int yPos = 55;
         for (int i = 0; i < MENU_COUNT; i++)
         {
             // Get the name
@@ -269,7 +269,7 @@ void CheatsDisplay()
             yPos += 16;
 
             // Add a gap
-            if (i == 5)
+            if (i == 6)
                 yPos += 8;
         }
     }
