@@ -326,7 +326,6 @@ void CheatsDisplay()
         PS1_BossObj->hit_points = PS1_BossObj->init_hit_points;
     }
 
-    // TODO: Does this overlap with timer?
     // Display fist state
     if (showFist)
     {
@@ -341,14 +340,14 @@ void CheatsDisplay()
         else if (initSubEtat == 5 || initSubEtat == 12)
             fistText[0] = '3';
 
-        display_sprite(mapobj, initSubEtat >= 8 ? 1 : 2, 275, 215, 0); // Fist
-        display_text(fistText, 305, 230, 2, 0); // Fist speed
+        display_sprite(mapobj, initSubEtat >= 8 ? 1 : 2, 275, 195, 0); // Fist
+        display_text(fistText, 305, 210, 2, 0); // Fist speed
 
         // Fist charge
         if (poing.is_charging && poing.charge > 5)
         {
             PS1_itoa(poing.charge, fistText, 3);
-            display_text(fistText, 255, 230, 2, 0);
+            display_text(fistText, 255, 210, 2, 0);
         }
     }
 
