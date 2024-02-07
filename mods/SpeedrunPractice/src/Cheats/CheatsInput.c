@@ -13,7 +13,7 @@ extern short poing_obj_id;
 extern Poing poing;
 extern StatusBar status_bar;
 
-void Cheats()
+void cheats_input()
 {
     // Re-implement pause toggle
     if (PS1_Ingame && PS1_TOUCHE_0x9())

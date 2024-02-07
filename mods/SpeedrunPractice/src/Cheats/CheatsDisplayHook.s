@@ -1,2 +1,2 @@
 .set noreorder
-j CheatsDisplay
+j cheats_display
