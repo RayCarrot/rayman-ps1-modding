@@ -1,0 +1,14 @@
+ntsc-u, exe, 0x8019f9f0,                   0x0, src/SkipUbiLogo/nop_load.s
+ntsc-u, exe, 0x8019f9fc,                   0x0, src/SkipUbiLogo/nop_play_music.s
+ntsc-u, exe, 0x8019fa14,                   0x0, src/SkipUbiLogo/nop_loop.s
+ntsc-u, exe, 0x8019fa24,                   0x0, src/SkipUbiLogo/nop_wait.s
+ntsc-u, exe, 0x8019fa2c,                   0x0, src/SkipUbiLogo/nop_fade_out.s
+
+ntsc-u, exe, 0x8019fffc,                   0x0, src/SkipGameLogo/nop_display.s
+ntsc-u, exe, 0x801a0038,                   0x0, src/SkipGameLogo/nop_animate.s
+
+ntsc-u, exe, 0x801328a4,                   0x0, src/SkipVideos/jump_to_end_of_play_video.s
+
+ntsc-u, exe, 0x8019ffc4,                   0x0, src/SkipTitleScreen/nop_load_img.s
+ntsc-u, exe, 0x8012fc8c,                   0x0, src/SkipTitleScreen/hook_DEPART_INIT_LOOP.s
+ntsc-u, exe, LOAD_SCREEN,                  0x0, src/SkipTitleScreen/DEPART_INIT_LOOP.c // Overwrite LOAD_SCREEN since we're not calling that anymore
