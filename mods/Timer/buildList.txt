@@ -1,5 +1,5 @@
 // C files
-common, exe, SsUtKeyOnV, 0x0, src/timer.c // Overwrite some unused functions
+common, exe, SsUtKeyOnV, 0x0, src/timer.c // 2140 bytes
 
 // Assembly files
 ntsc-u, exe, 0x801b9544, 0x0, src/hook_vsync.s // Extend VSYNC_OBJ_F0 which gets called from vsync
@@ -30,3 +30,13 @@ ntsc-u, exe, 0x8019b31c, 0x0, src/nop_dark_text_shadow.s
 pal-e, exe, 0x8019fd7c, 0x0, src/nop_dark_text_shadow.s
 ntsc-u, exe, 0x8012ff18, 0x0, src/hook_stop_level_music.s
 pal-e, exe, 0x8013501c, 0x0, src/hook_stop_level_music.s // Overwrite call to PS1_StopLevelMusic
+
+// TODO: Add PAL hooks
+ntsc-u, exe, 0x80161b7c, 0x0, src/ActionHooks/hook_ALLOCATE_MEDAILLON_TOON.s
+ntsc-u, exe, 0x80187d64, 0x0, src/ActionHooks/hook_RAY_HURT.s
+ntsc-u, exe, 0x80131d10, 0x0, src/ActionHooks/hook_start_cd_gagne.s
+ntsc-u, exe, 0x80164284, 0x0, src/ActionHooks/hook_checkpoint.s
+ntsc-u, exe, 0x80154a24, 0x0, src/ActionHooks/hook_Add_One_RAY_lives.s
+ntsc-u, exe, 0x80145468, 0x0, src/ActionHooks/hook_bigpower.s
+ntsc-u, exe, 0x80145e50, 0x0, src/ActionHooks/hook_smallpower.s
+ntsc-u, exe, 0x80145e00, 0x0, src/ActionHooks/hook_fistpower.s

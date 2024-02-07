@@ -2,10 +2,12 @@
 
 // Enums
 enum TIMERMODE { TIMER_OFF, TIMER_GAME, TIMER_WORLD, TIMER_LEVEL, TIMER_DEATH };
+enum TIMERDISPLAYMODE { TIMERDISP_ALWAYS, TIMERDISP_ACTION, TIMERDISP_ACTION_AND_CROSS };
 
 // Constants
 #define NUM_TIMER_MODES 5
-#define DEFAULT_COOLDOWN 15
+#define NUM_TIMER_DISPLAY_MODES 3
+#define TIMER_DISPLAY_TIME 60
 #define SOUND_NAVIGATE 0x44
 
 #if BUILD == 1 // pal-e
@@ -18,18 +20,53 @@ enum TIMERMODE { TIMER_OFF, TIMER_GAME, TIMER_WORLD, TIMER_LEVEL, TIMER_DEATH };
 extern byte dark_phase;
 extern byte world_index;
 extern short new_world;
+extern short position;
+extern Obj *PS1_BossObj;
 
 // Variables
 uint frames = 0;
 enum TIMERMODE timer_mode = TIMER_OFF;
-byte input_cooldown = 0;
+enum TIMERDISPLAYMODE timer_display_mode = TIMERDISP_ALWAYS;
 bool is_running = 0;
 bool entered_level = 0;
+int timer_display_countdown;
+byte prevBossHitPoints;
+
+void timer_action()
+{
+    timer_display_countdown = TIMER_DISPLAY_TIME;
+}
+
+void hook_checkpoint()
+{
+    timer_action();
+    restore_gendoor_link();
+}
+
+void hook_DO_NOVA(Obj *obj)
+{
+    timer_action();
+    DO_NOVA(obj);
+}
 
 void update_timer()
 {
     if (is_running)
         frames++;
+
+    if (timer_display_countdown > 0)
+        timer_display_countdown--;
+
+    if (timer_display_mode == TIMERDISP_ACTION_AND_CROSS && PS1_SpecialTOUCHE(INPUT_CROSS))
+        timer_action();
+
+    if (timer_display_mode != TIMERDISP_ALWAYS && PS1_BossObj != (Obj *)0x00)
+    {
+        if (PS1_BossObj->hit_points < PS1_BossObj->init_hit_points && PS1_BossObj->hit_points != prevBossHitPoints)
+            timer_action();
+        
+        prevBossHitPoints = PS1_BossObj->hit_points;
+    }
 }
 
 void stop_level_music()
@@ -46,6 +83,9 @@ void stop_level_music()
 void display_timer()
 {
     if (timer_mode == TIMER_OFF)
+        return;
+
+    if (timer_display_mode != TIMERDISP_ALWAYS && timer_display_countdown == 0)
         return;
 
     int sec, h, m, s, f;
@@ -89,32 +129,38 @@ void display_timer_credits()
 
 void set_timer_mode()
 {
-    if (input_cooldown == 0)
+    if (PS1_SpecialTOUCHE(INPUT_L2))
     {
-        if (TOUCHE(INPUT_L2))
+        if (timer_mode > 0)
         {
-            input_cooldown = DEFAULT_COOLDOWN;
-
-            if (timer_mode > 0)
-            {
-                PlaySnd_old(SOUND_NAVIGATE);
-                timer_mode--;
-            }
-        }
-        else if (TOUCHE(INPUT_R2))
-        {
-            input_cooldown = DEFAULT_COOLDOWN;
-            
-            if (timer_mode < (NUM_TIMER_MODES - 1))
-            {
-                PlaySnd_old(SOUND_NAVIGATE);
-                timer_mode++;
-            }
+            PlaySnd_old(SOUND_NAVIGATE);
+            timer_mode--;
         }
     }
-
-    if (input_cooldown > 0)
-        input_cooldown--;
+    else if (PS1_SpecialTOUCHE(INPUT_R2))
+    {
+        if (timer_mode < (NUM_TIMER_MODES - 1))
+        {
+            PlaySnd_old(SOUND_NAVIGATE);
+            timer_mode++;
+        }
+    }
+    else if (PS1_SpecialTOUCHE(INPUT_L1))
+    {
+        if (timer_display_mode > 0)
+        {
+            PlaySnd_old(SOUND_NAVIGATE);
+            timer_display_mode--;
+        }
+    }
+    else if (PS1_SpecialTOUCHE(INPUT_R1))
+    {
+        if (timer_display_mode < (NUM_TIMER_DISPLAY_MODES - 1))
+        {
+            PlaySnd_old(SOUND_NAVIGATE);
+            timer_display_mode++;
+        }
+    }
 
     char text[22] = "l2 | r2 timer: ";
 
@@ -142,7 +188,32 @@ void set_timer_mode()
             break;
     }
 
-    display_text((char *)&text, 80, 180, 2, 15);
+    display_text((char *)&text, 90, 180, 2, 15);
+
+    // Only show when selecting the start option as to not overlap text
+    if (position == 7)
+    {
+        char text2[40] = "l1 | r1 timer display: ";
+
+        switch (timer_display_mode)
+        {
+            default:
+            case TIMERDISP_ALWAYS:
+                strcat((char *)&text2, "always");
+                break;
+
+            case TIMERDISP_ACTION:
+                strcat((char *)&text2, "action");
+                break;
+
+            case TIMERDISP_ACTION_AND_CROSS:
+                strcat((char *)&text2, "action and cross");
+                break;
+        }
+
+        int width = PS1_CalcTextWidth((char *)&text2, 2);
+        display_text((char *)&text2, 360 / 2 - width / 2, 195, 2, 15);
+    }
 }
 
 void start_game()
