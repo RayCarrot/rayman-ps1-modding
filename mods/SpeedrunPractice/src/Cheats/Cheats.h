@@ -28,6 +28,7 @@ extern Poing poing;
 extern RaymanEvents RayEvts;
 extern short num_world;
 extern short num_level;
+extern StatusBar status_bar;
 
 // Variables
 extern bool showFist;

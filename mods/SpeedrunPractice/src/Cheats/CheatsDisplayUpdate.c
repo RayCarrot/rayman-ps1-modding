@@ -32,6 +32,7 @@ void cheats_display_update()
     if (infiniteBossHealth && PS1_BossObj != (Obj *)0x00)
     {
         PS1_BossObj->hit_points = PS1_BossObj->init_hit_points;
+        ray.hit_points = status_bar.max_hp;
     }
 
     // Display fist state
