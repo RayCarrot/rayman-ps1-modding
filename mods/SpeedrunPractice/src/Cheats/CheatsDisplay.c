@@ -34,8 +34,8 @@ byte selectedSpeedStorageValue;
 bool pieCageSetup;
 bool infiniteBossHealth;
 
-sbyte savedSpeedStorageValue1;
-sbyte savedSpeedStorageValue2;
+sbyte savedSpeedStorageLeft;
+sbyte savedSpeedStorageRight;
 
 char menu_names[] =  // Single string to save space
     "show fist state\0"
@@ -49,6 +49,7 @@ char menu_names[] =  // Single string to save space
     "run\0"
     "speed storage\0"
     "save speed storage\0";
+byte speedStorageSubEtats[] = { 0x11, 0x12, 0x13, 3, 5, 4, 0x20 };
 
 void CheatsDisplay()
 {
@@ -199,48 +200,48 @@ void CheatsDisplay()
                     if (click)
                         selectedSpeedStorageValue = !selectedSpeedStorageValue;
 
-                    int value1 = SPEED_STORAGE_LEFT;
-                    int value2 = SPEED_STORAGE_RIGHT;
-                    int selectedValue = selectedSpeedStorageValue == 0 ? value1 : value2;
+                    int leftSpeed = SPEED_STORAGE_LEFT;
+                    int rightSpeed = SPEED_STORAGE_RIGHT;
+                    int selectedSpeed = selectedSpeedStorageValue == 0 ? leftSpeed : rightSpeed;
 
                     if (PS1_SpecialTOUCHE(INPUT_LEFT))
                     {
-                        if (selectedValue >= 0)
+                        if (selectedSpeed >= 0)
                         {
-                            selectedValue -= SPEED_STORAGE_STEP;
-                            if (selectedValue < SPEED_STORAGE_MIN)
+                            selectedSpeed -= SPEED_STORAGE_STEP;
+                            if (selectedSpeed < SPEED_STORAGE_MIN)
                             {
-                                selectedValue = SPEED_STORAGE_MIN;
+                                selectedSpeed = SPEED_STORAGE_MIN;
                                 PlaySnd_old(SOUND_NAVIGATE);
                             }
                         }
                         else
                         {
-                            selectedValue += SPEED_STORAGE_STEP;
-                            if (selectedValue > -SPEED_STORAGE_MIN)
+                            selectedSpeed += SPEED_STORAGE_STEP;
+                            if (selectedSpeed > -SPEED_STORAGE_MIN)
                             {
-                                selectedValue = -SPEED_STORAGE_MIN;
+                                selectedSpeed = -SPEED_STORAGE_MIN;
                                 PlaySnd_old(SOUND_NAVIGATE);
                             }
                         }
                     }
                     else if (PS1_SpecialTOUCHE(INPUT_RIGHT))
                     {
-                        if (selectedValue >= 0)
+                        if (selectedSpeed >= 0)
                         {
-                            selectedValue += SPEED_STORAGE_STEP;
-                            if (selectedValue > SPEED_STORAGE_MAX)
+                            selectedSpeed += SPEED_STORAGE_STEP;
+                            if (selectedSpeed > SPEED_STORAGE_MAX)
                             {
-                                selectedValue = SPEED_STORAGE_MAX;
+                                selectedSpeed = SPEED_STORAGE_MAX;
                                 PlaySnd_old(SOUND_NAVIGATE);
                             }
                         }
                         else
                         {
-                            selectedValue -= SPEED_STORAGE_STEP;
-                            if (selectedValue < -SPEED_STORAGE_MAX)
+                            selectedSpeed -= SPEED_STORAGE_STEP;
+                            if (selectedSpeed < -SPEED_STORAGE_MAX)
                             {
-                                selectedValue = -SPEED_STORAGE_MAX;
+                                selectedSpeed = -SPEED_STORAGE_MAX;
                                 PlaySnd_old(SOUND_NAVIGATE);
                             }
                         }
@@ -248,26 +249,28 @@ void CheatsDisplay()
 
                     if (selectedSpeedStorageValue == 0)
                     {
-                        value1 = selectedValue;
-                        SPEED_STORAGE_LEFT = selectedValue;
+                        leftSpeed = selectedSpeed;
+                        for (byte i = 0; i < sizeof(speedStorageSubEtats); i++)
+                            ray.eta[2][speedStorageSubEtats[i]].speed_x_left = selectedSpeed;
                     }
                     else
                     {
-                        value2 = selectedValue;
-                        SPEED_STORAGE_RIGHT = selectedValue;
+                        rightSpeed = selectedSpeed;
+                        for (byte i = 0; i < sizeof(speedStorageSubEtats); i++)
+                            ray.eta[2][speedStorageSubEtats[i]].speed_x_right = selectedSpeed;
                     }
 
                     char str[4];
 
                     // Absolute values
-                    if (value1 < 0)
-                        value1 = -value1;
-                    if (value2 < 0)
-                        value2 = -value2;
+                    if (leftSpeed < 0)
+                        leftSpeed = -leftSpeed;
+                    if (rightSpeed < 0)
+                        rightSpeed = -rightSpeed;
 
-                    PS1_itoa(value1, (char *)&str, 4);
+                    PS1_itoa(leftSpeed, (char *)&str, 4);
                     display_text((char *)&str, 180, yPos, 2, selectedSpeedStorageValue == 0 ? color : 0x00);
-                    PS1_itoa(value2, (char *)&str, 4);
+                    PS1_itoa(rightSpeed, (char *)&str, 4);
                     display_text((char *)&str, 180 + 32, yPos, 2, selectedSpeedStorageValue == 1 ? color : 0x00);
                     break;
 
@@ -275,14 +278,17 @@ void CheatsDisplay()
                 case 10:
                     if (click)
                     {
-                        savedSpeedStorageValue1 = SPEED_STORAGE_LEFT;
-                        savedSpeedStorageValue2 = SPEED_STORAGE_RIGHT;
+                        savedSpeedStorageLeft = SPEED_STORAGE_LEFT;
+                        savedSpeedStorageRight = SPEED_STORAGE_RIGHT;
                     }
 
                     if (PS1_SpecialTOUCHE(INPUT_SQUARE))
                     {
-                        SPEED_STORAGE_LEFT = savedSpeedStorageValue1;
-                        SPEED_STORAGE_RIGHT = savedSpeedStorageValue2;
+                        for (byte i = 0; i < sizeof(speedStorageSubEtats); i++)
+                        {
+                            ray.eta[2][speedStorageSubEtats[i]].speed_x_left = savedSpeedStorageLeft;
+                            ray.eta[2][speedStorageSubEtats[i]].speed_x_right = savedSpeedStorageRight;
+                        }
                         PlaySnd_old(SOUND_SELECT);
                     }
                     break;
@@ -367,22 +373,22 @@ void CheatsDisplay()
     if (showSpeedStorage)
     {
         char *text = "speed";
-        int value1 = SPEED_STORAGE_LEFT;
-        int value2 = SPEED_STORAGE_RIGHT;
+        int speedLeft = SPEED_STORAGE_LEFT;
+        int speedRight = SPEED_STORAGE_RIGHT;
 
         char str[16];
         int txtWidth;
 
         // Absolute values
-        if (value1 < 0)
-            value1 = -value1;
-        if (value2 < 0)
-            value2 = -value2;
+        if (speedLeft < 0)
+            speedLeft = -speedLeft;
+        if (speedRight < 0)
+            speedRight = -speedRight;
 
         txtWidth = PS1_CalcTextWidth(text, 2);
         display_text(text, 125, 28, 2, 1);
 
-        sprintf((char *)&str, "%d %d", value1, value2);
+        sprintf((char *)&str, "%d %d", speedLeft, speedRight);
         display_text((char *)&str, 125 + txtWidth + 6, 28, 2, 2);
     }
 }
