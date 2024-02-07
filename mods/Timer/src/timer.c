@@ -25,6 +25,7 @@ extern Obj *PS1_BossObj;
 
 // Variables
 uint frames = 0;
+uint display_frames = 0;
 enum TIMERMODE timer_mode = TIMER_OFF;
 enum TIMERDISPLAYMODE timer_display_mode = TIMERDISP_ALWAYS;
 bool is_running = 0;
@@ -35,6 +36,7 @@ byte prevBossHitPoints;
 void timer_action()
 {
     timer_display_countdown = TIMER_DISPLAY_TIME;
+    display_frames = frames;
 }
 
 void hook_checkpoint()
@@ -90,14 +92,15 @@ void display_timer()
 
     int sec, h, m, s, f;
     char str[12];
+    uint value = timer_display_mode == TIMERDISP_ALWAYS ? frames : display_frames;
 
-    sec = frames / FRAMERATE;
+    sec = value / FRAMERATE;
 
     // Split into hours, minutes, seconds, frames
     h = sec / 3600; 
     m = (sec - (3600 * h)) / 60;
     s = (sec - (3600 * h) - (m * 60));
-    f = frames % 60;
+    f = value % 60;
 
     sprintf(str, "%02d:%02d:%02d:%02d", h, m, s, f);
     display_text(str, 230, 230, 2, 0);
