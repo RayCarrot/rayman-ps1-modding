@@ -209,13 +209,19 @@ void CheatsDisplay()
                         {
                             selectedValue -= SPEED_STORAGE_STEP;
                             if (selectedValue < SPEED_STORAGE_MIN)
+                            {
                                 selectedValue = SPEED_STORAGE_MIN;
+                                PlaySnd_old(SOUND_NAVIGATE);
+                            }
                         }
                         else
                         {
                             selectedValue += SPEED_STORAGE_STEP;
                             if (selectedValue > -SPEED_STORAGE_MIN)
+                            {
                                 selectedValue = -SPEED_STORAGE_MIN;
+                                PlaySnd_old(SOUND_NAVIGATE);
+                            }
                         }
                     }
                     else if (PS1_SpecialTOUCHE(INPUT_RIGHT))
@@ -224,13 +230,19 @@ void CheatsDisplay()
                         {
                             selectedValue += SPEED_STORAGE_STEP;
                             if (selectedValue > SPEED_STORAGE_MAX)
+                            {
                                 selectedValue = SPEED_STORAGE_MAX;
+                                PlaySnd_old(SOUND_NAVIGATE);
+                            }
                         }
                         else
                         {
                             selectedValue -= SPEED_STORAGE_STEP;
                             if (selectedValue < -SPEED_STORAGE_MAX)
+                            {
                                 selectedValue = -SPEED_STORAGE_MAX;
+                                PlaySnd_old(SOUND_NAVIGATE);
+                            }
                         }
                     }
 

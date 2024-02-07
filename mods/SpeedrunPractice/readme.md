@@ -37,4 +37,4 @@ The following cheats are input while in a level:
 | **Button** | **Action**        |
 |------------|-------------------|
 | Select     | Toggle no-clip    |
-| Triangle   | Toggle fist speed |
+| Triangle   | Cycle fist speeds |
