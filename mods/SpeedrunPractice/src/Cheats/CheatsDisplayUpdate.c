@@ -106,4 +106,46 @@ void cheats_display_update()
         sprintf((char *)&str, "%d %d", speedLeft, speedRight);
         display_text((char *)&str, 125 + txtWidth + 6, 28, 2, 2);
     }
+
+    // Place big power in no-clip mode with square
+    if (ray_mode < 0 && PS1_SpecialTOUCHE(INPUT_SQUARE))
+    {
+        Obj *obj = (Obj *)0x00;
+
+        // Find already placed big power to place again
+        for (short i = 0; i < level.nb_objects; i++)
+        {
+            if (level.objects[i].img_buffer == (undefined *)0x01234567)
+            {
+                obj = &level.objects[i];
+                break;
+            }
+        }
+
+        // If not found we convert unused object to a big power
+        if (obj == (Obj *)0x00)
+        {
+            obj = findfirstObject(TYPE_PIEDS_RAYMAN);
+            obj->type = TYPE_JAUGEUP;
+            obj->hit_points = 2;
+            obj->hit_sprite = 0;
+            obj->animations = level.objects[poing_obj_id].animations;
+            obj->sprites = level.objects[poing_obj_id].sprites;
+            obj->eta = level.objects[poing_obj_id].eta;
+            obj->cmds = 0x00;
+            obj->cmd_labels = 0x00;
+            obj->img_buffer = (undefined *)0x01234567;
+        }
+
+        // Set position and state
+        obj->init_x_pos = ray.x_pos;
+        obj->init_y_pos = ray.y_pos;
+        obj->init_main_etat = 6;
+        obj->init_sub_etat = 2;
+        
+        // Init
+        obj_init(obj);
+        obj->flags |= OBJ_ALIVE | OBJ_ACTIVE;
+        calc_obj_pos(obj);
+    }
 }

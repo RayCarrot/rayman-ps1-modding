@@ -36,7 +36,8 @@ The following cheats are input while paused:
 
 The following cheats are input while in a level:
 
-| **Button** | **Action**        |
-|------------|-------------------|
-| Select     | Toggle no-clip    |
-| Triangle   | Cycle fist speeds |
+| **Button** | **Action**                       |
+|------------|----------------------------------|
+| Select     | Toggle no-clip                   |
+| Triangle   | Cycle fist speeds                |
+| Square     | Place big power while in no-clip |
