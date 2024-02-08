@@ -25,7 +25,7 @@ void display_speed_value(char *text, int value1, int value2, short x, short y)
 
 void display_speed()
 {
-    if (PS1_SpecialTOUCHE(INPUT_SELECT))
+    if (PS1_SingleTOUCHE(INPUT_SELECT))
     {
         is_speed_display_visible = !is_speed_display_visible;
     }

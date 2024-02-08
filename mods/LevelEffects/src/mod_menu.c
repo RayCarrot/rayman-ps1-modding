@@ -108,7 +108,7 @@ int do_mod_settings_loop()
                 fistY = 80 - 15 + positiony * 15;
             }
 
-            if (PS1_SpecialTOUCHE(INPUT_CROSS))
+            if (PS1_SingleTOUCHE(INPUT_CROSS))
             {
                 PlaySnd_old(0x44);
                 enabled_effects ^= 1 << positiony;
@@ -116,7 +116,7 @@ int do_mod_settings_loop()
         }
 
         // BACK
-        if (PS1_SpecialTOUCHE(INPUT_CIRCLE) || (positiony == NUM_EFFECTS && PS1_SpecialTOUCHE(INPUT_CROSS)))
+        if (PS1_SingleTOUCHE(INPUT_CIRCLE) || (positiony == NUM_EFFECTS && PS1_SingleTOUCHE(INPUT_CROSS)))
         {
             PlaySnd_old(0x45);
             is_selecting_effects = FALSE;
@@ -160,7 +160,7 @@ int do_mod_settings_loop()
             fistX = 115;
             fistY = 185;
 
-            if (PS1_SpecialTOUCHE(INPUT_CROSS))
+            if (PS1_SingleTOUCHE(INPUT_CROSS))
             {
                 PlaySnd_old(0x45);
                 ret = 1;
@@ -175,7 +175,7 @@ int do_mod_settings_loop()
             // EFFECTS
             if (positiony == 0)
             {
-                if (PS1_SpecialTOUCHE(INPUT_CROSS))
+                if (PS1_SingleTOUCHE(INPUT_CROSS))
                 {
                     PlaySnd_old(0x44);
                     is_selecting_effects = TRUE;
@@ -188,7 +188,7 @@ int do_mod_settings_loop()
 
                 if (positionx != -1)
                 {
-                    if (PS1_SpecialTOUCHE(INPUT_DOWN))
+                    if (PS1_SingleTOUCHE(INPUT_DOWN))
                     {
                         PlaySnd_old(0x44);
 
@@ -201,7 +201,7 @@ int do_mod_settings_loop()
                             effects_per_level--;
                         }
                     }
-                    else if (PS1_SpecialTOUCHE(INPUT_UP))
+                    else if (PS1_SingleTOUCHE(INPUT_UP))
                     {
                         PlaySnd_old(0x44);
 
@@ -223,7 +223,7 @@ int do_mod_settings_loop()
 
                 if (positionx != -1)
                 {
-                    if (PS1_SpecialTOUCHE(INPUT_DOWN))
+                    if (PS1_SingleTOUCHE(INPUT_DOWN))
                     {
                         PlaySnd_old(0x44);
 
@@ -236,7 +236,7 @@ int do_mod_settings_loop()
                             rand_seed_digits[positionx]--;
                         }
                     }
-                    else if (PS1_SpecialTOUCHE(INPUT_UP))
+                    else if (PS1_SingleTOUCHE(INPUT_UP))
                     {
                         PlaySnd_old(0x44);
 
@@ -258,17 +258,17 @@ int do_mod_settings_loop()
 
     if (num_pos_x > 0 && positionx != -1)
     {
-        if (PS1_SpecialTOUCHE(INPUT_CROSS) || PS1_SpecialTOUCHE(INPUT_CIRCLE))
+        if (PS1_SingleTOUCHE(INPUT_CROSS) || PS1_SingleTOUCHE(INPUT_CIRCLE))
         {
             PlaySnd_old(0x45);
             positionx = -1;
         }
-        if (positionx > 0 && PS1_SpecialTOUCHE(INPUT_LEFT))
+        if (positionx > 0 && PS1_SingleTOUCHE(INPUT_LEFT))
         {
             PlaySnd_old(0x44);
             positionx--;
         }
-        else if (positionx < num_pos_x - 1 && PS1_SpecialTOUCHE(INPUT_RIGHT))
+        else if (positionx < num_pos_x - 1 && PS1_SingleTOUCHE(INPUT_RIGHT))
         {
             PlaySnd_old(0x44);
             positionx++;
@@ -276,17 +276,17 @@ int do_mod_settings_loop()
     }
     else
     {
-        if (num_pos_x > 0 && PS1_SpecialTOUCHE(INPUT_CROSS))
+        if (num_pos_x > 0 && PS1_SingleTOUCHE(INPUT_CROSS))
         {
             PlaySnd_old(0x44);
             positionx = 0;
         }
-        else if (positiony < num_pos_y - 1 && PS1_SpecialTOUCHE(INPUT_DOWN))
+        else if (positiony < num_pos_y - 1 && PS1_SingleTOUCHE(INPUT_DOWN))
         {
             PlaySnd_old(0x44);
             positiony++;
         }
-        else if (positiony > 0 && PS1_SpecialTOUCHE(INPUT_UP))
+        else if (positiony > 0 && PS1_SingleTOUCHE(INPUT_UP))
         {
             PlaySnd_old(0x44);
             positiony--;

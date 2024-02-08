@@ -34,7 +34,7 @@ void cheats_input()
     if (in_pause)
     {
         // Create checkpoint
-        if (PS1_SpecialTOUCHE(INPUT_SELECT))
+        if (PS1_SingleTOUCHE(INPUT_SELECT))
         {
             restore_gendoor_link();
             saveGameState((Obj *)0x0, &save1);
@@ -43,7 +43,7 @@ void cheats_input()
         }
 
         // Finish map
-        if (PS1_SpecialTOUCHE(INPUT_R1))
+        if (PS1_SingleTOUCHE(INPUT_R1))
         {
             ChangeLevel();
             in_pause = 0;
@@ -51,7 +51,7 @@ void cheats_input()
         }
 
         // Exit to worldmap
-        if (PS1_SpecialTOUCHE(INPUT_L1))
+        if (PS1_SingleTOUCHE(INPUT_L1))
         {
             new_world = 1;
             in_pause = 0;
@@ -59,7 +59,7 @@ void cheats_input()
         }
 
         // Die
-        if (PS1_SpecialTOUCHE(INPUT_TRIANGLE) && (ray.flags & (OBJ_ALIVE | OBJ_ACTIVE)) == (OBJ_ALIVE | OBJ_ACTIVE))
+        if (PS1_SingleTOUCHE(INPUT_TRIANGLE) && (ray.flags & (OBJ_ALIVE | OBJ_ACTIVE)) == (OBJ_ALIVE | OBJ_ACTIVE))
         {
             ray.hit_points = 0;
             RAY_HIT(1, (Obj *)0x00);
@@ -68,7 +68,7 @@ void cheats_input()
         }
 
         // Full health
-        if (PS1_SpecialTOUCHE(INPUT_CIRCLE))
+        if (PS1_SingleTOUCHE(INPUT_CIRCLE))
         {
             ray.hit_points = 4;
             status_bar.max_hp = 4;
@@ -81,7 +81,7 @@ void cheats_input()
     else
     {
         // No-clip
-        if (PS1_SpecialTOUCHE(INPUT_SELECT))
+        if (PS1_SingleTOUCHE(INPUT_SELECT))
         {
             ray.main_etat = 2;
             ray.sub_etat = 2;
@@ -91,7 +91,7 @@ void cheats_input()
         }
 
         // Fist speed
-        if (PS1_SpecialTOUCHE(INPUT_TRIANGLE))
+        if (PS1_SingleTOUCHE(INPUT_TRIANGLE))
         {
             byte initSubEtat = level.objects[poing_obj_id].init_sub_etat;
 

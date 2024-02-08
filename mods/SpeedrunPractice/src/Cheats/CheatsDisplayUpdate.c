@@ -108,7 +108,7 @@ void cheats_display_update()
     }
 
     // Place big power in no-clip mode with square
-    if (ray_mode < 0 && PS1_SpecialTOUCHE(INPUT_SQUARE))
+    if (ray_mode < 0 && PS1_SingleTOUCHE(INPUT_SQUARE))
     {
         Obj *obj = (Obj *)0x00;
 

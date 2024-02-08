@@ -8931,7 +8931,7 @@ byte FUN_8013491c(void);
 void PS1_DoDemo(Record *record);
 void FUN_80134be0(void);
 undefined * TOUCHE(Input param_1);
-undefined4 PS1_SpecialTOUCHE(Input param_1);
+undefined4 PS1_SingleTOUCHE(Input param_1);
 void PS1_LoadFondSprites(void);
 void PS1_LoadFondDataAndPalettes(void);
 void PS1_LoadFond(void);

@@ -59,7 +59,7 @@ void update_timer()
     if (timer_display_countdown > 0)
         timer_display_countdown--;
 
-    if (timer_display_mode == TIMERDISP_ACTION_AND_CROSS && PS1_SpecialTOUCHE(INPUT_CROSS))
+    if (timer_display_mode == TIMERDISP_ACTION_AND_CROSS && PS1_SingleTOUCHE(INPUT_CROSS))
         timer_action();
 
     if (timer_display_mode != TIMERDISP_ALWAYS && PS1_BossObj != (Obj *)0x00)
@@ -132,7 +132,7 @@ void display_timer_credits()
 
 void set_timer_mode()
 {
-    if (PS1_SpecialTOUCHE(INPUT_L2))
+    if (PS1_SingleTOUCHE(INPUT_L2))
     {
         if (timer_mode > 0)
         {
@@ -140,7 +140,7 @@ void set_timer_mode()
             timer_mode--;
         }
     }
-    else if (PS1_SpecialTOUCHE(INPUT_R2))
+    else if (PS1_SingleTOUCHE(INPUT_R2))
     {
         if (timer_mode < (NUM_TIMER_MODES - 1))
         {
@@ -148,7 +148,7 @@ void set_timer_mode()
             timer_mode++;
         }
     }
-    else if (PS1_SpecialTOUCHE(INPUT_L1))
+    else if (PS1_SingleTOUCHE(INPUT_L1))
     {
         if (timer_display_mode > 0)
         {
@@ -156,7 +156,7 @@ void set_timer_mode()
             timer_display_mode--;
         }
     }
-    else if (PS1_SpecialTOUCHE(INPUT_R1))
+    else if (PS1_SingleTOUCHE(INPUT_R1))
     {
         if (timer_display_mode < (NUM_TIMER_DISPLAY_MODES - 1))
         {

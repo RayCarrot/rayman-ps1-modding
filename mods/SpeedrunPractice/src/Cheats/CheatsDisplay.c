@@ -33,7 +33,7 @@ void cheats_display()
     if (in_pause)
     {
         // Navigate menu
-        if (PS1_SpecialTOUCHE(INPUT_DOWN))
+        if (PS1_SingleTOUCHE(INPUT_DOWN))
         {
             if (selectedMenuIndex < MENU_COUNT - 1)
             {
@@ -41,7 +41,7 @@ void cheats_display()
                 PlaySnd_old(SOUND_NAVIGATE);
             }
         }
-        else if (PS1_SpecialTOUCHE(INPUT_UP))
+        else if (PS1_SingleTOUCHE(INPUT_UP))
         {
             if (selectedMenuIndex > 0)
             {
@@ -83,7 +83,7 @@ void cheats_display()
             // Display the name
             display_text(name, 20, yPos, 2, color);
 
-            bool click = selectedMenuIndex == i && PS1_SpecialTOUCHE(INPUT_CROSS);
+            bool click = selectedMenuIndex == i && PS1_SingleTOUCHE(INPUT_CROSS);
             int onOff = -1;
 
             switch (i)
@@ -195,7 +195,7 @@ void cheats_display()
                     int rightSpeed = SPEED_STORAGE_RIGHT;
                     int selectedSpeed = selectedSpeedStorageValue == 0 ? leftSpeed : rightSpeed;
 
-                    if (PS1_SpecialTOUCHE(INPUT_LEFT))
+                    if (PS1_SingleTOUCHE(INPUT_LEFT))
                     {
                         if (selectedSpeed >= 0)
                         {
@@ -216,7 +216,7 @@ void cheats_display()
                             }
                         }
                     }
-                    else if (PS1_SpecialTOUCHE(INPUT_RIGHT))
+                    else if (PS1_SingleTOUCHE(INPUT_RIGHT))
                     {
                         if (selectedSpeed >= 0)
                         {
@@ -273,7 +273,7 @@ void cheats_display()
                         savedSpeedStorageRight = SPEED_STORAGE_RIGHT;
                     }
 
-                    if (PS1_SpecialTOUCHE(INPUT_SQUARE))
+                    if (PS1_SingleTOUCHE(INPUT_SQUARE))
                     {
                         for (byte i = 0; i < sizeof(speedStorageSubEtats); i++)
                         {

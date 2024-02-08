@@ -11,16 +11,16 @@ void DO_PLAYER()
     PS1_itoa(sound, sndStr, 0);
     display_text(sndStr, 0xA0, 0x78, 1, 1);
     
-    if (PS1_SpecialTOUCHE(INPUT_RIGHT))
+    if (PS1_SingleTOUCHE(INPUT_RIGHT))
         sound++;
-    else if (PS1_SpecialTOUCHE(INPUT_LEFT))
+    else if (PS1_SingleTOUCHE(INPUT_LEFT))
         sound--;
-    else if (PS1_SpecialTOUCHE(INPUT_UP))
+    else if (PS1_SingleTOUCHE(INPUT_UP))
         sound += 10;
-    else if (PS1_SpecialTOUCHE(INPUT_DOWN))
+    else if (PS1_SingleTOUCHE(INPUT_DOWN))
         sound -= 10;
-    else if (PS1_SpecialTOUCHE(INPUT_CROSS))
+    else if (PS1_SingleTOUCHE(INPUT_CROSS))
         PlaySnd_old(sound);
-    else if (PS1_SpecialTOUCHE(INPUT_CIRCLE))
+    else if (PS1_SingleTOUCHE(INPUT_CIRCLE))
         stop_all_snd();
 }

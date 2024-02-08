@@ -34,7 +34,7 @@ void update_timer()
 
 void check_inputs()
 {
-    if (PS1_Ingame && PS1_SpecialTOUCHE(INPUT_TRIANGLE))
+    if (PS1_Ingame && PS1_SingleTOUCHE(INPUT_TRIANGLE))
     {
         //RAY_HURT();
         RAY_HIT(1, (Obj *)0x00);
@@ -42,7 +42,7 @@ void check_inputs()
     }
 
     #ifdef DEBUG
-    if (PS1_Ingame && PS1_SpecialTOUCHE(INPUT_SELECT))
+    if (PS1_Ingame && PS1_SingleTOUCHE(INPUT_SELECT))
     {
         // Unlock powers
         RayEvts |= 1 << 0; // fist
