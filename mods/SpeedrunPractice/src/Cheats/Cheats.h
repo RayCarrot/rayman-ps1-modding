@@ -29,10 +29,12 @@ extern RaymanEvents RayEvts;
 extern short num_world;
 extern short num_level;
 extern StatusBar status_bar;
+extern ActiveObjects actobj;
 
 // Variables
 extern bool showFist;
 extern bool showSpeedStorage;
+extern bool showGendoors;
 extern bool pieCageSetup;
 extern bool infiniteBossHealth;
 

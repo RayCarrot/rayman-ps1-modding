@@ -8,6 +8,7 @@ sbyte savedSpeedStorageLeft;
 sbyte savedSpeedStorageRight;
 bool showFist;
 bool showSpeedStorage;
+bool showGendoors;
 bool pieCageSetup;
 bool infiniteBossHealth;
 
@@ -105,15 +106,9 @@ void cheats_display()
 
                 // Show gendoors
                 case 3:
-                    onOff = *(uint *)0x8013c49c == 0;
                     if (click)
-                    {
-                        onOff = !onOff;
-                        if (onOff)
-                            *(uint *)0x8013c49c = 0;
-                        else
-                            *(uint *)0x8013c49c = 0x10620096;
-                    }
+                        showGendoors = !showGendoors;
+                    onOff = showGendoors;
                     break;
 
                 // Pie cage setup

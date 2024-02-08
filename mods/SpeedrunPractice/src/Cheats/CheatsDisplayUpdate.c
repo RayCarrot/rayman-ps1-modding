@@ -1,6 +1,19 @@
 #include <export.h>
 #include "Cheats.h"
 
+void cheats_display_objects()
+{
+    // Display gendoors
+    if (showGendoors)
+    {
+        for (int i = 0; i < actobj.num_active_objects; i++)
+        {
+            if (level.objects[actobj.objects[i]].type == TYPE_GENERATING_DOOR)
+                display2(&level.objects[actobj.objects[i]]);
+        }        
+    }
+}
+
 void cheats_display_update()
 {
     // Setup pie cage

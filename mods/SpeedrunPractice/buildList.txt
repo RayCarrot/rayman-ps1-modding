@@ -9,8 +9,9 @@ ntsc-u, exe, fix_numlevel,                 0x0, src/DontSkipLevels/fix_numlevel.
 
 ntsc-u, exe, PS1_CheckPauseAndCheatInputs, 0x0, src/Cheats/CheatsInput.c // 664/1192 bytes
 ntsc-u, exe, RotMatrixYXZ,                 0x0, src/Cheats/CheatsDisplay.c // 2076/2643 bytes
-ntsc-u, exe, LoadAverage12,                0x0, src/Cheats/CheatsDisplayUpdate.c // 708/1864 bytes
+ntsc-u, exe, LoadAverage12,                0x0, src/Cheats/CheatsDisplayUpdate.c // 916/1864 bytes
 ntsc-u, exe, 0x80137990,                   0x0, src/Cheats/CheatsDisplayHook.s // Extend PS1_DisplayFondSprites
+ntsc-u, exe, 0x8013c910,                   0x0, src/Cheats/CheatsDisplayObjectsHook.s // Extend DISPLAY_ALL_OBJECTS
 ntsc-u, exe, 0x8012f860,                   0x0, src/Cheats/DisablePauseText.s
 ntsc-u, exe, 0x8019b31c,                   0x0, src/Cheats/nop_dark_text_shadow.s
 
