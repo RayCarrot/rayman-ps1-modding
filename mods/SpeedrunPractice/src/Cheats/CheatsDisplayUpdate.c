@@ -14,6 +14,17 @@ void cheats_display_objects()
     }
 }
 
+void restoreGameStateAfterDying(SaveState *save)
+{
+    byte subEtat = poing.sub_etat;
+    restoreGameState(save);
+    if (maintainFistState)
+    {
+        poing.sub_etat = subEtat;
+        level.objects[poing_obj_id].init_sub_etat = subEtat;
+    }
+}
+
 void cheats_display_update()
 {
     // Setup pie cage

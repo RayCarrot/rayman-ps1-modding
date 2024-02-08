@@ -14,9 +14,11 @@
 When paused, the following options are available:
 - Toggle showing fist state (normal/gold, speed and charge)
 - Toggle normal/gold fist
+- Toggle to maintain fist state after dying
 - Toggle showing speed storage
 - Toggle showing gendoors
 - Toggle pie cage setup for EAJ 5
+- Toggle for infinite health for Rayman and bosses during boss fights
 - Toggle powers
 - Manually set speed storage
 - Save speed storage - restore with square when paused

@@ -11,10 +11,12 @@ bool showSpeedStorage;
 bool showGendoors;
 bool pieCageSetup;
 bool infiniteBossHealth;
+bool maintainFistState;
 
 char menu_names[] =  // Single string to save space
     "show fist state\0"
     "gold fist\0"
+    "maintain fist state\0"
     "show speed storage\0"
     "show gendoors\0"
     "pie cage setup\0"
@@ -49,7 +51,20 @@ void cheats_display()
         }
 
         // Display menu
-        int yPos = 55;
+        int yPos;
+        if (selectedMenuIndex> (MENU_SCROLL_START - 1))
+        {
+            int scrollPos = selectedMenuIndex;
+
+            if (MENU_COUNT - scrollPos <= MENU_SCROLL_START)
+                scrollPos = MENU_COUNT - MENU_SCROLL_START;
+
+            yPos = 80 - (scrollPos * MENU_LINE_HEIGHT) + (MENU_SCROLL_START * MENU_LINE_HEIGHT);
+        }
+        else
+        {
+            yPos = 80;
+        }
         for (int i = 0; i < MENU_COUNT; i++)
         {
             // Get the name
@@ -100,33 +115,40 @@ void cheats_display()
                 // Show speed storage
                 case 2:
                     if (click)
+                        maintainFistState = !maintainFistState;
+                    onOff = maintainFistState;
+                    break;
+
+                // Show speed storage
+                case 3:
+                    if (click)
                         showSpeedStorage = !showSpeedStorage;
                     onOff = showSpeedStorage;
                     break;
 
                 // Show gendoors
-                case 3:
+                case 4:
                     if (click)
                         showGendoors = !showGendoors;
                     onOff = showGendoors;
                     break;
 
                 // Pie cage setup
-                case 4:
+                case 5:
                     if (click)
                         pieCageSetup = !pieCageSetup;
                     onOff = pieCageSetup;
                     break;
 
                 // Infinite boss health
-                case 5:
+                case 6:
                     if (click)
                         infiniteBossHealth = !infiniteBossHealth;
                     onOff = infiniteBossHealth;
                     break;
 
                 // Fist, hang, grab
-                case 6:
+                case 7:
                     onOff = (RayEvts.flags0 & (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP)) == (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP);
                     if (click)
                     {
@@ -139,7 +161,7 @@ void cheats_display()
                     break;
 
                 // Helico
-                case 7:
+                case 8:
                     onOff = (RayEvts.flags0 & RAYEVTS0_HELICO) != 0;
                     if (click)
                     {
@@ -152,7 +174,7 @@ void cheats_display()
                     break;
 
                 // Run
-                case 8:
+                case 9:
                     onOff = (RayEvts.flags1 & RAYEVTS1_RUN) != 0;
                     if (click)
                     {
@@ -165,7 +187,7 @@ void cheats_display()
                     break;
 
                 // Speed storage
-                case 9:
+                case 10:
                     if (click)
                         selectedSpeedStorageValue = !selectedSpeedStorageValue;
 
@@ -244,7 +266,7 @@ void cheats_display()
                     break;
 
                 // Save speed storage
-                case 10:
+                case 11:
                     if (click)
                     {
                         savedSpeedStorageLeft = SPEED_STORAGE_LEFT;
@@ -274,11 +296,11 @@ void cheats_display()
                     display_text("off", 180, yPos, 2, color);
             }
 
-            yPos += 16;
+            yPos += MENU_LINE_HEIGHT;
 
             // Add a gap
-            if (i == 8)
-                yPos += 8;
+            if (i == 9)
+                yPos += MENU_LINE_HEIGHT / 2;
         }
     }
 
