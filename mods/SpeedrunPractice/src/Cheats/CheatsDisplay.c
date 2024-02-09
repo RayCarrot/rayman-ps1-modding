@@ -15,15 +15,15 @@ char menu_names[] =  // Single string to save space
     "inputs\0"
 
     // Misc
-    "pie cage setup\0"
-    "infinite boss hp\0"
+    "pie cage\0"
+    "boss hp\0"
     
     // Power
-    "fist | hang | grab\0"
-    "helico\0"
+    "fhg\0"
+    "heli\0"
     "run\0"
     
-    // Speed storage
+    // Speed
     "show\0"
     "set\0"
     "save\0"
@@ -33,7 +33,7 @@ char menu_names[] =  // Single string to save space
     "show\0"
     "misc\0"
     "power\0"
-    "speed storage";
+    "speed";
 byte menuPageIndexes[] = { 
     MENUITEM_SHOW_FIST_STATE, 
     MENUITEM_SHOW_GENDOORS, 

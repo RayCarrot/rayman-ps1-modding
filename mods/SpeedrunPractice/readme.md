@@ -24,13 +24,13 @@ When paused, the following options are available. Use R2/L2 to navigate between 
 - **Inputs**: shows an input display
 
 #### Misc
-- **Pie cage setup**: spawns the first UFO in EAJ 5 at a later position
-- **Infinite boss hp**: gives bosses and Rayman infinite health during boss fights
+- **Pie cage**: spawns the first UFO in EAJ 5 at a later position
+- **Boss hp**: gives bosses and Rayman infinite health during boss fights
 
 #### Power
-- **Fist, hang, grab**
-- **Helico**
-- **Run**
+- **FHG**: Toggles fist, hang and grab powers
+- **Heli**: Toggles helico power
+- **Run**: Toggles run power
 
 #### Speed storage
 - **Show**: shows the current speed storage values (left and right)

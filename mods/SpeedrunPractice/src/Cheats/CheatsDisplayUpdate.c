@@ -119,12 +119,10 @@ void cheats_display_update()
     // Display speed storage
     if (cheatsInfo.showSpeedStorage)
     {
-        char *text = "speed";
         int speedLeft = SPEED_STORAGE_LEFT;
         int speedRight = SPEED_STORAGE_RIGHT;
 
         char str[16];
-        int txtWidth;
 
         // Absolute values
         if (speedLeft < 0)
@@ -132,11 +130,8 @@ void cheats_display_update()
         if (speedRight < 0)
             speedRight = -speedRight;
 
-        txtWidth = PS1_CalcTextWidth(text, 2);
-        display_text(text, 125, 28, 2, 1);
-
         sprintf((char *)&str, "%d %d", speedLeft, speedRight);
-        display_text((char *)&str, 125 + txtWidth + 6, 28, 2, 2);
+        display_text((char *)&str, 135, 28, 2, 2);
     }
 
     // Place big power in no-clip mode with square
