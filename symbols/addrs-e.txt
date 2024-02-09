@@ -1250,6 +1250,7 @@ snd_bis = 0x801c6e0c;
 PS1_SoundVabIds = 0x801c700c;
 PS1_SepVols = 0x801c711c;
 PS1_SepInfos = 0x801c7150;
+PS1_NewWorldMusic = 0x801c71b4;
 PS1_AudioTable = 0x801c71c4;
 voice_is_working = 0x801c71e0;
 atak = 0x801c7238;

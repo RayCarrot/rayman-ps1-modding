@@ -1,0 +1,19 @@
+ntsc-u, exe, DEPART_WORLD, 0x0, src/DEPART_WORLD.c //entering level from map without transition
+ntsc-u, exe, 0x8018e62c, 0x0, asm/DO_RAYMAN_IN_WLD_MAP.s //map movement speed
+ntsc-u, exe, DO_MEDAILLONS, 0x0, src/DO_MEDAILLONS.c //instant level unlock dots
+
+ntsc-u, exe, TEST_SIGNPOST, 0x0, src/TEST_SIGNPOST.c //skip win anims, YEAH sound still a bit off?
+ntsc-u, exe, PS1_StopLevelMusic, 0x0, src/PS1_StopLevelMusic.c
+
+ntsc-u, exe, DO_FEE, 0x0, src/DO_FEE.c //faster betilla
+
+ntsc-u, exe, ALLOCATE_MEDAILLON_TOON, 0x0, src/ALLOCATE_MEDAILLON_TOON.c //disable cage medaillon freezing
+
+ntsc-u, exe, dyingSequence, 0x0, src/dyingSequence.c //faster bzzit death
+ntsc-u, exe, 0x80157090, 0x0, asm/INIT_RAY.s //RayEvts graine for tsof1
+ntsc-u, exe, 0x8017ecbc, 0x0, asm/DO_BBMONT2_COMMAND.s //tg2 not an autoscroller
+ntsc-u, exe, 0x8015b344, 0x0, asm/fix_numlevel_1.s //remove vignettes
+ntsc-u, exe, 0x8015b464, 0x0, asm/fix_numlevel_2.s
+ntsc-u, exe, 0x8014a2c4, 0x0, asm/init_finBossLevel.s //musician and joe done
+
+ntsc-u, exe, 0x801bb670, 0x0, src/INIT_RAY_GRAINE.c src/init_finBossLevel_skips.c
