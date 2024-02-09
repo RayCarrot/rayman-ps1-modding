@@ -5,11 +5,11 @@ ntsc-u, exe, 0x8018771c,                   0x0, src/NoLivesLost/NoLivesLostPatch
 
 ntsc-u, exe, 0x8018eacc,                   0x0, src/SkipJoe/SkipJoePatch.s
 
-ntsc-u, exe, fix_numlevel,                 0x0, src/DontSkipLevels/fix_numlevel.c // 1736/2720 bytes
+ntsc-u, exe, fix_numlevel,                 0x0, src/DontSkipLevels/fix_numlevel.c src/FastWorldMap/FastWorldMap.c // 1820/2720 bytes
 
 ntsc-u, exe, PS1_CheckPauseAndCheatInputs, 0x0, src/Cheats/CheatsInput.c // 664/1192 bytes
-ntsc-u, exe, RotMatrixYXZ,                 0x0, src/Cheats/CheatsDisplay.c // 2208/2643 bytes
-ntsc-u, exe, LoadAverage12,                0x0, src/Cheats/CheatsDisplayUpdate.c // 1352/1864 bytes
+ntsc-u, exe, RotMatrixYXZ,                 0x0, src/Cheats/CheatsDisplay.c // 2284/2643 bytes
+ntsc-u, exe, LoadAverage12,                0x0, src/Cheats/CheatsDisplayUpdate.c // 1500/1864 bytes
 ntsc-u, exe, 0x80137990,                   0x0, src/Cheats/CheatsDisplayHook.s // Extend PS1_DisplayFondSprites
 ntsc-u, exe, 0x8013c910,                   0x0, src/Cheats/CheatsDisplayObjectsHook.s // Extend DISPLAY_ALL_OBJECTS
 ntsc-u, exe, 0x801592dc,                   0x0, src/Cheats/RestoreGameStateAfterDyingHook.s
@@ -32,3 +32,5 @@ ntsc-u, exe, 0x8018eb70,                   0x0, src/ReplayMDD/ReplayMDDPatch.s
 
 ntsc-u, exe, 0x801a0160,                   0x0, src/NoLoadScreens/NoLoadScreensPatch1.s
 ntsc-u, exe, 0x801a0130,                   0x0, src/NoLoadScreens/NoLoadScreensPatch2.s
+
+ntsc-u, exe, 0x8018e868,                   0x0, src/FastWorldMap/FastWorldMapHook.s

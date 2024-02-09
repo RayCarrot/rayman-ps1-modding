@@ -9,6 +9,7 @@
 - The plug for the UFOs is activated by default
 - Mr Dark's Dare can be replayed
 - Loading screens are removed, making load times slightly faster
+- Move faster on the worldmap by holding down R1
 
 ### Cheats
 When paused, the following options are available:
@@ -17,6 +18,7 @@ When paused, the following options are available:
 - Toggle to maintain fist state after dying
 - Toggle showing speed storage
 - Toggle showing gendoors
+- Toggle showing input display
 - Toggle pie cage setup for EAJ 5
 - Toggle for infinite health for Rayman and bosses during boss fights
 - Toggle powers
