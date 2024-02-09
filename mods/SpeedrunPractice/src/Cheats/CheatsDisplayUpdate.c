@@ -1,10 +1,42 @@
 #include <export.h>
 #include "Cheats.h"
 
+// Structs
+typedef struct 
+{
+    byte x_pos;
+    byte y_pos;
+    char str;
+    Input input;
+} InputItem;
+
+// External variables
+extern byte PS1_DrawSpriteSemiTrans;
+
+// Variables
+InputItem input_items[] =
+{
+    { .x_pos = 20, .y_pos = 190, .str = 'o', .input = INPUT_DOWN },
+    { .x_pos = 10, .y_pos = 180, .str = 'o', .input = INPUT_LEFT },
+    { .x_pos = 20, .y_pos = 170, .str = 'o', .input = INPUT_UP },
+    { .x_pos = 30, .y_pos = 180, .str = 'o', .input = INPUT_RIGHT },
+
+    { .x_pos = 60, .y_pos = 190, .str = 'o', .input = INPUT_CROSS },
+    { .x_pos = 50, .y_pos = 180, .str = 'o', .input = INPUT_SQUARE },
+    { .x_pos = 60, .y_pos = 170, .str = 'o', .input = INPUT_TRIANGLE },
+    { .x_pos = 70, .y_pos = 180, .str = 'o', .input = INPUT_CIRCLE },
+
+    { .x_pos = 10, .y_pos = 160, .str = '.', .input = INPUT_L1 },
+    { .x_pos = 10, .y_pos = 150, .str = '.', .input = INPUT_L2 },
+
+    { .x_pos = 70, .y_pos = 160, .str = '.', .input = INPUT_R1 },
+    { .x_pos = 70, .y_pos = 150, .str = '.', .input = INPUT_R2 },
+};
+
 void cheats_display_objects()
 {
     // Display gendoors
-    if (showGendoors)
+    if (cheatsInfo.showGendoors)
     {
         for (int i = 0; i < actobj.num_active_objects; i++)
         {
@@ -18,7 +50,7 @@ void restoreGameStateAfterDying(SaveState *save)
 {
     byte subEtat = poing.sub_etat;
     restoreGameState(save);
-    if (maintainFistState)
+    if (cheatsInfo.maintainFistState)
     {
         poing.sub_etat = subEtat;
         level.objects[poing_obj_id].init_sub_etat = subEtat;
@@ -28,7 +60,7 @@ void restoreGameStateAfterDying(SaveState *save)
 void cheats_display_update()
 {
     // Setup pie cage
-    if (pieCageSetup && num_world == 5 && num_level == 7)
+    if (cheatsInfo.pieCageSetup && num_world == 5 && num_level == 7)
     {
         Obj *ufo = &level.objects[62];
 
@@ -53,14 +85,14 @@ void cheats_display_update()
     }
 
     // Infinite boss health
-    if (infiniteBossHealth && PS1_BossObj != (Obj *)0x00)
+    if (cheatsInfo.infiniteBossHealth && PS1_BossObj != (Obj *)0x00)
     {
         PS1_BossObj->hit_points = PS1_BossObj->init_hit_points;
         ray.hit_points = status_bar.max_hp;
     }
 
     // Display fist state
-    if (showFist)
+    if (cheatsInfo.showFist)
     {
         char fistText[3] = { 0, 0, 0 };
 
@@ -85,14 +117,12 @@ void cheats_display_update()
     }
 
     // Display speed storage
-    if (showSpeedStorage)
+    if (cheatsInfo.showSpeedStorage)
     {
-        char *text = "speed";
         int speedLeft = SPEED_STORAGE_LEFT;
         int speedRight = SPEED_STORAGE_RIGHT;
 
         char str[16];
-        int txtWidth;
 
         // Absolute values
         if (speedLeft < 0)
@@ -100,11 +130,8 @@ void cheats_display_update()
         if (speedRight < 0)
             speedRight = -speedRight;
 
-        txtWidth = PS1_CalcTextWidth(text, 2);
-        display_text(text, 125, 28, 2, 1);
-
         sprintf((char *)&str, "%d %d", speedLeft, speedRight);
-        display_text((char *)&str, 125 + txtWidth + 6, 28, 2, 2);
+        display_text((char *)&str, 135, 28, 2, 2);
     }
 
     // Place big power in no-clip mode with square
@@ -147,5 +174,23 @@ void cheats_display_update()
         obj_init(obj);
         obj->flags |= OBJ_ALIVE | OBJ_ACTIVE;
         calc_obj_pos(obj);
+    }
+
+    // Input display
+    if (cheatsInfo.showInputs)
+    {
+        char text[2];
+        text[1] = 0x00;
+        InputItem *item;
+
+        for (uint i = 0; i < sizeof(input_items) / sizeof(InputItem); i++)
+        {
+            item = &input_items[i];
+            if (!TOUCHE(item->input))
+                PS1_DrawSpriteSemiTrans = 1;
+            text[0] = item->str;
+            display_text(text, item->x_pos, item->y_pos, 2, PS1_DrawSpriteSemiTrans ? 11 : 1);
+            PS1_DrawSpriteSemiTrans = 0;
+        }
     }
 }
