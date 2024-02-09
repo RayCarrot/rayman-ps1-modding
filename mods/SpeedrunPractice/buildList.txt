@@ -8,8 +8,8 @@ ntsc-u, exe, 0x8018eacc,                   0x0, src/SkipJoe/SkipJoePatch.s
 ntsc-u, exe, fix_numlevel,                 0x0, src/DontSkipLevels/fix_numlevel.c src/FastWorldMap/FastWorldMap.c // 1820/2720 bytes
 
 ntsc-u, exe, PS1_CheckPauseAndCheatInputs, 0x0, src/Cheats/CheatsInput.c // 664/1192 bytes
-ntsc-u, exe, RotMatrixYXZ,                 0x0, src/Cheats/CheatsDisplay.c // 2284/2643 bytes
-ntsc-u, exe, LoadAverage12,                0x0, src/Cheats/CheatsDisplayUpdate.c // 1500/1864 bytes
+ntsc-u, exe, RotMatrixYXZ,                 0x0, src/Cheats/CheatsDisplay.c // 2316/2643 bytes
+ntsc-u, exe, LoadAverage12,                0x0, src/Cheats/CheatsDisplayUpdate.c // 1476/1864 bytes
 ntsc-u, exe, 0x8013f458,                   0x0, src/Cheats/CheatsDisplayHook.s // Extend display_time
 ntsc-u, exe, 0x8013c910,                   0x0, src/Cheats/CheatsDisplayObjectsHook.s // Extend DISPLAY_ALL_OBJECTS
 ntsc-u, exe, 0x801592dc,                   0x0, src/Cheats/RestoreGameStateAfterDyingHook.s

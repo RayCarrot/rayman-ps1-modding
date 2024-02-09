@@ -1,19 +1,8 @@
 #include <export.h>
 #include "Cheats.h"
 
-// Variables todo: might save space to place in a struct?
-byte selectedMenuPageIndex;
-byte selectedMenuIndex;
-byte selectedSpeedStorageValue;
-sbyte savedSpeedStorageLeft;
-sbyte savedSpeedStorageRight;
-bool showFist;
-bool showSpeedStorage;
-bool showGendoors;
-bool showInputs;
-bool pieCageSetup;
-bool infiniteBossHealth;
-bool maintainFistState;
+// Variables
+CheatsInfo cheatsInfo;
 
 char menu_names[] =  // Single string to save space
     // Fist
@@ -62,64 +51,64 @@ void cheats_display()
         // Navgiate menu pages
         if (PS1_SingleTOUCHE(INPUT_R2))
         {
-            if (selectedMenuPageIndex < MENU_PAGES_COUNT - 1)
+            if (cheatsInfo.selectedMenuPageIndex < MENU_PAGES_COUNT - 1)
             {
-                selectedMenuPageIndex++;
+                cheatsInfo.selectedMenuPageIndex++;
                 PlaySnd_old(SOUND_NAVIGATE);
             }
             else
             {
-                selectedMenuPageIndex = 0;
+                cheatsInfo.selectedMenuPageIndex = 0;
             }
 
-            selectedMenuIndex = 0;
+            cheatsInfo.selectedMenuIndex = 0;
         }
         else if (PS1_SingleTOUCHE(INPUT_L2))
         {
-            if (selectedMenuPageIndex > 0)
+            if (cheatsInfo.selectedMenuPageIndex > 0)
             {
-                selectedMenuPageIndex--;
+                cheatsInfo.selectedMenuPageIndex--;
                 PlaySnd_old(SOUND_NAVIGATE);
             }
             else
             {
-                selectedMenuPageIndex = MENU_PAGES_COUNT - 1;
+                cheatsInfo.selectedMenuPageIndex = MENU_PAGES_COUNT - 1;
             }
 
-            selectedMenuIndex = 0;
+            cheatsInfo.selectedMenuIndex = 0;
         }
 
-        int pageLength = menuPageIndexes[selectedMenuPageIndex + 1] - menuPageIndexes[selectedMenuPageIndex];
+        int pageLength = menuPageIndexes[cheatsInfo.selectedMenuPageIndex + 1] - menuPageIndexes[cheatsInfo.selectedMenuPageIndex];
 
         // Navigate menu items
         if (PS1_SingleTOUCHE(INPUT_DOWN))
         {
-            if (selectedMenuIndex < pageLength - 1)
+            if (cheatsInfo.selectedMenuIndex < pageLength - 1)
             {
-                selectedMenuIndex++;
+                cheatsInfo.selectedMenuIndex++;
                 PlaySnd_old(SOUND_NAVIGATE);
             }
             else
             {
-                selectedMenuIndex = 0;
+                cheatsInfo.selectedMenuIndex = 0;
             }
         }
         else if (PS1_SingleTOUCHE(INPUT_UP))
         {
-            if (selectedMenuIndex > 0)
+            if (cheatsInfo.selectedMenuIndex > 0)
             {
-                selectedMenuIndex--;
+                cheatsInfo.selectedMenuIndex--;
                 PlaySnd_old(SOUND_NAVIGATE);
             }
             else
             {
-                selectedMenuIndex = pageLength - 1;
+                cheatsInfo.selectedMenuIndex = pageLength - 1;
             }
         }
 
         // Display page name
         char *name = menu_names;
-        byte index = MENU_COUNT + selectedMenuPageIndex;
+        byte index = MENU_COUNT + cheatsInfo.selectedMenuPageIndex;
         while (index) 
         {
             if ( !*name ) 
@@ -130,7 +119,7 @@ void cheats_display()
 
         // Display page indicators
         for (int i = 0; i < MENU_PAGES_COUNT; i++)
-            display_text(".", 20 + i * 8, 70, 2, selectedMenuPageIndex == i ? 2 : 6);   
+            display_text(".", 20 + i * 8, 70, 2, cheatsInfo.selectedMenuPageIndex == i ? 2 : 6);   
 
         // Display menu
         int yPos = 90;
@@ -138,7 +127,7 @@ void cheats_display()
         {
             // Get the name
             name = menu_names;
-            byte index = menuPageIndexes[selectedMenuPageIndex] + i;
+            byte index = menuPageIndexes[cheatsInfo.selectedMenuPageIndex] + i;
             while (index) 
             {
                 if ( !*name ) 
@@ -147,21 +136,21 @@ void cheats_display()
             }
 
             // Get the color - have it be multi-colored if selected
-            byte color = selectedMenuIndex == i ? 0xe0 : 0x00;
+            byte color = cheatsInfo.selectedMenuIndex == i ? 0xe0 : 0x00;
 
             // Display the name
             display_text(name, 20, yPos, 2, color);
 
-            bool click = selectedMenuIndex == i && PS1_SingleTOUCHE(INPUT_CROSS);
+            bool click = cheatsInfo.selectedMenuIndex == i && PS1_SingleTOUCHE(INPUT_CROSS);
             int onOff = -1;
 
-            switch (menuPageIndexes[selectedMenuPageIndex] + i)
+            switch (menuPageIndexes[cheatsInfo.selectedMenuPageIndex] + i)
             {
                 // Show fist state
                 case MENUITEM_SHOW_FIST_STATE:
                     if (click)
-                        showFist = !showFist;
-                    onOff = showFist;
+                        cheatsInfo.showFist = !cheatsInfo.showFist;
+                    onOff = cheatsInfo.showFist;
                     break;
 
                 // Gold fist
@@ -184,43 +173,43 @@ void cheats_display()
                 // Maintain fist state
                 case MENUITEM_MAINTAIN_FIST_STATE:
                     if (click)
-                        maintainFistState = !maintainFistState;
-                    onOff = maintainFistState;
+                        cheatsInfo.maintainFistState = !cheatsInfo.maintainFistState;
+                    onOff = cheatsInfo.maintainFistState;
                     break;
 
                 // Show speed storage
                 case MENUITEM_SHOW_SPEED_STORAGE:
                     if (click)
-                        showSpeedStorage = !showSpeedStorage;
-                    onOff = showSpeedStorage;
+                        cheatsInfo.showSpeedStorage = !cheatsInfo.showSpeedStorage;
+                    onOff = cheatsInfo.showSpeedStorage;
                     break;
 
                 // Show gendoors
                 case MENUITEM_SHOW_GENDOORS:
                     if (click)
-                        showGendoors = !showGendoors;
-                    onOff = showGendoors;
+                        cheatsInfo.showGendoors = !cheatsInfo.showGendoors;
+                    onOff = cheatsInfo.showGendoors;
                     break;
 
                 // Show inputs
                 case MENUITEM_SHOW_INPUTS:
                     if (click)
-                        showInputs = !showInputs;
-                    onOff = showInputs;
+                        cheatsInfo.showInputs = !cheatsInfo.showInputs;
+                    onOff = cheatsInfo.showInputs;
                     break;
 
                 // Pie cage setup
                 case MENUITEM_PIE_CAGE_SETUP:
                     if (click)
-                        pieCageSetup = !pieCageSetup;
-                    onOff = pieCageSetup;
+                        cheatsInfo.pieCageSetup = !cheatsInfo.pieCageSetup;
+                    onOff = cheatsInfo.pieCageSetup;
                     break;
 
                 // Infinite boss health
                 case MENUITEM_INFINITE_BOSS_HEALTH:
                     if (click)
-                        infiniteBossHealth = !infiniteBossHealth;
-                    onOff = infiniteBossHealth;
+                        cheatsInfo.infiniteBossHealth = !cheatsInfo.infiniteBossHealth;
+                    onOff = cheatsInfo.infiniteBossHealth;
                     break;
 
                 // Fist, hang, grab
@@ -265,11 +254,11 @@ void cheats_display()
                 // Speed storage
                 case MENUITEM_SPEED_STORAGE:
                     if (click)
-                        selectedSpeedStorageValue = !selectedSpeedStorageValue;
+                        cheatsInfo.selectedSpeedStorageValue = !cheatsInfo.selectedSpeedStorageValue;
 
                     int leftSpeed = SPEED_STORAGE_LEFT;
                     int rightSpeed = SPEED_STORAGE_RIGHT;
-                    int selectedSpeed = selectedSpeedStorageValue == 0 ? leftSpeed : rightSpeed;
+                    int selectedSpeed = cheatsInfo.selectedSpeedStorageValue == 0 ? leftSpeed : rightSpeed;
 
                     if (PS1_SingleTOUCHE(INPUT_LEFT))
                     {
@@ -314,7 +303,7 @@ void cheats_display()
                         }
                     }
 
-                    if (selectedSpeedStorageValue == 0)
+                    if (cheatsInfo.selectedSpeedStorageValue == 0)
                     {
                         leftSpeed = selectedSpeed;
                         for (byte i = 0; i < sizeof(speedStorageSubEtats); i++)
@@ -336,25 +325,25 @@ void cheats_display()
                         rightSpeed = -rightSpeed;
 
                     PS1_itoa(leftSpeed, (char *)&str, 4);
-                    display_text((char *)&str, 160, yPos, 2, selectedSpeedStorageValue == 0 ? color : 0x00);
+                    display_text((char *)&str, 160, yPos, 2, cheatsInfo.selectedSpeedStorageValue == 0 ? color : 0x00);
                     PS1_itoa(rightSpeed, (char *)&str, 4);
-                    display_text((char *)&str, 160 + 32, yPos, 2, selectedSpeedStorageValue == 1 ? color : 0x00);
+                    display_text((char *)&str, 160 + 32, yPos, 2, cheatsInfo.selectedSpeedStorageValue == 1 ? color : 0x00);
                     break;
 
                 // Save speed storage
                 case MENUITEM_SAVE_SPEED_STORAGE:
                     if (click)
                     {
-                        savedSpeedStorageLeft = SPEED_STORAGE_LEFT;
-                        savedSpeedStorageRight = SPEED_STORAGE_RIGHT;
+                        cheatsInfo.savedSpeedStorageLeft = SPEED_STORAGE_LEFT;
+                        cheatsInfo.savedSpeedStorageRight = SPEED_STORAGE_RIGHT;
                     }
 
                     if (PS1_SingleTOUCHE(INPUT_SQUARE))
                     {
                         for (byte i = 0; i < sizeof(speedStorageSubEtats); i++)
                         {
-                            ray.eta[2][speedStorageSubEtats[i]].speed_x_left = savedSpeedStorageLeft;
-                            ray.eta[2][speedStorageSubEtats[i]].speed_x_right = savedSpeedStorageRight;
+                            ray.eta[2][speedStorageSubEtats[i]].speed_x_left = cheatsInfo.savedSpeedStorageLeft;
+                            ray.eta[2][speedStorageSubEtats[i]].speed_x_right = cheatsInfo.savedSpeedStorageRight;
                         }
                         PlaySnd_old(SOUND_SELECT);
                     }

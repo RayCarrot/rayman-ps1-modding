@@ -49,14 +49,24 @@ extern short num_level;
 extern StatusBar status_bar;
 extern ActiveObjects actobj;
 
+typedef struct // Struct to save space 
+{
+    byte selectedMenuPageIndex;
+    byte selectedMenuIndex;
+    byte selectedSpeedStorageValue;
+    sbyte savedSpeedStorageLeft;
+    sbyte savedSpeedStorageRight;
+    bool showFist;
+    bool showSpeedStorage;
+    bool showGendoors;
+    bool showInputs;
+    bool pieCageSetup;
+    bool infiniteBossHealth;
+    bool maintainFistState;
+} CheatsInfo;
+
 // Variables
-extern bool showFist;
-extern bool showSpeedStorage;
-extern bool showGendoors;
-extern bool showInputs;
-extern bool pieCageSetup;
-extern bool infiniteBossHealth;
-extern bool maintainFistState;
+extern CheatsInfo cheatsInfo;
 
 void cheats_display_update();
 

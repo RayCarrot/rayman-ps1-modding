@@ -36,7 +36,7 @@ InputItem input_items[] =
 void cheats_display_objects()
 {
     // Display gendoors
-    if (showGendoors)
+    if (cheatsInfo.showGendoors)
     {
         for (int i = 0; i < actobj.num_active_objects; i++)
         {
@@ -50,7 +50,7 @@ void restoreGameStateAfterDying(SaveState *save)
 {
     byte subEtat = poing.sub_etat;
     restoreGameState(save);
-    if (maintainFistState)
+    if (cheatsInfo.maintainFistState)
     {
         poing.sub_etat = subEtat;
         level.objects[poing_obj_id].init_sub_etat = subEtat;
@@ -60,7 +60,7 @@ void restoreGameStateAfterDying(SaveState *save)
 void cheats_display_update()
 {
     // Setup pie cage
-    if (pieCageSetup && num_world == 5 && num_level == 7)
+    if (cheatsInfo.pieCageSetup && num_world == 5 && num_level == 7)
     {
         Obj *ufo = &level.objects[62];
 
@@ -85,14 +85,14 @@ void cheats_display_update()
     }
 
     // Infinite boss health
-    if (infiniteBossHealth && PS1_BossObj != (Obj *)0x00)
+    if (cheatsInfo.infiniteBossHealth && PS1_BossObj != (Obj *)0x00)
     {
         PS1_BossObj->hit_points = PS1_BossObj->init_hit_points;
         ray.hit_points = status_bar.max_hp;
     }
 
     // Display fist state
-    if (showFist)
+    if (cheatsInfo.showFist)
     {
         char fistText[3] = { 0, 0, 0 };
 
@@ -117,7 +117,7 @@ void cheats_display_update()
     }
 
     // Display speed storage
-    if (showSpeedStorage)
+    if (cheatsInfo.showSpeedStorage)
     {
         char *text = "speed";
         int speedLeft = SPEED_STORAGE_LEFT;
@@ -182,7 +182,7 @@ void cheats_display_update()
     }
 
     // Input display
-    if (showInputs)
+    if (cheatsInfo.showInputs)
     {
         char text[2];
         text[1] = 0x00;
