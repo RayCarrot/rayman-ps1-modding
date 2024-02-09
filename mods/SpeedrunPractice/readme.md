@@ -12,18 +12,30 @@
 - Move faster on the worldmap by holding down R1
 
 ### Cheats
-When paused, the following options are available:
-- Toggle showing fist state (normal/gold, speed and charge)
-- Toggle normal/gold fist
-- Toggle to maintain fist state after dying
-- Toggle showing speed storage
-- Toggle showing gendoors
-- Toggle showing input display
-- Toggle pie cage setup for EAJ 5
-- Toggle for infinite health for Rayman and bosses during boss fights
-- Toggle powers
-- Manually set speed storage
-- Save speed storage - restore with square when paused
+When paused, the following options are available. Use R2/L2 to navigate between pages.
+
+#### Fist
+- **Show**: shows the current fist state (normal/gold, speed and charge) 
+- **Gold**: toggles normal/gold fist
+- **Maintain**: maintains the fist state when dying
+
+#### Show
+- **Gendoors**: shows gendoors (spawn triggers)
+- **Inputs**: shows an input display
+
+#### Misc
+- **Pie cage setup**: spawns the first UFO in EAJ 5 at a later position
+- **Infinite boss hp**: gives bosses and Rayman infinite health during boss fights
+
+#### Power
+- **Fist, hang, grab**
+- **Helico**
+- **Run**
+
+#### Speed storage
+- **Show**: shows the current speed storage values (left and right)
+- **Set**: allows manually setting speed storage
+- **Save**: save current speed storage, restore with square when paused
 
 The following cheats are input while paused:
 
