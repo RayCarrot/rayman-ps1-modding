@@ -4,7 +4,7 @@
 #include <export.h>
 
 // Constants
-#define MENU_COUNT 12
+#define MENU_COUNT 13
 #define MENU_SCROLL_START 4
 #define MENU_LINE_HEIGHT 16
 #define SOUND_NAVIGATE 0x44
@@ -37,6 +37,7 @@ extern ActiveObjects actobj;
 extern bool showFist;
 extern bool showSpeedStorage;
 extern bool showGendoors;
+extern bool showInputs;
 extern bool pieCageSetup;
 extern bool infiniteBossHealth;
 extern bool maintainFistState;

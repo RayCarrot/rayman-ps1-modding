@@ -9,6 +9,7 @@ sbyte savedSpeedStorageRight;
 bool showFist;
 bool showSpeedStorage;
 bool showGendoors;
+bool showInputs;
 bool pieCageSetup;
 bool infiniteBossHealth;
 bool maintainFistState;
@@ -19,6 +20,7 @@ char menu_names[] =  // Single string to save space
     "maintain fist state\0"
     "show speed storage\0"
     "show gendoors\0"
+    "show inputs\0"
     "pie cage setup\0"
     "infinite boss health\0"
     "fist | hang | grab\0"
@@ -133,22 +135,29 @@ void cheats_display()
                     onOff = showGendoors;
                     break;
 
-                // Pie cage setup
+                // Show inputs
                 case 5:
+                    if (click)
+                        showInputs = !showInputs;
+                    onOff = showInputs;
+                    break;
+
+                // Pie cage setup
+                case 6:
                     if (click)
                         pieCageSetup = !pieCageSetup;
                     onOff = pieCageSetup;
                     break;
 
                 // Infinite boss health
-                case 6:
+                case 7:
                     if (click)
                         infiniteBossHealth = !infiniteBossHealth;
                     onOff = infiniteBossHealth;
                     break;
 
                 // Fist, hang, grab
-                case 7:
+                case 8:
                     onOff = (RayEvts.flags0 & (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP)) == (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP);
                     if (click)
                     {
@@ -161,7 +170,7 @@ void cheats_display()
                     break;
 
                 // Helico
-                case 8:
+                case 9:
                     onOff = (RayEvts.flags0 & RAYEVTS0_HELICO) != 0;
                     if (click)
                     {
@@ -174,7 +183,7 @@ void cheats_display()
                     break;
 
                 // Run
-                case 9:
+                case 10:
                     onOff = (RayEvts.flags1 & RAYEVTS1_RUN) != 0;
                     if (click)
                     {
@@ -187,7 +196,7 @@ void cheats_display()
                     break;
 
                 // Speed storage
-                case 10:
+                case 11:
                     if (click)
                         selectedSpeedStorageValue = !selectedSpeedStorageValue;
 
@@ -266,7 +275,7 @@ void cheats_display()
                     break;
 
                 // Save speed storage
-                case 11:
+                case 12:
                     if (click)
                     {
                         savedSpeedStorageLeft = SPEED_STORAGE_LEFT;
@@ -299,7 +308,7 @@ void cheats_display()
             yPos += MENU_LINE_HEIGHT;
 
             // Add a gap
-            if (i == 9)
+            if (i == 10)
                 yPos += MENU_LINE_HEIGHT / 2;
         }
     }
