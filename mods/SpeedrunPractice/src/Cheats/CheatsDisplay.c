@@ -91,14 +91,14 @@ void cheats_display()
             switch (i)
             {
                 // Show fist state
-                case 0:
+                case MENUPAGE_SHOW_FIST_STATE:
                     if (click)
                         showFist = !showFist;
                     onOff = showFist;
                     break;
 
                 // Gold fist
-                case 1:
+                case MENUPAGE_GOLD_FIST:
                     onOff = level.objects[poing_obj_id].init_sub_etat >= 8;
                     if (click)
                     {
@@ -114,50 +114,50 @@ void cheats_display()
                     }
                     break;
 
-                // Show speed storage
-                case 2:
+                // Maintain fist state
+                case MENUPAGE_MAINTAIN_FIST_STATE:
                     if (click)
                         maintainFistState = !maintainFistState;
                     onOff = maintainFistState;
                     break;
 
                 // Show speed storage
-                case 3:
+                case MENUPAGE_SHOW_SPEED_STORAGE:
                     if (click)
                         showSpeedStorage = !showSpeedStorage;
                     onOff = showSpeedStorage;
                     break;
 
                 // Show gendoors
-                case 4:
+                case MENUPAGE_SHOW_GENDOORS:
                     if (click)
                         showGendoors = !showGendoors;
                     onOff = showGendoors;
                     break;
 
                 // Show inputs
-                case 5:
+                case MENUPAGE_SHOW_INPUTS:
                     if (click)
                         showInputs = !showInputs;
                     onOff = showInputs;
                     break;
 
                 // Pie cage setup
-                case 6:
+                case MENUPAGE_PIE_CAGE_SETUP:
                     if (click)
                         pieCageSetup = !pieCageSetup;
                     onOff = pieCageSetup;
                     break;
 
                 // Infinite boss health
-                case 7:
+                case MENUPAGE_INFINITE_BOSS_HEALTH:
                     if (click)
                         infiniteBossHealth = !infiniteBossHealth;
                     onOff = infiniteBossHealth;
                     break;
 
                 // Fist, hang, grab
-                case 8:
+                case MENUPAGE_FIST_HANG_GRAB:
                     onOff = (RayEvts.flags0 & (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP)) == (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP);
                     if (click)
                     {
@@ -170,7 +170,7 @@ void cheats_display()
                     break;
 
                 // Helico
-                case 9:
+                case MENUPAGE_HELICO:
                     onOff = (RayEvts.flags0 & RAYEVTS0_HELICO) != 0;
                     if (click)
                     {
@@ -183,7 +183,7 @@ void cheats_display()
                     break;
 
                 // Run
-                case 10:
+                case MENUPAGE_RUN:
                     onOff = (RayEvts.flags1 & RAYEVTS1_RUN) != 0;
                     if (click)
                     {
@@ -196,7 +196,7 @@ void cheats_display()
                     break;
 
                 // Speed storage
-                case 11:
+                case MENUPAGE_SPEED_STORAGE:
                     if (click)
                         selectedSpeedStorageValue = !selectedSpeedStorageValue;
 
@@ -275,7 +275,7 @@ void cheats_display()
                     break;
 
                 // Save speed storage
-                case 12:
+                case MENUPAGE_SAVE_SPEED_STORAGE:
                     if (click)
                     {
                         savedSpeedStorageLeft = SPEED_STORAGE_LEFT;

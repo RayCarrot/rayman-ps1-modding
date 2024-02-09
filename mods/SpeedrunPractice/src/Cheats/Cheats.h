@@ -15,6 +15,20 @@
 #define SPEED_STORAGE_LEFT ray.eta[2][0x11].speed_x_left
 #define SPEED_STORAGE_RIGHT ray.eta[2][0x11].speed_x_right
 
+#define MENUPAGE_SHOW_FIST_STATE 0
+#define MENUPAGE_GOLD_FIST 1
+#define MENUPAGE_MAINTAIN_FIST_STATE 2
+#define MENUPAGE_SHOW_SPEED_STORAGE 3
+#define MENUPAGE_SHOW_GENDOORS 4
+#define MENUPAGE_SHOW_INPUTS 5
+#define MENUPAGE_PIE_CAGE_SETUP 6
+#define MENUPAGE_INFINITE_BOSS_HEALTH 7
+#define MENUPAGE_FIST_HANG_GRAB 8
+#define MENUPAGE_HELICO 9
+#define MENUPAGE_RUN 10
+#define MENUPAGE_SPEED_STORAGE 11
+#define MENUPAGE_SAVE_SPEED_STORAGE 12
+
 // External variables
 extern bool in_pause;
 extern bool PS1_Ingame;
