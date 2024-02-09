@@ -1,7 +1,8 @@
 #include <export.h>
 #include "Cheats.h"
 
-// Variables
+// Variables todo: might save space to place in a struct?
+byte selectedMenuPageIndex;
 byte selectedMenuIndex;
 byte selectedSpeedStorageValue;
 sbyte savedSpeedStorageLeft;
@@ -15,32 +16,92 @@ bool infiniteBossHealth;
 bool maintainFistState;
 
 char menu_names[] =  // Single string to save space
-    "show fist state\0"
-    "gold fist\0"
-    "maintain fist state\0"
-    "show speed storage\0"
-    "show gendoors\0"
-    "show inputs\0"
+    // Fist
+    "show\0"
+    "gold\0"
+    "maintain\0"
+
+    // Show
+    "gendoors\0"
+    "inputs\0"
+
+    // Misc
     "pie cage setup\0"
-    "infinite boss health\0"
+    "infinite boss hp\0"
+    
+    // Power
     "fist | hang | grab\0"
     "helico\0"
     "run\0"
-    "speed storage\0"
-    "save speed storage\0";
+    
+    // Speed storage
+    "show\0"
+    "set\0"
+    "save\0"
+    
+    // Page names
+    "fist\0"
+    "show\0"
+    "misc\0"
+    "power\0"
+    "speed storage";
+byte menuPageIndexes[] = { 
+    MENUITEM_SHOW_FIST_STATE, 
+    MENUITEM_SHOW_GENDOORS, 
+    MENUITEM_PIE_CAGE_SETUP, 
+    MENUITEM_FIST_HANG_GRAB, 
+    MENUITEM_SHOW_SPEED_STORAGE,
+    MENU_COUNT, // end
+};
 byte speedStorageSubEtats[] = { 0x11, 0x12, 0x13, 3, 5, 4, 0x20 };
 
 void cheats_display()
 {
     if (in_pause)
     {
-        // Navigate menu
+        // Navgiate menu pages
+        if (PS1_SingleTOUCHE(INPUT_R2))
+        {
+            if (selectedMenuPageIndex < MENU_PAGES_COUNT - 1)
+            {
+                selectedMenuPageIndex++;
+                PlaySnd_old(SOUND_NAVIGATE);
+            }
+            else
+            {
+                selectedMenuPageIndex = 0;
+            }
+
+            selectedMenuIndex = 0;
+        }
+        else if (PS1_SingleTOUCHE(INPUT_L2))
+        {
+            if (selectedMenuPageIndex > 0)
+            {
+                selectedMenuPageIndex--;
+                PlaySnd_old(SOUND_NAVIGATE);
+            }
+            else
+            {
+                selectedMenuPageIndex = MENU_PAGES_COUNT - 1;
+            }
+
+            selectedMenuIndex = 0;
+        }
+
+        int pageLength = menuPageIndexes[selectedMenuPageIndex + 1] - menuPageIndexes[selectedMenuPageIndex];
+
+        // Navigate menu items
         if (PS1_SingleTOUCHE(INPUT_DOWN))
         {
-            if (selectedMenuIndex < MENU_COUNT - 1)
+            if (selectedMenuIndex < pageLength - 1)
             {
                 selectedMenuIndex++;
                 PlaySnd_old(SOUND_NAVIGATE);
+            }
+            else
+            {
+                selectedMenuIndex = 0;
             }
         }
         else if (PS1_SingleTOUCHE(INPUT_UP))
@@ -50,28 +111,34 @@ void cheats_display()
                 selectedMenuIndex--;
                 PlaySnd_old(SOUND_NAVIGATE);
             }
+            else
+            {
+                selectedMenuIndex = pageLength - 1;
+            }
         }
+
+        // Display page name
+        char *name = menu_names;
+        byte index = MENU_COUNT + selectedMenuPageIndex;
+        while (index) 
+        {
+            if ( !*name ) 
+                index--;
+            name++;
+        }
+        display_text(name, 20, 60, 2, 2);
+
+        // Display page indicators
+        for (int i = 0; i < MENU_PAGES_COUNT; i++)
+            display_text(".", 20 + i * 8, 70, 2, selectedMenuPageIndex == i ? 2 : 6);   
 
         // Display menu
-        int yPos;
-        if (selectedMenuIndex> (MENU_SCROLL_START - 1))
-        {
-            int scrollPos = selectedMenuIndex;
-
-            if (MENU_COUNT - scrollPos <= MENU_SCROLL_START)
-                scrollPos = MENU_COUNT - MENU_SCROLL_START;
-
-            yPos = 80 - (scrollPos * MENU_LINE_HEIGHT) + (MENU_SCROLL_START * MENU_LINE_HEIGHT);
-        }
-        else
-        {
-            yPos = 80;
-        }
-        for (int i = 0; i < MENU_COUNT; i++)
+        int yPos = 90;
+        for (int i = 0; i < pageLength; i++)
         {
             // Get the name
-            char *name = menu_names;
-            byte index = i;
+            name = menu_names;
+            byte index = menuPageIndexes[selectedMenuPageIndex] + i;
             while (index) 
             {
                 if ( !*name ) 
@@ -88,17 +155,17 @@ void cheats_display()
             bool click = selectedMenuIndex == i && PS1_SingleTOUCHE(INPUT_CROSS);
             int onOff = -1;
 
-            switch (i)
+            switch (menuPageIndexes[selectedMenuPageIndex] + i)
             {
                 // Show fist state
-                case MENUPAGE_SHOW_FIST_STATE:
+                case MENUITEM_SHOW_FIST_STATE:
                     if (click)
                         showFist = !showFist;
                     onOff = showFist;
                     break;
 
                 // Gold fist
-                case MENUPAGE_GOLD_FIST:
+                case MENUITEM_GOLD_FIST:
                     onOff = level.objects[poing_obj_id].init_sub_etat >= 8;
                     if (click)
                     {
@@ -115,49 +182,49 @@ void cheats_display()
                     break;
 
                 // Maintain fist state
-                case MENUPAGE_MAINTAIN_FIST_STATE:
+                case MENUITEM_MAINTAIN_FIST_STATE:
                     if (click)
                         maintainFistState = !maintainFistState;
                     onOff = maintainFistState;
                     break;
 
                 // Show speed storage
-                case MENUPAGE_SHOW_SPEED_STORAGE:
+                case MENUITEM_SHOW_SPEED_STORAGE:
                     if (click)
                         showSpeedStorage = !showSpeedStorage;
                     onOff = showSpeedStorage;
                     break;
 
                 // Show gendoors
-                case MENUPAGE_SHOW_GENDOORS:
+                case MENUITEM_SHOW_GENDOORS:
                     if (click)
                         showGendoors = !showGendoors;
                     onOff = showGendoors;
                     break;
 
                 // Show inputs
-                case MENUPAGE_SHOW_INPUTS:
+                case MENUITEM_SHOW_INPUTS:
                     if (click)
                         showInputs = !showInputs;
                     onOff = showInputs;
                     break;
 
                 // Pie cage setup
-                case MENUPAGE_PIE_CAGE_SETUP:
+                case MENUITEM_PIE_CAGE_SETUP:
                     if (click)
                         pieCageSetup = !pieCageSetup;
                     onOff = pieCageSetup;
                     break;
 
                 // Infinite boss health
-                case MENUPAGE_INFINITE_BOSS_HEALTH:
+                case MENUITEM_INFINITE_BOSS_HEALTH:
                     if (click)
                         infiniteBossHealth = !infiniteBossHealth;
                     onOff = infiniteBossHealth;
                     break;
 
                 // Fist, hang, grab
-                case MENUPAGE_FIST_HANG_GRAB:
+                case MENUITEM_FIST_HANG_GRAB:
                     onOff = (RayEvts.flags0 & (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP)) == (RAYEVTS0_POING | RAYEVTS0_HANG | RAYEVTS0_GRAP);
                     if (click)
                     {
@@ -170,7 +237,7 @@ void cheats_display()
                     break;
 
                 // Helico
-                case MENUPAGE_HELICO:
+                case MENUITEM_HELICO:
                     onOff = (RayEvts.flags0 & RAYEVTS0_HELICO) != 0;
                     if (click)
                     {
@@ -183,7 +250,7 @@ void cheats_display()
                     break;
 
                 // Run
-                case MENUPAGE_RUN:
+                case MENUITEM_RUN:
                     onOff = (RayEvts.flags1 & RAYEVTS1_RUN) != 0;
                     if (click)
                     {
@@ -196,7 +263,7 @@ void cheats_display()
                     break;
 
                 // Speed storage
-                case MENUPAGE_SPEED_STORAGE:
+                case MENUITEM_SPEED_STORAGE:
                     if (click)
                         selectedSpeedStorageValue = !selectedSpeedStorageValue;
 
@@ -269,13 +336,13 @@ void cheats_display()
                         rightSpeed = -rightSpeed;
 
                     PS1_itoa(leftSpeed, (char *)&str, 4);
-                    display_text((char *)&str, 180, yPos, 2, selectedSpeedStorageValue == 0 ? color : 0x00);
+                    display_text((char *)&str, 160, yPos, 2, selectedSpeedStorageValue == 0 ? color : 0x00);
                     PS1_itoa(rightSpeed, (char *)&str, 4);
-                    display_text((char *)&str, 180 + 32, yPos, 2, selectedSpeedStorageValue == 1 ? color : 0x00);
+                    display_text((char *)&str, 160 + 32, yPos, 2, selectedSpeedStorageValue == 1 ? color : 0x00);
                     break;
 
                 // Save speed storage
-                case MENUPAGE_SAVE_SPEED_STORAGE:
+                case MENUITEM_SAVE_SPEED_STORAGE:
                     if (click)
                     {
                         savedSpeedStorageLeft = SPEED_STORAGE_LEFT;
@@ -300,16 +367,10 @@ void cheats_display()
             if (onOff != -1)
             {
                 if (onOff)
-                    display_text("on", 180, yPos, 2, color);
-                else
-                    display_text("off", 180, yPos, 2, color);
+                    display_text("x", 160, yPos, 2, color);
             }
 
             yPos += MENU_LINE_HEIGHT;
-
-            // Add a gap
-            if (i == 10)
-                yPos += MENU_LINE_HEIGHT / 2;
         }
     }
 
