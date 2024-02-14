@@ -21,6 +21,9 @@ void fix_numlevel(Obj *obj)
   
     handledLevelChoice = 0;
 
+    if (departlevel)
+        new_level_init();
+
     /*
     if (departlevel && (new_level_init(), obj->type != TYPE_WIZARD1)) 
     {
