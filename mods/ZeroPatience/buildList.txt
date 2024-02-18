@@ -1,3 +1,4 @@
+//UNFINISHED, BUGS: moskito invincible first hit, PS1_StopLevelMusic change also shortens deaths
 ntsc-u, exe, DEPART_WORLD, 0x0, src/DEPART_WORLD.c //entering level from map without transition
 ntsc-u, exe, 0x8018e62c, 0x0, asm/DO_RAYMAN_IN_WLD_MAP.s //map movement speed
 ntsc-u, exe, DO_MEDAILLONS, 0x0, src/DO_MEDAILLONS.c //instant level unlock dots
