@@ -1,4 +1,3 @@
-//UNFINISHED, BUGS: moskito invincible first hit, PS1_StopLevelMusic change also shortens deaths
 ntsc-u, exe, DEPART_WORLD, 0x0, src/DEPART_WORLD.c //entering level from map without transition
 ntsc-u, exe, 0x8018e62c, 0x0, asm/DO_RAYMAN_IN_WLD_MAP.s //map movement speed
 ntsc-u, exe, DO_MEDAILLONS, 0x0, src/DO_MEDAILLONS.c //instant level unlock dots
@@ -10,7 +9,7 @@ ntsc-u, exe, DO_FEE, 0x0, src/DO_FEE.c //faster betilla
 
 ntsc-u, exe, ALLOCATE_MEDAILLON_TOON, 0x0, src/ALLOCATE_MEDAILLON_TOON.c //disable cage medaillon freezing
 
-ntsc-u, exe, dyingSequence, 0x0, src/dyingSequence.c //faster bzzit death
+ntsc-u, exe, dyingSequence, 0x0, src/dyingSequence.c //faster bzzit and moskito death
 ntsc-u, exe, 0x80157090, 0x0, asm/INIT_RAY.s //RayEvts graine for tsof1
 ntsc-u, exe, 0x8017ecbc, 0x0, asm/DO_BBMONT2_COMMAND.s //tg2 not an autoscroller
 ntsc-u, exe, 0x8015b344, 0x0, asm/fix_numlevel_1.s //remove vignettes
