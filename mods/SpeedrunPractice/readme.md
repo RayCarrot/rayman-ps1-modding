@@ -8,6 +8,7 @@
 - Lives and cages can be re-collected
 - The plug for the UFOs is activated by default
 - Mr Dark's Dare can be replayed
+- Finishing Mr Dark's Dare brings you back to the worldmap rather than to the ending
 - Loading screens are removed, making load times slightly faster
 - Move faster on the worldmap by holding down R1
 

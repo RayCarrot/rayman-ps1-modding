@@ -497,9 +497,13 @@ void fix_numlevel(Obj *obj)
             if (num_level == 4) 
             {
                 new_world = 1;
+
+                // Comment this out to return to the worldmap after defeating Mr Dark
+                /*
                 You_Win = 1;
                 fin_du_jeu = 1;
                 fin_dark = 1;
+                */
             }
             break;
     }
