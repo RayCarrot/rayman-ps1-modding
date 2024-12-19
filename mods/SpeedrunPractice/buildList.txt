@@ -34,3 +34,5 @@ ntsc-u, exe, 0x801a0160,                   0x0, src/NoLoadScreens/NoLoadScreensP
 ntsc-u, exe, 0x801a0130,                   0x0, src/NoLoadScreens/NoLoadScreensPatch2.s
 
 ntsc-u, exe, 0x8018e868,                   0x0, src/FastWorldMap/FastWorldMapHook.s
+
+ntsc-u, exe, DETER_WORLD_AND_LEVEL,        0x0, src/ResetTempPowers/DETER_WORLD_AND_LEVEL.c // 268/408 bytes

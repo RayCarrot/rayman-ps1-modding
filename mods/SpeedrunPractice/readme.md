@@ -6,6 +6,8 @@
 - The first map of Eat at Joe's is skipped
 - Boss and Betilla maps are no longer skipped upon replaying
 - Lives and cages can be re-collected
+- Re-entering The Swamps of Forgetfulness will always reset Tarayzan and the seed
+- Re-entering Mr Stone's Peaks will always reset the boulder and super-helico
 - The plug for the UFOs is activated by default
 - Mr Dark's Dare can be replayed
 - Finishing Mr Dark's Dare brings you back to the worldmap rather than to the ending
