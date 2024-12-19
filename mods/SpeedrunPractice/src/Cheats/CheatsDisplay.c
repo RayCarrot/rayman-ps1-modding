@@ -27,19 +27,25 @@ char menu_names[] =  // Single string to save space
     "show\0"
     "set\0"
     "save\0"
+
+    // Tings
+    "set\0"
+    "save\0"
     
     // Page names
     "fist\0"
     "show\0"
     "misc\0"
     "power\0"
-    "speed";
+    "speed\0"
+    "tings";
 byte menuPageIndexes[] = { 
     MENUITEM_SHOW_FIST_STATE, 
     MENUITEM_SHOW_GENDOORS, 
     MENUITEM_PIE_CAGE_SETUP, 
     MENUITEM_FIST_HANG_GRAB, 
     MENUITEM_SHOW_SPEED_STORAGE,
+    MENUITEM_TINGS,
     MENU_COUNT, // end
 };
 byte speedStorageSubEtats[] = { 0x11, 0x12, 0x13, 3, 5, 4, 0x20 };
@@ -345,6 +351,44 @@ void cheats_display()
                             ray.eta[2][speedStorageSubEtats[i]].speed_x_left = cheatsInfo.savedSpeedStorageLeft;
                             ray.eta[2][speedStorageSubEtats[i]].speed_x_right = cheatsInfo.savedSpeedStorageRight;
                         }
+                        PlaySnd_old(SOUND_SELECT);
+                    }
+                    break;
+
+                // Tings
+                case MENUITEM_TINGS:
+                    if (click)
+                        status_bar.num_wiz += TINGS_BIG_STEP;
+
+                    if (PS1_SingleTOUCHE(INPUT_LEFT))
+                    {
+                        status_bar.num_wiz -= TINGS_STEP;
+                        PlaySnd_old(SOUND_NAVIGATE);
+                    }
+                    else if (PS1_SingleTOUCHE(INPUT_RIGHT))
+                    {
+                        status_bar.num_wiz += TINGS_STEP;
+                        PlaySnd_old(SOUND_NAVIGATE);
+                    }
+
+                    if ((sbyte)status_bar.num_wiz < TINGS_MIN)
+                        status_bar.num_wiz = TINGS_MAX;
+                    else if (status_bar.num_wiz > TINGS_MAX)
+                        status_bar.num_wiz = TINGS_MIN;
+
+                    char tingsStr[3];
+                    PS1_itoa(status_bar.num_wiz, (char *)&tingsStr, 3);
+                    display_text((char *)&tingsStr, 160, yPos, 2, color);
+                    break;
+
+                // Save tings
+                case MENUITEM_SAVE_TINGS:
+                    if (click)
+                        cheatsInfo.savedTings = status_bar.num_wiz;
+
+                    if (PS1_SingleTOUCHE(INPUT_SQUARE))
+                    {
+                        status_bar.num_wiz = cheatsInfo.savedTings;
                         PlaySnd_old(SOUND_SELECT);
                     }
                     break;

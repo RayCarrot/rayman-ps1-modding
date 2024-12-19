@@ -4,8 +4,8 @@
 #include <export.h>
 
 // Constants
-#define MENU_COUNT 13
-#define MENU_PAGES_COUNT 5
+#define MENU_COUNT 15
+#define MENU_PAGES_COUNT 6
 #define MENU_LINE_HEIGHT 16
 
 #define SOUND_NAVIGATE 0x44
@@ -16,6 +16,11 @@
 #define SPEED_STORAGE_STEP 16
 #define SPEED_STORAGE_LEFT ray.eta[2][0x11].speed_x_left
 #define SPEED_STORAGE_RIGHT ray.eta[2][0x11].speed_x_right
+
+#define TINGS_MIN 0
+#define TINGS_MAX 99
+#define TINGS_STEP 1
+#define TINGS_BIG_STEP 10
 
 #define MENUITEM_SHOW_FIST_STATE 0
 #define MENUITEM_GOLD_FIST 1
@@ -30,6 +35,8 @@
 #define MENUITEM_SHOW_SPEED_STORAGE 10
 #define MENUITEM_SPEED_STORAGE 11
 #define MENUITEM_SAVE_SPEED_STORAGE 12
+#define MENUITEM_TINGS 13
+#define MENUITEM_SAVE_TINGS 14
 
 // External variables
 extern bool in_pause;
@@ -56,6 +63,7 @@ typedef struct // Struct to save space
     byte selectedSpeedStorageValue;
     sbyte savedSpeedStorageLeft;
     sbyte savedSpeedStorageRight;
+    byte savedTings;
     bool showFist;
     bool showSpeedStorage;
     bool showGendoors;

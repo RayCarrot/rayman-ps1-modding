@@ -41,6 +41,10 @@ When paused, the following options are available. Use R2/L2 to navigate between 
 - **Set**: allows manually setting speed storage
 - **Save**: save current speed storage, restore with square when paused
 
+#### Tings
+- **Set**: allows manually setting tings count
+- **Save**: save current tings count, restore with square when paused
+
 The following cheats are input while paused:
 
 | **Button** | **Action**            |
