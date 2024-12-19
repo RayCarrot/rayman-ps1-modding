@@ -47,7 +47,7 @@ void DETER_WORLD_AND_LEVEL()
         }
     }
 
-    // Don't need this
+    // Allow MDD to be replayed
     /*
     if ((num_world_choice == 6) && ((finBosslevel[0] & 0x80) != 0)) {
         You_Win = true;
