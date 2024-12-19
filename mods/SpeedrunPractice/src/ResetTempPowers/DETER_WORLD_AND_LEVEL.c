@@ -30,12 +30,15 @@ void DETER_WORLD_AND_LEVEL()
 
     if (num_world_choice == 5) 
     {
+        // Do not skip Joe screen
+        /*
         if (num_level_choice == 3 && (finBosslevel[1] & 2) != 0) 
         {
             num_level_choice = 4;
             RayEvts.flags1 |= RAYEVTS1_LUCIOLE;
             return;
         }
+        */
 
         if ((num_level_choice == 4 && (finBosslevel[1] & 2) != 0) && ModeDemo != 0) 
         {
