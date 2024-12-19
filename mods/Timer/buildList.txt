@@ -1,5 +1,5 @@
 // C files
-common, exe, SsUtKeyOnV, 0x0, src/timer.c // 2140 bytes
+common, exe, SsUtKeyOnV, 0x0, src/timer.c // 1972/2140 bytes
 
 // Assembly files
 ntsc-u, exe, 0x801b9544, 0x0, src/hook_vsync.s // Extend VSYNC_OBJ_F0 which gets called from vsync
@@ -28,10 +28,11 @@ ntsc-u, exe, 0x8012ddc4, 0x0, src/hook_exit_level.s // Extend DO_CONTINUE
 pal-e, exe, 0x80132c90, 0x0, src/hook_exit_level.s
 ntsc-u, exe, 0x8019b31c, 0x0, src/nop_dark_text_shadow.s
 pal-e, exe, 0x8019fd7c, 0x0, src/nop_dark_text_shadow.s
-ntsc-u, exe, 0x8012ff18, 0x0, src/hook_stop_level_music.s
-pal-e, exe, 0x8013501c, 0x0, src/hook_stop_level_music.s // Overwrite call to PS1_StopLevelMusic
+ntsc-u, exe, 0x8012ff18, 0x0, src/hook_stop_level_music.s // Overwrite call to PS1_StopLevelMusic
+pal-e, exe, 0x8013501c, 0x0, src/hook_stop_level_music.s
 
 // TODO: Add PAL hooks
+ntsc-u, exe, 0x8012fbc8, 0x0, src/hook_display_game_vignet.s // Overwrite call to DISPLAY_GAME_VIGNET
 ntsc-u, exe, 0x80161b7c, 0x0, src/ActionHooks/hook_ALLOCATE_MEDAILLON_TOON.s
 ntsc-u, exe, 0x80187d64, 0x0, src/ActionHooks/hook_RAY_HURT.s
 ntsc-u, exe, 0x80131d10, 0x0, src/ActionHooks/hook_start_cd_gagne.s

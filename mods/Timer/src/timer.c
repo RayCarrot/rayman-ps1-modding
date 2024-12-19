@@ -82,6 +82,17 @@ void stop_level_music()
     is_running = wasRunning;
 }
 
+void display_game_vignet()
+{
+    bool wasRunning = is_running;
+    is_running = 0;
+
+    // We don't want to count the timer during this
+    DISPLAY_GAME_VIGNET();
+
+    is_running = wasRunning;
+}
+
 void display_timer()
 {
     if (timer_mode == TIMER_OFF)
