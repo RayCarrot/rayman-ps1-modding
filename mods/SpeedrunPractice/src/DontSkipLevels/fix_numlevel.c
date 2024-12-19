@@ -422,8 +422,13 @@ void fix_numlevel(Obj *obj)
                         t_world_info[22].state |= 4;
 
                         // Show cutscene
+                        /*
                         Vignet_To_Display = 1;
+                        */
                     } 
+
+                    // Always show the cutscene
+                    Vignet_To_Display = 1;
                     break;
 
                 // End: Bonus 1

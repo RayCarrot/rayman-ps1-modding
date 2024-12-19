@@ -7,7 +7,8 @@
 - Lives and cages can be re-collected
 - Re-entering The Swamps of Forgetfulness will always reset Tarayzan and the seed
 - Re-entering Mr Stone's Peaks will always reset the boulder and super-helico
-- Re-entering Eat at Joe's does not skip the first map 
+- Re-entering Eat at Joe's does not skip the first map
+- The end of level cutscenes always play
 - The plug for the UFOs is activated by default
 - Mr Dark's Dare can be replayed
 - Finishing Mr Dark's Dare brings you back to the worldmap rather than to the ending
