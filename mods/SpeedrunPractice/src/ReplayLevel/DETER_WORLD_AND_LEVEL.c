@@ -40,6 +40,10 @@ void DETER_WORLD_AND_LEVEL()
         }
         */
 
+        // Deactivate the UFO plug
+        if (num_level_choice == 3)
+            finBosslevel[1] &= ~4;
+
         if ((num_level_choice == 4 && (finBosslevel[1] & 2) != 0) && ModeDemo != 0) 
         {
             RayEvts.flags1 |= RAYEVTS1_LUCIOLE;
