@@ -1,19 +1,5 @@
 #include <export.h>
-
-extern byte You_Win;
-extern byte fin_du_jeu;
-extern byte fin_dark;
-extern byte Nb_total_cages;
-extern byte Vignet_To_Display;
-extern short departlevel;
-extern short num_world;
-extern short num_level;
-extern short num_level_choice;
-extern short new_world;
-extern short new_level;
-extern byte finBosslevel[2];
-extern byte RayEvts[2];
-extern WorldInfo t_world_info[24];
+#include "Cheats/Cheats.h"
 
 void fix_numlevel(Obj *obj)
 {
@@ -21,10 +7,6 @@ void fix_numlevel(Obj *obj)
   
     handledLevelChoice = 0;
 
-    if (departlevel)
-        new_level_init();
-
-    /*
     if (departlevel && (new_level_init(), obj->type != TYPE_WIZARD1)) 
     {
         switch(num_world) 
@@ -32,91 +14,119 @@ void fix_numlevel(Obj *obj)
             // Jungle
             case 1:
                 // Betila: fist
-                if (num_level == 2 && (RayEvts[0] & 1) != 0) 
+                //if (num_level == 2 && (RayEvts.flags0 & RAYEVTS0_POING) != 0) 
+                if (num_level == 2 && cheatsInfo.skipBetilla) 
                     num_level_choice++;
                 
                 // Boss: Bzzit
+                /*
                 if (num_level == 5 && (finBosslevel[0] & 1) != 0)
                     num_level_choice++;
-
+                */
+                
                 // Betilla: hang
-                if (num_level == 7 && (RayEvts[0] & 2) != 0) 
+                //if (num_level == 7 && (RayEvts.flags0 & RAYEVTS0_HANG) != 0) 
+                if (num_level == 7 && cheatsInfo.skipBetilla) 
                     new_world = 1;
                 
                 // Boss: Moskito chase
+                /*
                 if (num_level == 13 && (finBosslevel[0] & 2) != 0) 
                     num_level_choice++;
+                */
 
                 // Boss: Moskito
+                /*
                 if (num_level == 15 && (finBosslevel[0] & 2) != 0)
                     new_world = 1;
+                */
                 
                 // Betilla: grab
-                if (num_level == 16 && (RayEvts[0] & 0x80) != 0) 
+                //if (num_level == 16 && (RayEvts.flags0 & RAYEVTS0_GRAP) != 0) 
+                if (num_level == 16 && cheatsInfo.skipBetilla) 
                     new_world = 1;
                 break;
 
             // Music
             case 2:
                 // Boss: Red Drummer (unused)
+                /*
                 if (num_level == 5 && (finBosslevel[1] & 1) != 0) 
                     new_world = 1;
+                */
                 
                 // Boss: Sax encounter
+                /*
                 if (num_level == 9 && (finBosslevel[0] & 4) != 0) 
                     new_world = 1;
+                */
 
                 // Betilla: helico
-                if (num_level == 10 && (RayEvts[0] & 4) != 0) 
+                //if (num_level == 10 && (RayEvts.flags0 & RAYEVTS0_HELICO) != 0) 
+                if (num_level == 10 && cheatsInfo.skipBetilla) 
                     new_world = 1;
 
                 // Boss: Sax
+                /*
                 if (num_level == 14 && (finBosslevel[0] & 4) != 0) 
                     new_world = 1;
+                */
                 break;
 
             // Mountain
             case 3:
                 // Boss: Stone chase
+                /*
                 if (num_level == 1 && (finBosslevel[0] & 8) != 0) 
                     new_world = 1;
+                */
                 
                 // Boss: Stone
+                /*
                 if ((num_level == 9) && (finBosslevel[0] & 8) != 0) 
                     new_world = 1;
+                */
 
                 // Betilla: run
-                if (num_level == 10 && (RayEvts[1] & 1) != 0) 
+                //if (num_level == 10 && (RayEvts.flags1 & RAYEVTS1_RUN) != 0) 
+                if (num_level == 10 && cheatsInfo.skipBetilla) 
                     new_world = 1;
                 break;
             
             // Image
             case 4:
                 // Boss: Pirate Mama
+                /*
                 if (num_level == 3 && (finBosslevel[0] & 0x10) != 0) 
                     new_world = 1;
+                */
 
                 // Boss: Space Mama
+                /*
                 if (num_level == 10 && (finBosslevel[0] & 0x20) != 0) 
                     new_world = 1;
+                */
                 break;
 
             // Cave
             case 5:
                 // Boss: Skops
+                /*
                 if (num_level == 9 && (finBosslevel[0] & 0x40) != 0)
                     new_world = 1;
+                */
                 break;
 
             // Cake
             case 6:
                 // Boss: Dark (unused)
+                /*
                 if (num_level == 1 && (finBosslevel[0] & 0x80) != 0) 
                     new_world = 1;
+                */
                 break;
         }
     }
-    */
 
     switch(num_world) 
     {

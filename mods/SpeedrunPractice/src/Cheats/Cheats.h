@@ -4,7 +4,7 @@
 #include <export.h>
 
 // Constants
-#define MENU_COUNT 15
+#define MENU_COUNT 16
 #define MENU_PAGES_COUNT 6
 #define MENU_LINE_HEIGHT 16
 
@@ -29,14 +29,15 @@
 #define MENUITEM_SHOW_INPUTS 4
 #define MENUITEM_PIE_CAGE_SETUP 5
 #define MENUITEM_INFINITE_BOSS_HEALTH 6
-#define MENUITEM_FIST_HANG_GRAB 7
-#define MENUITEM_HELICO 8
-#define MENUITEM_RUN 9
-#define MENUITEM_SHOW_SPEED_STORAGE 10
-#define MENUITEM_SPEED_STORAGE 11
-#define MENUITEM_SAVE_SPEED_STORAGE 12
-#define MENUITEM_TINGS 13
-#define MENUITEM_SAVE_TINGS 14
+#define MENUITEM_BETILLA 7
+#define MENUITEM_FIST_HANG_GRAB 8
+#define MENUITEM_HELICO 9
+#define MENUITEM_RUN 10
+#define MENUITEM_SHOW_SPEED_STORAGE 11
+#define MENUITEM_SPEED_STORAGE 12
+#define MENUITEM_SAVE_SPEED_STORAGE 13
+#define MENUITEM_TINGS 14
+#define MENUITEM_SAVE_TINGS 15
 
 // External variables
 extern bool in_pause;
@@ -55,6 +56,17 @@ extern short num_world;
 extern short num_level;
 extern StatusBar status_bar;
 extern ActiveObjects actobj;
+extern byte You_Win;
+extern byte fin_du_jeu;
+extern byte fin_dark;
+extern byte Nb_total_cages;
+extern byte Vignet_To_Display;
+extern short departlevel;
+extern short num_level_choice;
+extern short new_world;
+extern short new_level;
+extern byte finBosslevel[2];
+extern WorldInfo t_world_info[24];
 
 typedef struct // Struct to save space 
 {
@@ -71,6 +83,7 @@ typedef struct // Struct to save space
     bool pieCageSetup;
     bool infiniteBossHealth;
     bool maintainFistState;
+    bool skipBetilla;
 } CheatsInfo;
 
 // Variables

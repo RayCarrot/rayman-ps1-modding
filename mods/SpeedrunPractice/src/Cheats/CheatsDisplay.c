@@ -17,6 +17,7 @@ char menu_names[] =  // Single string to save space
     // Misc
     "pie cage\0"
     "boss hp\0"
+    "betilla\0"
     
     // Power
     "fhg\0"
@@ -216,6 +217,13 @@ void cheats_display()
                     if (click)
                         cheatsInfo.infiniteBossHealth = !cheatsInfo.infiniteBossHealth;
                     onOff = cheatsInfo.infiniteBossHealth;
+                    break;
+
+                // Betilla
+                case MENUITEM_BETILLA:
+                    if (click)
+                        cheatsInfo.skipBetilla = !cheatsInfo.skipBetilla;
+                    onOff = !cheatsInfo.skipBetilla;
                     break;
 
                 // Fist, hang, grab
