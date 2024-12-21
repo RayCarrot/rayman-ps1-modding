@@ -1,3 +1,0 @@
-.set noreorder
-nop
-nop

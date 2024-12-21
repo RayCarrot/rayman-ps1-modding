@@ -45,6 +45,9 @@ When paused, the following options are available. Use R2/L2 to navigate between 
 - **Set**: allows manually setting tings count
 - **Save**: save current tings count, restore with square when paused
 
+#### Collect
+- **Cages**: toggles if cages should remain collected
+
 The following cheats are input while paused:
 
 | **Button** | **Action**            |

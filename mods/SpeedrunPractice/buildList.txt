@@ -5,8 +5,8 @@ ntsc-u, exe, 0x8018771c,                   0x0, src/NoLivesLost/NoLivesLostPatch
 
 ntsc-u, exe, fix_numlevel,                 0x0, src/DontSkipLevels/fix_numlevel.c src/FastWorldMap/FastWorldMap.c // 2024/2720 bytes
 
-ntsc-u, exe, PS1_CheckPauseAndCheatInputs, 0x0, src/Cheats/CheatsInput.c // 664/1192 bytes
-ntsc-u, exe, RotMatrixYXZ,                 0x0, src/Cheats/CheatsDisplay.c // 2572/2643 bytes
+ntsc-u, exe, PS1_CheckPauseAndCheatInputs, 0x0, src/Cheats/CheatsInput.c src/RecollectCages/RecollectCages.c // 876/1192 bytes
+ntsc-u, exe, RotMatrixYXZ,                 0x0, src/Cheats/CheatsDisplay.c // 2624/2643 bytes
 ntsc-u, exe, LoadAverage12,                0x0, src/Cheats/CheatsDisplayUpdate.c // 1396/1864 bytes
 ntsc-u, exe, 0x8013f458,                   0x0, src/Cheats/CheatsDisplayHook.s // Extend display_time
 ntsc-u, exe, 0x8013c910,                   0x0, src/Cheats/CheatsDisplayObjectsHook.s // Extend DISPLAY_ALL_OBJECTS
@@ -14,11 +14,7 @@ ntsc-u, exe, 0x801592dc,                   0x0, src/Cheats/RestoreGameStateAfter
 ntsc-u, exe, 0x8012f860,                   0x0, src/Cheats/DisablePauseText.s
 ntsc-u, exe, 0x8019b31c,                   0x0, src/Cheats/nop_dark_text_shadow.s
 
-ntsc-u, exe, 0x80142b24,                   0x0, src/RecollectCages/RecollectCagesPatch1.s
-ntsc-u, exe, 0x80142b3c,                   0x0, src/RecollectCages/RecollectCagesPatch2.s
-ntsc-u, exe, 0x80142b44,                   0x0, src/RecollectCages/RecollectCagesPatch3.s
-ntsc-u, exe, 0x80142b7c,                   0x0, src/RecollectCages/RecollectCagesPatch4.s
-ntsc-u, exe, 0x80161b2c,                   0x0, src/RecollectCages/RecollectCagesPatch5.s
+ntsc-u, exe, 0x80142b24,                   0x0, src/RecollectCages/RecollectCagesPatch.s
 
 ntsc-u, exe, 0x80145458,                   0x0, src/RecollectLives/RecollectLivesPatch1.s
 ntsc-u, exe, 0x80145f04,                   0x0, src/RecollectLives/RecollectLivesPatch2.s

@@ -32,6 +32,9 @@ char menu_names[] =  // Single string to save space
     // Tings
     "set\0"
     "save\0"
+
+    // Collect
+    "cages\0"
     
     // Page names
     "fist\0"
@@ -39,7 +42,8 @@ char menu_names[] =  // Single string to save space
     "misc\0"
     "power\0"
     "speed\0"
-    "tings";
+    "tings\0"
+    "collect";
 byte menuPageIndexes[] = { 
     MENUITEM_SHOW_FIST_STATE, 
     MENUITEM_SHOW_GENDOORS, 
@@ -47,6 +51,7 @@ byte menuPageIndexes[] = {
     MENUITEM_FIST_HANG_GRAB, 
     MENUITEM_SHOW_SPEED_STORAGE,
     MENUITEM_TINGS,
+    MENUITEM_COLLECT_CAGES,
     MENU_COUNT, // end
 };
 byte speedStorageSubEtats[] = { 0x11, 0x12, 0x13, 3, 5, 4, 0x20 };
@@ -399,6 +404,13 @@ void cheats_display()
                         status_bar.num_wiz = cheatsInfo.savedTings;
                         PlaySnd_old(SOUND_SELECT);
                     }
+                    break;
+
+                // Collect cages
+                case MENUITEM_COLLECT_CAGES:
+                    if (click)
+                        cheatsInfo.collectCages = !cheatsInfo.collectCages;
+                    onOff = cheatsInfo.collectCages;
                     break;
             }
 

@@ -4,8 +4,8 @@
 #include <export.h>
 
 // Constants
-#define MENU_COUNT 16
-#define MENU_PAGES_COUNT 6
+#define MENU_COUNT 17
+#define MENU_PAGES_COUNT 7
 #define MENU_LINE_HEIGHT 16
 
 #define SOUND_NAVIGATE 0x44
@@ -38,6 +38,7 @@
 #define MENUITEM_SAVE_SPEED_STORAGE 13
 #define MENUITEM_TINGS 14
 #define MENUITEM_SAVE_TINGS 15
+#define MENUITEM_COLLECT_CAGES 16
 
 // External variables
 extern bool in_pause;
@@ -65,8 +66,11 @@ extern short departlevel;
 extern short num_level_choice;
 extern short new_world;
 extern short new_level;
+extern byte world_index;
 extern byte finBosslevel[2];
 extern WorldInfo t_world_info[24];
+extern byte lidol_to_allocate;
+extern Obj *lidol_source_obj;
 
 typedef struct // Struct to save space 
 {
@@ -84,6 +88,7 @@ typedef struct // Struct to save space
     bool infiniteBossHealth;
     bool maintainFistState;
     bool skipBetilla;
+    bool collectCages;
 } CheatsInfo;
 
 // Variables
