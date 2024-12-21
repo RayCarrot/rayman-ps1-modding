@@ -29,7 +29,7 @@
 #define MENUITEM_SHOW_INPUTS 4
 #define MENUITEM_PIE_CAGE_SETUP 5
 #define MENUITEM_INFINITE_BOSS_HEALTH 6
-#define MENUITEM_BETILLA 7
+#define MENUITEM_REVISIT 7
 #define MENUITEM_FIST_HANG_GRAB 8
 #define MENUITEM_HELICO 9
 #define MENUITEM_RUN 10
@@ -87,7 +87,7 @@ typedef struct // Struct to save space
     bool pieCageSetup;
     bool infiniteBossHealth;
     bool maintainFistState;
-    bool skipBetilla;
+    bool revisit;
     bool collectCages;
 } CheatsInfo;
 

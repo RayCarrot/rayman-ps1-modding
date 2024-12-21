@@ -1,5 +1,6 @@
 #include <export.h>
 #include "Cheats.h"
+#include "revisit.h"
 
 // Variables
 CheatsInfo cheatsInfo;
@@ -17,7 +18,7 @@ char menu_names[] =  // Single string to save space
     // Misc
     "pie cage\0"
     "boss hp\0"
-    "betilla\0"
+    "revisit\0"
     
     // Power
     "fhg\0"
@@ -224,11 +225,14 @@ void cheats_display()
                     onOff = cheatsInfo.infiniteBossHealth;
                     break;
 
-                // Betilla
-                case MENUITEM_BETILLA:
+                // Revisit
+                case MENUITEM_REVISIT:
                     if (click)
-                        cheatsInfo.skipBetilla = !cheatsInfo.skipBetilla;
-                    onOff = !cheatsInfo.skipBetilla;
+                    {
+                        cheatsInfo.revisit = !cheatsInfo.revisit;
+                        update_revisit_cages(cheatsInfo.revisit);
+                    }
+                    onOff = cheatsInfo.revisit;
                     break;
 
                 // Fist, hang, grab

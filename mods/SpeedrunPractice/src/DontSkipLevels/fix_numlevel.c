@@ -15,7 +15,7 @@ void fix_numlevel(Obj *obj)
             case 1:
                 // Betila: fist
                 //if (num_level == 2 && (RayEvts.flags0 & RAYEVTS0_POING) != 0) 
-                if (num_level == 2 && cheatsInfo.skipBetilla) 
+                if (num_level == 2 && cheatsInfo.revisit) 
                     num_level_choice++;
                 
                 // Boss: Bzzit
@@ -26,7 +26,7 @@ void fix_numlevel(Obj *obj)
                 
                 // Betilla: hang
                 //if (num_level == 7 && (RayEvts.flags0 & RAYEVTS0_HANG) != 0) 
-                if (num_level == 7 && cheatsInfo.skipBetilla) 
+                if (num_level == 7 && cheatsInfo.revisit) 
                     new_world = 1;
                 
                 // Boss: Moskito chase
@@ -43,7 +43,7 @@ void fix_numlevel(Obj *obj)
                 
                 // Betilla: grab
                 //if (num_level == 16 && (RayEvts.flags0 & RAYEVTS0_GRAP) != 0) 
-                if (num_level == 16 && cheatsInfo.skipBetilla) 
+                if (num_level == 16 && cheatsInfo.revisit) 
                     new_world = 1;
                 break;
 
@@ -63,7 +63,7 @@ void fix_numlevel(Obj *obj)
 
                 // Betilla: helico
                 //if (num_level == 10 && (RayEvts.flags0 & RAYEVTS0_HELICO) != 0) 
-                if (num_level == 10 && cheatsInfo.skipBetilla) 
+                if (num_level == 10 && cheatsInfo.revisit) 
                     new_world = 1;
 
                 // Boss: Sax
@@ -89,7 +89,7 @@ void fix_numlevel(Obj *obj)
 
                 // Betilla: run
                 //if (num_level == 10 && (RayEvts.flags1 & RAYEVTS1_RUN) != 0) 
-                if (num_level == 10 && cheatsInfo.skipBetilla) 
+                if (num_level == 10 && cheatsInfo.revisit) 
                     new_world = 1;
                 break;
             

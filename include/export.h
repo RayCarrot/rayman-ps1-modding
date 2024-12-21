@@ -9068,7 +9068,7 @@ void snapToSprite(Obj *obj1,Obj *obj2,uint param_3,int param_4,ushort param_5);
 Obj * findfirstObject(ObjType objType);
 Obj * findfirstInactiveObject(ObjType param_1);
 void setbit(byte *buffer,uint bitIndex);
-void clearbit(int param_1,uint param_2);
+void clearbit(byte *buffer,uint bitIndex);
 uint getbit(byte *buffer,uint bitIndex);
 int cosinus(short param_1);
 int sinus(short param_1);
