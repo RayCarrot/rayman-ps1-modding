@@ -3,7 +3,7 @@
 ### Changes
 - All levels are unlocked when starting a new game
 - Lives are not lost when dying
-- Boss maps are no longer skipped upon replaying
+- Boss and Betilla maps are no longer skipped upon replaying
 - Lives and cages can be re-collected
 - Re-entering The Swamps of Forgetfulness will always reset Tarayzan and the seed
 - Re-entering Mr Stone's Peaks will always reset the boulder and super-helico
@@ -29,7 +29,7 @@ When paused, the following options are available. Use R2/L2 to navigate between 
 #### Misc
 - **Pie cage**: spawns the first UFO in EAJ 5 at a later position
 - **Boss hp**: gives bosses and Rayman infinite health during boss fights
-- **Betilla**: toggles if Betilla screens should appear
+- **Revisit**: turns off Betilla maps and sets collected cages
 
 #### Power
 - **FHG**: toggles fist, hang and grab powers
