@@ -24,4 +24,4 @@ ntsc-u, exe, 0x801a0130,                   0x0, src/NoLoadScreens/NoLoadScreensP
 
 ntsc-u, exe, 0x8018e868,                   0x0, src/FastWorldMap/FastWorldMapHook.s
 
-ntsc-u, exe, DETER_WORLD_AND_LEVEL,        0x0, src/ReplayLevel/DETER_WORLD_AND_LEVEL.c // 260/408 bytes
+ntsc-u, exe, DETER_WORLD_AND_LEVEL,        0x0, src/ReplayLevel/DETER_WORLD_AND_LEVEL.c // 348/408 bytes

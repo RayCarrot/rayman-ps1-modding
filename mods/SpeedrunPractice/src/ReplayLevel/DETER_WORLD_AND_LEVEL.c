@@ -1,4 +1,6 @@
 #include <export.h>
+#include "Cheats/Cheats.h"
+#include "Cheats/revisit.h"
 
 extern byte You_Win;
 extern byte fin_du_jeu;
@@ -67,4 +69,9 @@ void DETER_WORLD_AND_LEVEL()
     // Disable super-helico in MSP
     if (num_world_choice == 3 && num_level_choice == 6)
         finBosslevel[1] &= ~8;
+
+    // Reset all collectibles
+    PS1_ResetSaveZone();
+    t_world_info[num_world_choice].nb_cages = 0;
+    update_revisit_cages(cheatsInfo.revisit);
 }
