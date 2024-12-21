@@ -72,6 +72,6 @@ void DETER_WORLD_AND_LEVEL()
 
     // Reset all collectibles
     PS1_ResetSaveZone();
-    t_world_info[num_world_choice].nb_cages = 0;
+    t_world_info[world_index].nb_cages = 0;
     update_revisit_cages(cheatsInfo.revisit);
 }
