@@ -18,7 +18,6 @@ char menu_names[] =  // Single string to save space
     // Misc
     "pie cage\0"
     "boss hp\0"
-    "revisit\0"
     
     // Power
     "fhg\0"
@@ -34,7 +33,8 @@ char menu_names[] =  // Single string to save space
     "set\0"
     "save\0"
 
-    // Collect
+    // IL
+    "revisit\0"
     "cages\0"
     
     // Page names
@@ -44,7 +44,7 @@ char menu_names[] =  // Single string to save space
     "power\0"
     "speed\0"
     "tings\0"
-    "collect";
+    "il";
 byte menuPageIndexes[] = { 
     MENUITEM_SHOW_FIST_STATE, 
     MENUITEM_SHOW_GENDOORS, 
@@ -52,7 +52,7 @@ byte menuPageIndexes[] = {
     MENUITEM_FIST_HANG_GRAB, 
     MENUITEM_SHOW_SPEED_STORAGE,
     MENUITEM_TINGS,
-    MENUITEM_COLLECT_CAGES,
+    MENUITEM_REVISIT,
     MENU_COUNT, // end
 };
 byte speedStorageSubEtats[] = { 0x11, 0x12, 0x13, 3, 5, 4, 0x20 };
@@ -223,16 +223,6 @@ void cheats_display()
                     if (click)
                         cheatsInfo.infiniteBossHealth = !cheatsInfo.infiniteBossHealth;
                     onOff = cheatsInfo.infiniteBossHealth;
-                    break;
-
-                // Revisit
-                case MENUITEM_REVISIT:
-                    if (click)
-                    {
-                        cheatsInfo.revisit = !cheatsInfo.revisit;
-                        update_revisit_cages(cheatsInfo.revisit);
-                    }
-                    onOff = cheatsInfo.revisit;
                     break;
 
                 // Fist, hang, grab
@@ -408,6 +398,16 @@ void cheats_display()
                         status_bar.num_wiz = cheatsInfo.savedTings;
                         PlaySnd_old(SOUND_SELECT);
                     }
+                    break;
+
+                // Revisit
+                case MENUITEM_REVISIT:
+                    if (click)
+                    {
+                        cheatsInfo.revisit = !cheatsInfo.revisit;
+                        update_revisit_cages(cheatsInfo.revisit);
+                    }
+                    onOff = cheatsInfo.revisit;
                     break;
 
                 // Collect cages

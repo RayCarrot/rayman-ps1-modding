@@ -29,7 +29,6 @@ When paused, the following options are available. Use R2/L2 to navigate between 
 #### Misc
 - **Pie cage**: spawns the first UFO in EAJ 5 at a later position
 - **Boss hp**: gives bosses and Rayman infinite health during boss fights
-- **Revisit**: turns off Betilla maps and sets collected cages
 
 #### Power
 - **FHG**: toggles fist, hang and grab powers
@@ -45,7 +44,8 @@ When paused, the following options are available. Use R2/L2 to navigate between 
 - **Set**: allows manually setting tings count
 - **Save**: save current tings count, restore with square when paused
 
-#### Collect
+#### IL
+- **Revisit**: turns off Betilla maps and sets collected cages
 - **Cages**: toggles if cages should remain collected
 
 The following cheats are input while paused:
