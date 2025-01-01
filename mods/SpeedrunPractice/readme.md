@@ -57,7 +57,6 @@ The following cheats are input while paused:
 | L1         | Exit to worldmap      |
 | Triangle   | Die                   |
 | Circle     | Full health           |
-| Square     | Restore speed storage |
 
 The following cheats are input while in a level:
 

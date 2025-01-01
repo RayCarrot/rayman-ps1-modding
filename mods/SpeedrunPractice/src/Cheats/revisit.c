@@ -14,6 +14,7 @@ void update_revisit_cages(bool revisit)
         t_world_info[0].nb_cages = 3; // Pink Plant Woods
         t_world_info[1].nb_cages = 3; // Anguish Lagoon
         t_world_info[3].nb_cages = 4; // Moskito's Nest
+        t_world_info[11].nb_cages = 5; // Eraser Plains
 
         // Pink Plant Woods - Part 4
         M_COLLECT_CAGE(4, 82);
@@ -34,12 +35,16 @@ void update_revisit_cages(bool revisit)
         M_COLLECT_CAGE(13, 76);
         M_COLLECT_CAGE(13, 78);
         M_COLLECT_CAGE(13, 79);
+        
+        // Eraser Plains - Part 1
+        M_COLLECT_CAGE(0x15 + 0x12 + 0xD + 1, 155); // Add prev. world level counts since the macro assumed world 1
     }
     else
     {
         t_world_info[0].nb_cages = 0; // Pink Plant Woods
         t_world_info[1].nb_cages = 0; // Anguish Lagoon
         t_world_info[3].nb_cages = 0; // Moskito's Nest
+        t_world_info[11].nb_cages = 0; // Eraser Plains
 
         // Pink Plant Woods - Part 4
         M_CLEAR_CAGE(4, 82);
@@ -60,5 +65,8 @@ void update_revisit_cages(bool revisit)
         M_CLEAR_CAGE(13, 76);
         M_CLEAR_CAGE(13, 78);
         M_CLEAR_CAGE(13, 79);
+
+        // Eraser Plains - Part 1
+        M_CLEAR_CAGE(0x15 + 0x12 + 0xD + 1, 155); // Add prev. world level counts since the macro assumed world 1
     }
 }
