@@ -263,7 +263,7 @@ void init_dead()
 
 void change_dark_phase()
 {
-    if (dark_phase == 5 && timer_mode == TIMER_GAME)
+    if (dark_phase == 5)
         is_running = 0;
 }
 
