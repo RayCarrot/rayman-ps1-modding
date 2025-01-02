@@ -1,5 +1,5 @@
 // C files
-common, exe, SsUtKeyOnV, 0x0, src/timer.c // 1972/2140 bytes
+common, exe, SsUtKeyOnV, 0x0, src/timer.c // 1956/2140 bytes
 
 // Assembly files
 ntsc-u, exe, 0x801b9544, 0x0, src/hook_vsync.s // Extend VSYNC_OBJ_F0 which gets called from vsync
