@@ -261,9 +261,10 @@ void init_dead()
         frames = 0;
 }
 
-void change_dark_phase()
+void on_display_bar_boss()
 {
-    if (dark_phase == 5)
+    // Stop timer on final Mr Dark boss hit
+    if (PS1_BossObj->hit_points == 0 && PS1_BossObj->type == TYPE_HYBRIDE_MOSAMS)
         is_running = 0;
 }
 
