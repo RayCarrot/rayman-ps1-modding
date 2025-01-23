@@ -3,6 +3,3 @@ ntsc-u, exe, 0x8018df8c,             0x0, src/no_cages/nop_dark_unlock_check_che
 ntsc-u, exe, 0x8015b4f8,             0x0, src/no_cages/nop_dark_unlock_check_fixlevel.s
 ntsc-u, exe, 0x8015b54c,             0x0, src/no_cages/hook_fixlevel.s
 ntsc-u, exe, 0x8013eb30,             0x0, src/cage_counter/hook_worldchoice.s // Extend DisplayJumellesNormal
-
-add, Timer
-add, DeathCounter
