@@ -1,9 +1,9 @@
 # Rayman PS1 Modding
-This project is made to help with modding the PS1 version of Rayman 1 using the [PSX Modding Toolchain](https://github.com/mateusfavarin/psx-modding-toolchain). Currently the NTSC and PAL versions are supported by this project, though different mods might only work on specific versions. Included in here are several mods as well as an [example](mods/HelloWorld). Feel free to submit your own mods through pull requests!
+This project provides an easy way for modding the PS1 version of Rayman 1 using the [PSX Modding Toolchain](https://github.com/mateusfavarin/psx-modding-toolchain). It includes symbols exported from the game, allowing mods to directly access its functions and data. Currently the NTSC and PAL versions are supported by this project, though not all mods have been updated to work for the PAL version.
 
-*NOTE: This project is still a work in process. As such changes may be made at any point, especially to the exported symbols. Keep this in mind if you're going to work on a mod.*
+Included in here are several mods as well as an [example](mods/HelloWorld). Feel free to submit your own mods through pull requests!
 
-## Instructions
+## Usage
 
 ### Getting started
 - Download and set up the [PSX Modding Toolchain](https://github.com/mateusfavarin/psx-modding-toolchain).
@@ -25,3 +25,8 @@ To create a mod the easiest to do is to first run the clean command on an existi
 Generally the easiest way to hook in your code is to extend an existing function by replacing its return instruction with a jump `j`. Another easy option is to replace a function call `jal` with your own one and then have your custom function also call the original function.
 
 Once you've added a hook you also need a place to write your custom code. Generally any unused space in the exe will do. One option used in some examples here is to truncate the `FntPrint` function and overwrite the remaining part of it with your own code.
+
+## Related projects
+* [BinarySerializer.Ray1](https://github.com/BinarySerializer/BinarySerializer.Ray1) - a C# library for serializing the game data from all versions of the game
+* [rayman-ps1-decomp](https://github.com/fuerchter/rayman-ps1-decomp) - a matching decompilation of the PS1 version
+* [Ray1Editor](https://github.com/RayCarrot/Ray1Editor) - a level editor for the PS1 and PC versions
