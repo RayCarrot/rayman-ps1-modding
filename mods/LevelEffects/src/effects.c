@@ -11,7 +11,7 @@ int is_effect_available(int effect, short world, short level, uint currentEffect
     // Wind right can't be used with wind left or in Allegro Presto part 2
     if (effect == EFFECT_WIND_LEFT)
     {
-        if (num_world == 2 && num_level == 8)
+        if (world == 2 && level == 8)
         {
             return FALSE;
         }
@@ -21,7 +21,7 @@ int is_effect_available(int effect, short world, short level, uint currentEffect
     // Wind left can't be used with wind right or in Allegro Presto part 2
     else if (effect == EFFECT_WIND_RIGHT)
     {
-        if (num_world == 2 && num_level == 8)
+        if (world == 2 && level == 8)
         {
             return FALSE;
         }
@@ -43,12 +43,12 @@ int is_effect_available(int effect, short world, short level, uint currentEffect
         }
 
         // Allegro Presto part 1 or 2
-        if (num_world == 2 && (num_level == 7 || num_level == 8))
+        if (world == 2 && (level == 7 || level == 8))
         {
             return FALSE;
         }
         // Crystal Palace part 1 or 2
-        else if (num_world == 5 && (num_level == 1 || num_level == 2))
+        else if (world == 5 && (level == 1 || level == 2))
         {
             return FALSE;
         }
