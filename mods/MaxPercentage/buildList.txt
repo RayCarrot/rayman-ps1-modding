@@ -19,5 +19,3 @@ ntsc-u, exe, 0x801454fc, 0x0, src/asm/hook_collect_jaugeup.s // Replace call to 
 ntsc-u, exe, 0x80145eac, 0x0, src/asm/hook_collect_powerup.s // Replace call to PlaySnd
 ntsc-u, exe, 0x80145e40, 0x0, src/asm/hook_collect_poing_powerup.s // Replace call to PlaySnd
 ntsc-u, exe, 0x80145f18, 0x0, src/asm/hook_collect_superhelico.s // Replace call to PlaySnd
-
-add, Timer

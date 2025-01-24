@@ -55,6 +55,3 @@ pal-e, exe, 0x801a4458,            0x0, src/inputs/hook_inputs.s
 ntsc-u, exe, LoadAverage12,         0x0, src/speed_display/speed_display.c src/moskito/reset_bossSafeTimer.c // 1864 unused bytes
 pal-e, exe, LoadAverage12,          0x0, src/speed_display/speed_display.c src/moskito/reset_bossSafeTimer.c // 1864 unused bytes
 ntsc-u, exe, 0x8013f458,            0x0, src/speed_display/speed_display_hook.s // TODO: Add for pal
-
-add, Timer
-add, DeathCounter
