@@ -23,7 +23,7 @@ extern short jump_time;
 extern short decalage_en_cours;
 extern short ray_wind_force;
 extern bool PS1_Ingame;
-extern Display PS1_Display2;
+extern Display PS1_Displays[2];
 extern byte ray_stack_is_full;
 extern byte ray_pos_in_stack;
 extern byte black_pos_in_stack;

@@ -122,5 +122,5 @@ void show_vram()
     PS1_DisplayVRAM();
 
     // Fix developer bug... they probably made a typo in the code
-    PS1_Display2.field0_0x0.pad0 = 0;
+    PS1_Displays[1].field0_0x0.pad0 = 0;
 }

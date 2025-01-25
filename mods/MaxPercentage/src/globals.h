@@ -12,7 +12,7 @@
 extern LevelData level;
 extern short PS1_PolygonsCount;
 extern Display *PS1_CurrentDisplay;
-extern Display PS1_Display1;
+extern Display PS1_Displays[2];
 extern void *PS1_PrevPrim;
 extern bool in_pause;
 extern Font alpha;

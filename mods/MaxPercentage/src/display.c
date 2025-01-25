@@ -36,7 +36,7 @@ void draw_displaced_sprite(Sprite *sprite, short x, short y,
     }
     else 
     {
-        if (PS1_CurrentDisplay == &PS1_Display1) 
+        if (PS1_CurrentDisplay == &PS1_Displays[0]) 
         {
             iVar1 = (POLY_FT4 *)0x800d772c;
         }
@@ -124,7 +124,7 @@ void draw_colored_sprite(Sprite *sprite, short x, short y, bool flipX, byte r, b
     }
     else 
     {
-        if (PS1_CurrentDisplay == &PS1_Display1) 
+        if (PS1_CurrentDisplay == &PS1_Displays[0]) 
         {
             iVar1 = (POLY_FT4 *)0x800d772c;
         }
