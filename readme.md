@@ -3,6 +3,8 @@ This project provides an easy way for modding the PS1 version of Rayman 1 using 
 
 Included in here are several mods as well as an [example](mods/HelloWorld). Feel free to submit your own mods through pull requests!
 
+![Debug Menu](img/debug_menu.png)
+
 ## Mods
 Below is a list of every mod available in this repo, in alphabetical order. In order to apply a mod without using the toolchain you can download the provided `xdelta` patch file and [apply it](https://kotcrab.github.io/xdelta-wasm) to the game's first .bin disc file. Note that when using xdelta files you can only apply one mod at a time. Some mods have combined downloads to make this easier.
 
